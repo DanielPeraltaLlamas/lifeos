@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cierre del día · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#0B0B0D}
+*{box-sizing:border-box}
+a{color:#F79B93;text-decoration:none}a:hover{color:#FBC4BE}
+.lbl{font-size:12px;font-weight:600;color:#A1A1AA;letter-spacing:.05em;margin:0 0 12px;text-transform:uppercase;display:flex;gap:10px;align-items:center}
+.n{width:22px;height:22px;border-radius:50%;background:#222226;color:#D4D4D8;display:grid;place-items:center;font-size:11.5px}
+.row{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid #27272A}
+section{background:#18181B;border:1px solid #2A2A2E;border-radius:16px;padding:20px 22px}
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px 14px;border-radius:10px;border:1px solid #2A2A2E;background:#141416;color:#EDEDEF;font:14px Inter,system-ui,sans-serif;cursor:pointer;min-height:52px}
+.opt.on{border-color:#F2665B;background:#2A1918}
+.opt.dis{opacity:.45;cursor:default}
+.box{width:20px;height:20px;border-radius:6px;border:1.5px solid #46464C;display:grid;place-items:center;flex:none;color:#1A0605}
+.box.on{background:#F2665B;border-color:#F2665B}
+.rad{width:20px;height:20px;border-radius:50%;border:1.5px solid #46464C;flex:none;display:grid;place-items:center}
+.rad.on{border-color:#F2665B}
+.num{font-variant-numeric:tabular-nums}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#0B0B0D;color:#EDEDEF;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;padding:28px 16px 72px">
+<div style="max-width:640px;margin:0 auto">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:36px">
+<div style="display:flex;align-items:center;gap:10px;color:#A1A1AA;font-size:13px"><svg viewBox="0 0 16 16" fill="none" stroke="#F79B93" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="M13.5 9.5A5.5 5.5 0 1 1 6.5 2.5a4.5 4.5 0 0 0 7 7z"></path></svg>Jueves 19 nov · 23:04 · unos 2 minutos</div>
+<a href="Main.dc.html" style="font-size:13px;color:#B4B4BB">Ahora no</a>
+</div>
+<h1 style="margin:0 0 6px;font-size:26px;font-weight:600;letter-spacing:-.02em;color:#FAFAFA">Cerremos el día</h1>
+<p style="margin:0 0 36px;color:#A1A1AA">Sin juicios: mira lo que pasó, elige lo de mañana y a dormir.</p>
+
+<section aria-label="Cómo fue hoy" style="margin-bottom:14px">
+<h2 class="lbl"><span class="n">1</span>Cómo fue hoy</h2>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px">
+<div><div class="num" style="font-size:22px;font-weight:600;color:#FAFAFA">2 / 3</div><div style="font-size:12.5px;color:#A1A1AA">Plan cumplido</div></div>
+<div><div class="num" style="font-size:22px;font-weight:600;color:#FAFAFA">2 h 30</div><div style="font-size:12.5px;color:#A1A1AA">Foco · 3 bloques</div></div>
+<div><div class="num" style="font-size:22px;font-weight:600;color:#FAFAFA">24 min</div><div style="font-size:12.5px;color:#A1A1AA">Scroll (de 30)</div></div>
+</div>
+<div class="row"><span style="color:#4FC1A6;width:20px">✓</span><span style="flex:1">Analizar AniList y MyAnimeList</span><span style="font-size:12.5px;color:#A1A1AA">10:12 · 1 h 40</span></div>
+<div class="row"><span style="color:#4FC1A6;width:20px">✓</span><span style="flex:1">Gimnasio · pierna</span><span style="font-size:12.5px;color:#A1A1AA">18:05</span></div>
+<div class="row"><span style="color:#A1A1AA;width:20px">–</span><span style="flex:1;color:#B4B4BB">Repasar tema 5 de Sistemas Distribuidos</span><span style="font-size:12.5px;color:#A1A1AA">pasa a mañana</span></div>
+<p style="margin:14px 0 0;font-size:13px;color:#B4B4BB">Primer bloque a las 10:12: tu mejor arranque en dos semanas.</p>
+</section>
+
+<section aria-label="Plan de mañana" style="margin-bottom:14px">
+<h2 class="lbl"><span class="n">2</span>Mañana, viernes · elige hasta 3 <span class="num" style="margin-left:auto;font-weight:500;letter-spacing:0;text-transform:none">{{selN}} / 3</span></h2>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{opts}}" as="o" hint-placeholder-count="5">
+<button class="{{o.cls}}" type="button" aria-pressed="{{o.on}}" onClick="{{o.toggle}}">
+<span class="{{o.box}}"><sc-if value="{{o.on}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px"><path d="M3.5 8.5l3 3 6-7"></path></svg></sc-if></span>
+<span style="flex:1;min-width:0"><span style="display:block;font-weight:500">{{o.t}}</span><span style="display:block;font-size:12.5px;color:#A1A1AA">{{o.why}}</span></span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section aria-label="Lo primero" style="margin-bottom:14px">
+<h2 class="lbl"><span class="n">3</span>¿Qué será lo primero?</h2>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{chosen}}" as="c" hint-placeholder-count="3">
+<button class="{{c.cls}}" type="button" aria-pressed="{{c.on}}" onClick="{{c.pick}}"><span class="{{c.rad}}"><sc-if value="{{c.on}}" hint-placeholder-val="{{false}}"><span style="width:10px;height:10px;border-radius:50%;background:#F2665B"></span></sc-if></span><span style="flex:1">{{c.t}}</span></button>
+</sc-for>
+</div>
+<p style="margin:10px 0 0;font-size:12.5px;color:#A1A1AA">Mañana, al abrir la app, solo verás esto y un botón para empezar.</p>
+</section>
+
+<a href="Main.dc.html" style="margin-top:22px;display:flex;justify-content:center;align-items:center;min-height:52px;border-radius:12px;background:#F2665B;color:#1A0605;font-weight:600;font-size:15px">Cerrar el día</a>
+<p style="text-align:center;margin:12px 0 0;font-size:12.5px;color:#A1A1AA">TikTok e Instagram se bloquean hasta mañana después del primer bloque.</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { sel: [0, 1], first: 0 }; }
+  renderVals() {
+    const base = [
+      { t: 'Analizar Backloggd y HowLongToBeat', why: 'TFG · siguiente tarea del Hito 1' },
+      { t: 'Repasar tema 5 de Sistemas Distribuidos', why: 'Pendiente de hoy · Práctica 3 vence el lunes' },
+      { t: 'Empezar la Práctica 3 de Sistemas Distribuidos', why: 'Vence en 4 días' },
+      { t: 'Cuestionario de Seguridad', why: 'Vence mañana · 20 min' },
+      { t: 'Escribir al tutor del TFG', why: 'Tarea suelta · 10 min' }
+    ];
+    const sel = this.state.sel;
+    const full = sel.length >= 3;
+    const opts = base.map((x, i) => {
+      const on = sel.indexOf(i) !== -1;
+      return {
+        t: x.t, why: x.why, on,
+        cls: on ? 'opt on' : (full ? 'opt dis' : 'opt'),
+        box: on ? 'box on' : 'box',
+        toggle: () => this.setState((st) => {
+          const has = st.sel.indexOf(i) !== -1;
+          if (has) { const s = st.sel.filter((k) => k !== i); return { sel: s, first: s.indexOf(st.sel[st.first]) === -1 ? 0 : s.indexOf(st.sel[st.first]) }; }
+          if (st.sel.length >= 3) return null;
+          return { sel: st.sel.concat([i]) };
+        })
+      };
+    });
+    const chosen = sel.map((k, j) => ({
+      t: base[k].t, on: j === this.state.first,
+      cls: j === this.state.first ? 'opt on' : 'opt',
+      rad: j === this.state.first ? 'rad on' : 'rad',
+      pick: () => this.setState({ first: j })
+    }));
+    return { opts, chosen, selN: sel.length };
+  }
+}
+</script>
+</body>
+</html>

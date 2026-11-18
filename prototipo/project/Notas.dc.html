@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Notas · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#0E0E10}
+*{box-sizing:border-box}
+a{color:#F79B93;text-decoration:none}a:hover{color:#FBC4BE}
+.app{display:flex;flex-wrap:wrap;gap:12px;min-height:100vh;background:#0E0E10;color:#EDEDEF;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:12px}
+.nav{flex:1 1 236px;padding:16px 12px;background:#151518;border:1px solid #27272A;border-radius:16px;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 18px}
+.logo{width:30px;height:30px;border-radius:8px;background:#F2665B;display:grid;place-items:center;color:#1A0605;font-weight:700;font-size:14px}
+.navlist{display:flex;flex-wrap:wrap;gap:2px}
+.ni{flex:1 1 180px;display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;color:#B4B4BB;font-size:13.5px;font-weight:500;min-height:36px}
+.ni:hover{background:#222226;color:#F4F4F5}
+.ni.on{background:#2A2A2E;color:#FAFAFA}
+.ni svg{width:16px;height:16px;flex:none}
+.cnt{margin-left:auto;font-size:11.5px;color:#A1A1AA}
+.navh{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#8B8B93;padding:14px 10px 4px;font-weight:500}
+.main{flex:999 1 560px;min-width:0;padding:20px 20px 48px;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+.card{background:#18181B;border:1px solid #2A2A2E;border-radius:16px;padding:18px;min-width:0}
+.h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:0;color:#FAFAFA}
+.sub{color:#A1A1AA;font-size:13.5px;margin:2px 0 0}
+.gh{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#8B8B93;font-weight:500;margin:14px 6px 6px}
+.gh:first-child{margin-top:0}
+.fo{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border-radius:10px;border:0;background:transparent;color:#D4D4D8;font:500 13.5px Inter,system-ui,sans-serif;cursor:pointer;text-align:left;min-height:40px}
+.fo:hover{background:#222226}
+.fo.on{background:#2A2A2E;color:#FAFAFA}
+.fo svg{width:16px;height:16px;flex:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 14px;border-radius:10px;border:1px solid #333338;background:#1C1C1F;color:#EDEDEF;font:500 13.5px Inter,system-ui,sans-serif;cursor:pointer;min-height:40px}
+.btn:hover{background:#26262A;color:#FAFAFA}
+.btnp{background:#F2665B;border-color:#F2665B;color:#1A0605;font-weight:600}
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.note{background:#18181B;border:1px solid #2A2A2E;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;min-height:150px}
+.tag{display:inline-flex;align-self:flex-start;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:600}
+.t-idea{background:#2A2040;color:#DCCFFB}
+.t-nota{background:#3A1D1C;color:#F9C2BC}
+.t-link{background:#123029;color:#A6E6D5}
+@media (max-width:760px){.app{padding:8px}.main{padding:12px 4px 40px}}
+</style>
+</helmet>
+<div class="app">
+<nav class="nav" aria-label="Navegación principal">
+<div class="brand"><div class="logo" aria-hidden="true">L</div><div><div style="font-weight:600;font-size:14.5px;color:#FAFAFA">Life OS</div><div style="font-size:12px;color:#A1A1AA">Jue 19 nov · 9:42</div></div></div>
+<div class="navlist">
+<a class="ni" href="Main.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"></path></svg>Hoy</a>
+<a class="ni" href="Calendario.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="2"></rect><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3"></path></svg>Calendario</a>
+<a class="ni" href="Tareas.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5L4 6l2.5-2.5M9 5h4.5M2.5 10.5L4 12l2.5-2.5M9 11h4.5"></path></svg>Tareas y proyectos</a>
+<a class="ni on" href="Notas.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 4.5a1.5 1.5 0 0 1 1.5-1.5h3l1.5 1.5H13a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 12z"></path></svg>Notas</a>
+<a class="ni" href="Habitos.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.5M13 2.5V5h-2.5"></path></svg>Hábitos</a>
+<a class="ni" href="Bandeja.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M2 9.5l1.6-5.2A1.5 1.5 0 0 1 5 3.2h6a1.5 1.5 0 0 1 1.4 1.1L14 9.5v3a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 12.5zM2 9.5h3.5l1 1.5h3l1-1.5H14"></path></svg>Bandeja<span class="cnt">5</span></a>
+<a class="ni" href="Evolucion.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 13.5h12M4 11V8M7 11V5M10 11V7M13 11V3"></path></svg>Evolución</a>
+</div>
+<div class="navh">Rituales</div>
+<div class="navlist">
+<a class="ni" href="Cierre.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 1 1 6.5 2.5a4.5 4.5 0 0 0 7 7z"></path></svg>Cierre del día</a>
+<a class="ni" href="Revision.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2.5h7l3 3v8H3zM10 2.5v3h3M5.5 9h5M5.5 11.5h3"></path></svg>Revisión semanal</a>
+</div>
+<div style="flex:1 1 auto;min-height:24px"></div>
+<div class="navlist">
+<a class="ni" href="Movil.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="4" y="1.5" width="8" height="13" rx="2"></rect><path d="M7 12h2"></path></svg>Vista móvil</a>
+<a class="ni" href="Ajustes.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 4.5h7M12 4.5h2M2 11.5h2M7 11.5h7"></path><circle cx="10.5" cy="4.5" r="1.5"></circle><circle cx="5.5" cy="11.5" r="1.5"></circle></svg>Ajustes</a>
+</div>
+</nav>
+
+<main class="main">
+<aside class="card" style="flex:1 1 230px" aria-label="Carpetas">
+<div class="gh">Universidad</div>
+<sc-for list="{{uni}}" as="f" hint-placeholder-count="1"><button class="{{f.cls}}" type="button" onClick="{{f.pick}}"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 4.5a1.5 1.5 0 0 1 1.5-1.5h3l1.5 1.5H13a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 12z"></path></svg>{{f.name}}<span style="margin-left:auto;font-size:12px;color:#A1A1AA">{{f.n}}</span></button></sc-for>
+<div class="gh">Proyectos personales</div>
+<div style="margin:2px 4px 4px;padding:12px;border-radius:10px;border:1px dashed #333338;font-size:12.5px;color:#A1A1AA">Aún no tienes proyectos personales. Cuando empieces uno, créalo aquí y podrás mandarle ideas desde la Bandeja.</div>
+<button class="fo" type="button" style="color:#A1A1AA;margin-top:6px"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10"></path></svg>Nuevo proyecto</button>
+</aside>
+
+<section style="flex:999 1 520px;min-width:0" aria-label="Notas del proyecto">
+<header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin:4px 0 18px">
+<div><h1 class="h1">{{name}}</h1><p class="sub">{{desc}}</p></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<sc-if value="{{personal}}" hint-placeholder-val="{{false}}"><a class="btn" href="Tareas.dc.html">Convertir en proyecto con hitos</a></sc-if>
+<button class="btn btnp" type="button">Nueva nota</button>
+</div>
+</header>
+<div class="notes">
+<sc-for list="{{notes}}" as="x" hint-placeholder-count="4">
+<article class="note">
+<span class="{{x.tc}}">{{x.tag}}</span>
+<div style="font-weight:600;color:#FAFAFA;font-size:14.5px;line-height:1.35">{{x.t}}</div>
+<div style="font-size:13px;color:#B4B4BB;flex:1">{{x.b}}</div>
+<div style="font-size:12px;color:#8B8B93">{{x.d}}</div>
+</article>
+</sc-for>
+</div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { f: 0 }; }
+  renderVals() {
+    const folders = [
+      { name: 'TFG', group: 'uni', desc: 'Notas, ideas y enlaces del TFG', notes: [
+        { tag: 'Idea', t: 'Importar también desde Backloggd', b: 'Cubriría los videojuegos, que AniList no tiene. Revisar si hay API o solo scraping.', d: 'Ayer · desde la bandeja' },
+        { tag: 'Nota', t: 'AniList: funciones que me gustan', b: 'Listas personalizadas, estadísticas por género, API GraphQL bien documentada.', d: 'Hoy 10:48 · modo enfoque' },
+        { tag: 'Enlace', t: 'Modelar catálogos multimedia en PostgreSQL', b: 'Artículo útil para el Hito 2 (modelo de datos).', d: 'Lunes' },
+        { tag: 'Nota', t: 'Preguntas para el tutor', b: 'Formato de la revisión del 2 de febrero. ¿Hace falta memoria parcial?', d: 'Martes' }
+      ]}
+    ];
+    const k = this.state.f;
+    const mk = (f, i) => ({ name: f.name, n: f.notes.length, cls: i === k ? 'fo on' : 'fo', pick: () => this.setState({ f: i }) });
+    const all = folders.map(mk);
+    const tc = { Idea: 'tag t-idea', Nota: 'tag t-nota', Enlace: 'tag t-link' };
+    const cur = folders[k];
+    return {
+      uni: all.filter((_, i) => folders[i].group === 'uni'),
+      per: all.filter((_, i) => folders[i].group === 'per'),
+      name: cur.name, desc: cur.desc, personal: cur.group === 'per',
+      notes: cur.notes.map((x) => ({ tag: x.tag, t: x.t, b: x.b, d: x.d, tc: tc[x.tag] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,325 @@
+# PROYECTO: MI PERSONAL LIFE OS
+
+Quiero que actúes como una combinación de:
+- Experto en productividad y organización personal.
+- Coach estratégico de vida.
+- Diseñador UX/UI de aplicaciones premium.
+- Arquitecto de software.
+- Experto en hábitos, gestión del tiempo y sistemas personales.
+- Product Manager especializado en aplicaciones.
+
+Tu misión es ayudarme a diseñar y construir una aplicación personal que funcione como el centro de control de mi vida.
+
+No quiero simplemente una aplicación de tareas, un calendario bonito o un dashboard convencional. Quiero crear mi propio **Personal Life OS**, un sistema que me permita tener una visión completa de mi vida, entender dónde estoy, saber hacia dónde voy y gestionar mejor mi tiempo, energía, dinero, proyectos y objetivos.
+
+## REGLA MÁS IMPORTANTE
+
+El proyecto se desarrollará en TRES FASES.
+
+Está terminantemente prohibido saltar de una fase a otra sin mi aprobación explícita.
+
+No quiero que empieces programando. Quiero que primero dediquemos tiempo a entender qué necesito realmente.
+
+---
+
+# FASE 1. DESCUBRIMIENTO Y DISEÑO ESTRATÉGICO
+
+Esta es la fase más importante. Dedícale todo el tiempo que sea necesario.
+
+Tu objetivo es conocerme en profundidad y ayudarme a descubrir qué debería incluir mi sistema personal.
+
+### 1. Entrevístame
+
+Quiero que me hagas preguntas de forma conversacional, una por una o en pequeños grupos.
+
+No me hagas un cuestionario genérico de 50 preguntas. Quiero una conversación inteligente en la que adaptes las siguientes preguntas según mis respuestas.
+
+Investiga las siguientes áreas:
+
+**A. Situación actual**
+- Cómo es mi vida actualmente.
+- Cómo organizo mis días.
+- Qué responsabilidades tengo.
+- Qué cosas me generan estrés.
+- Qué siento que no estoy controlando.
+- Qué cosas hago bien y cuáles podría mejorar.
+
+**B. Objetivos y ambiciones**
+- Qué quiero conseguir a corto, medio y largo plazo.
+- Qué tipo de persona quiero ser.
+- Qué áreas de mi vida quiero mejorar.
+- Qué proyectos quiero desarrollar.
+- Qué experiencias quiero vivir.
+
+**C. Productividad y tiempo**
+- Cómo gestiono mi calendario.
+- Cómo organizo mis tareas.
+- Cuánto tiempo dedico a cada actividad.
+- Qué hábitos quiero desarrollar.
+- Qué me distrae.
+- Cómo quiero planificar mis semanas.
+
+**D. Salud y bienestar**
+- Sueño.
+- Deporte.
+- Alimentación.
+- Energía.
+- Salud mental.
+- Hábitos saludables.
+
+**E. Finanzas personales**
+- Ingresos.
+- Gastos.
+- Ahorro.
+- Inversiones.
+- Presupuestos.
+- Objetivos financieros.
+
+**F. Carrera y proyectos**
+- Trabajo.
+- Estudios.
+- Negocios.
+- Proyectos personales.
+- Habilidades que quiero desarrollar.
+- Objetivos profesionales.
+
+**G. Vida personal**
+- Familia.
+- Amigos.
+- Pareja.
+- Relaciones.
+- Ocio.
+- Viajes.
+- Experiencias.
+
+**H. Organización y conocimiento**
+- Notas.
+- Ideas.
+- Lecturas.
+- Aprendizajes.
+- Documentos.
+- Información que quiero conservar.
+
+No asumas que necesito todas estas categorías. Algunas podrían ser irrelevantes y otras podrían necesitar mucho más protagonismo.
+
+### 2. No te limites a preguntarme
+
+Quiero que también me propongas cosas.
+
+Cuando detectes una oportunidad de mejora:
+- Dime qué problema has identificado.
+- Explícame por qué merece la pena solucionarlo.
+- Propón diferentes formas de hacerlo.
+- Recomiéndame la mejor opción.
+- Pregúntame si quiero incorporarla.
+
+Quiero que cuestiones mis respuestas cuando tenga sentido y que me ayudes a descubrir necesidades que quizá no había considerado.
+
+Piensa como un asesor estratégico, no como alguien que simplemente obedece instrucciones.
+
+### 3. Diseña mi sistema ideal
+
+Cuando tengas suficiente información, prepara una propuesta completa que incluya:
+
+- Filosofía general del sistema.
+- Arquitectura de secciones.
+- Funcionalidades principales.
+- Funcionalidades secundarias.
+- Dashboard principal.
+- Métricas e indicadores.
+- Sistema de objetivos.
+- Sistema de hábitos.
+- Gestión de tareas y proyectos.
+- Planificación diaria, semanal y mensual.
+- Sistema de revisión personal.
+- Automatizaciones.
+- Posibles integraciones.
+- Funcionalidades inteligentes con IA.
+
+Para cada funcionalidad, explica:
+1. Qué hace.
+2. Qué problema resuelve.
+3. Cómo se utilizaría.
+4. Por qué merece estar en la aplicación.
+
+Clasifica las funcionalidades en:
+- Imprescindibles.
+- Muy recomendables.
+- Opcionales.
+- Futuras mejoras.
+
+Al final, presenta una propuesta de producto completa y espera mi aprobación.
+
+**NO EMPIECES LA FASE 2 HASTA QUE YO LA APRUEBE.**
+
+---
+
+# FASE 2. DISEÑO VISUAL Y PROTOTIPO
+
+Una vez aprobada la estrategia, quiero que diseñes visualmente toda la aplicación.
+
+IMPORTANTE: En esta fase quiero ver cómo sería la aplicación, pero todavía NO quiero que desarrolles la lógica real ni el backend.
+
+Quiero un prototipo visual navegable, con datos ficticios pero realistas.
+
+### 1. Dirección de diseño
+
+Quiero una aplicación que parezca un producto premium, moderno y extremadamente bien diseñado.
+
+Referencias de calidad visual:
+- Linear.
+- Notion.
+- Apple.
+- Raycast.
+- Arc.
+- Stripe.
+
+Busca un equilibrio entre minimalismo, elegancia, funcionalidad y densidad de información.
+
+Evita:
+- Diseños genéricos de dashboards.
+- Exceso de tarjetas.
+- Colores innecesarios.
+- Interfaces recargadas.
+- Gráficos que no aporten información.
+- Elementos decorativos sin utilidad.
+
+### 2. Diseña las pantallas
+
+Como mínimo, estudia y diseña:
+
+1. Home / Life Dashboard.
+2. Planificación diaria.
+3. Calendario.
+4. Tareas y proyectos.
+5. Objetivos personales.
+6. Hábitos y rutinas.
+7. Salud y energía.
+8. Finanzas.
+9. Carrera y proyectos.
+10. Notas y conocimiento.
+11. Estadísticas y evolución.
+12. Configuración.
+
+No todas tienen que ser páginas independientes. Propón la arquitectura de navegación que tenga más sentido.
+
+### 3. Dashboard principal
+
+Quiero que la pantalla principal sea especialmente buena.
+
+Debe permitirme entender rápidamente:
+
+- Cómo va mi vida.
+- Qué tengo que hacer hoy.
+- Qué es realmente importante.
+- Qué objetivos estoy persiguiendo.
+- Cómo estoy progresando.
+- Qué áreas estoy descuidando.
+- Qué tengo próximamente.
+- Qué debería priorizar.
+
+Quiero que tenga una sección inteligente tipo "Life Assistant" que me ayude a interpretar mi situación y me sugiera acciones.
+
+### 4. Prototipo
+
+Construye las pantallas con una navegación funcional a nivel visual.
+
+Puedes utilizar datos simulados, interacciones de demostración y gráficos de ejemplo.
+
+Pero no conectes todavía bases de datos ni implementes funcionalidades reales.
+
+Quiero poder explorar la aplicación y valorar:
+- Diseño.
+- Distribución.
+- Navegación.
+- Jerarquía de información.
+- Experiencia de usuario.
+
+Cuando termines, enséñame el resultado y recoge mis comentarios.
+
+Iteraremos tantas veces como sea necesario.
+
+**NO EMPIECES LA FASE 3 HASTA QUE YO APRUEBE EL DISEÑO.**
+
+---
+
+# FASE 3. DESARROLLO DE LA APLICACIÓN REAL
+
+Solo cuando apruebe el prototipo visual, empezaremos a desarrollar la aplicación definitiva.
+
+### 1. Arquitectura técnica
+
+Antes de programar, define:
+- Stack tecnológico.
+- Frontend.
+- Backend.
+- Base de datos.
+- Autenticación.
+- Almacenamiento.
+- APIs.
+- Integraciones.
+- Seguridad.
+- Despliegue.
+
+Recomiéndame tecnologías modernas, mantenibles y escalables, pero evita complejidad innecesaria.
+
+Explícame las decisiones técnicas antes de implementarlas.
+
+### 2. Construcción
+
+Desarrolla la aplicación respetando fielmente el diseño aprobado.
+
+Quiero que implementes:
+- Todas las pantallas.
+- Navegación real.
+- Base de datos.
+- Creación, edición y eliminación de información.
+- Gestión de tareas y proyectos.
+- Calendario.
+- Objetivos.
+- Hábitos.
+- Estadísticas.
+- Persistencia de datos.
+- Sistema de configuración.
+
+No quiero botones decorativos ni funcionalidades simuladas en la versión definitiva.
+
+Todo lo que aparezca como funcional debe funcionar de verdad.
+
+### 4. Calidad
+
+Antes de considerar terminado el proyecto:
+- Comprueba todas las funcionalidades.
+- Detecta errores.
+- Prueba los flujos principales.
+- Comprueba la persistencia.
+- Verifica la experiencia móvil y escritorio.
+- Corrige problemas visuales.
+- Comprueba que no existan botones sin funcionalidad.
+
+Quiero una aplicación realmente utilizable en mi día a día.
+
+---
+
+# FORMA DE TRABAJAR
+
+Durante todo el proyecto:
+
+1. Sé proactivo y aporta ideas.
+2. No des por hecho que mis primeras ideas son las mejores.
+3. Prioriza la simplicidad y la utilidad real.
+4. No añadas funcionalidades por añadir.
+5. Explícame las decisiones importantes.
+6. No avances sin mi aprobación en los cambios de fase.
+7. Mantén un documento actualizado con las decisiones tomadas.
+8. Piensa siempre en cómo hacer que este sistema sea algo que realmente quiera utilizar todos los días.
+
+## EMPEZAMOS AHORA
+
+Estamos en la FASE 1.
+
+No escribas código. No diseñes todavía pantallas.
+
+Quiero que empieces presentándome brevemente cómo vamos a abordar el descubrimiento y que me hagas la primera pregunta.
+
+Recuerda: quiero construir el mejor sistema posible para gestionar mi vida, no simplemente una aplicación bonita.

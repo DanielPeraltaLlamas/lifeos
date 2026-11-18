@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Calendario · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#0E0E10}
+*{box-sizing:border-box}
+a{color:#F79B93;text-decoration:none}a:hover{color:#FBC4BE}
+.app{display:flex;flex-wrap:wrap;min-height:100vh;background:#0E0E10;color:#EDEDEF;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.nav{flex:1 1 232px;padding:18px 12px;background:#0B0B0D;border-right:1px solid #27272A;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 14px}
+.logo{width:26px;height:26px;border-radius:7px;background:#F2665B;display:grid;place-items:center;color:#1A0605;font-weight:700;font-size:13px}
+.navlist{display:flex;flex-wrap:wrap;gap:2px}
+.ni{flex:1 1 180px;display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;color:#B4B4BB;font-size:13.5px;font-weight:500;min-height:36px}
+.ni:hover{background:#1C1C1F;color:#F4F4F5}
+.ni.on{background:#222226;color:#FAFAFA}
+.ni svg{width:16px;height:16px;flex:none}
+.cnt{margin-left:auto;font-size:11.5px;color:#A1A1AA}
+.navh{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#8B8B93;padding:14px 10px 4px;font-weight:500}
+.go{display:flex;align-items:center;gap:8px;justify-content:center;margin:0 4px 12px;padding:9px 12px;border-radius:8px;background:#F2665B;color:#1A0605;font-weight:600;font-size:13.5px;min-height:40px}
+.go:hover{background:#F58A81;color:#1A0605}
+.main{flex:999 1 560px;min-width:0;padding:28px 40px 72px}
+.wrap{max-width:1240px;margin:0 auto}
+.h1{font-size:22px;font-weight:600;letter-spacing:-.015em;margin:0;color:#FAFAFA}
+.sub{color:#A1A1AA;font-size:13.5px;margin:2px 0 0}
+.lbl{font-size:12px;font-weight:500;color:#A1A1AA;letter-spacing:.02em;margin:0 0 10px;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;flex:none;display:inline-block}
+.c-tfg{background:#F2665B}.c-uni{background:#A1A1AA}.c-gym{background:#4FC1A6}.c-ocio{background:#B79CF5}.c-due{background:#F5B544}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border-radius:8px;border:1px solid #333338;background:#1C1C1F;color:#EDEDEF;font:500 13px Inter,system-ui,sans-serif;cursor:pointer;min-height:36px}
+.btn:hover{background:#27272A;color:#FAFAFA}
+.seg{display:inline-flex;padding:3px;border-radius:9px;background:#17171A;border:1px solid #27272A}
+.seg a{padding:5px 12px;border-radius:6px;color:#B4B4BB;font-size:13px;font-weight:500}
+.seg a.on{background:#2A2A2E;color:#FAFAFA}
+.fch{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:7px;border:1px solid #2A2A2E;font-size:12.5px;color:#D4D4D8;background:#17171A}
+.num{font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:52px repeat(7,minmax(0,1fr))}
+.dh{padding:8px 8px 10px;border-left:1px solid #27272A;font-size:12.5px;color:#A1A1AA}
+.dh b{display:block;font-size:18px;font-weight:600;color:#EDEDEF}
+.col{position:relative;height:660px;border-left:1px solid #27272A;background-image:linear-gradient(#222226 1px,transparent 1px);background-size:100% 44px}
+.hr{height:44px;font-size:11px;color:#8B8B93;text-align:right;padding-right:8px;transform:translateY(-7px)}
+.ev{position:absolute;left:3px;right:3px;border-radius:6px;padding:4px 7px;font-size:11.5px;line-height:1.3;overflow:hidden}
+.ev b{font-weight:600;display:block}
+.e-uni{background:#202024;color:#D4D4D8}
+.e-tfg{background:#3A1F1E;color:#F9C2BC}
+.e-plan{background:#241617;color:#F9C2BC;border:1px dashed #B04A42}
+.e-gym{background:#123029;color:#A6E6D5}
+.e-ocio{background:#2A2040;color:#DCCFFB}
+.e-rev{background:#202024;color:#D4D4D8;border:1px dashed #52525B}
+.ad{border-left:1px solid #27272A;padding:4px;min-height:34px}
+.adv{border-radius:6px;padding:3px 7px;font-size:11.5px;background:#3A2C12;color:#F8D9A0;font-weight:500}
+.mm{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center;font-size:12px}
+.md{height:30px;display:grid;place-items:center;border-radius:6px;color:#D4D4D8;position:relative}
+.md.out{color:#46464C}
+.md.today{background:#F2665B;color:#1A0605;font-weight:600}
+.md.mark{box-shadow:inset 0 -2px 0 #F5B544}
+.md.hito{box-shadow:inset 0 -2px 0 #F2665B}
+.up{display:flex;gap:12px;padding:10px 0;border-top:1px solid #27272A}
+@media (max-width:800px){.main{padding:20px 16px 56px}.nav{border-right:0;border-bottom:1px solid #27272A}}
+</style>
+</helmet>
+<div class="app">
+<nav class="nav" aria-label="Navegación principal">
+<div class="brand"><div class="logo" aria-hidden="true">L</div><div><div style="font-weight:600;font-size:14px;color:#FAFAFA">Life OS</div><div style="font-size:12px;color:#A1A1AA">Jue 19 nov · 9:42</div></div></div>
+<a class="go" href="Enfoque.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="M9 1.5L3.5 9H8l-1 5.5L12.5 7H8z"></path></svg>Empezar bloque</a>
+<div class="navlist">
+<a class="ni" href="Main.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"></path></svg>Hoy</a>
+<a class="ni on" href="Calendario.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="2"></rect><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3"></path></svg>Calendario</a>
+<a class="ni" href="Tareas.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5L4 6l2.5-2.5M9 5h4.5M2.5 10.5L4 12l2.5-2.5M9 11h4.5"></path></svg>Tareas y proyectos</a>
+<a class="ni" href="Notas.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 4.5a1.5 1.5 0 0 1 1.5-1.5h3l1.5 1.5H13a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 12z"></path></svg>Notas</a>
+<a class="ni" href="Habitos.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.5M13 2.5V5h-2.5"></path></svg>Hábitos</a>
+<a class="ni" href="Bandeja.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M2 9.5l1.6-5.2A1.5 1.5 0 0 1 5 3.2h6a1.5 1.5 0 0 1 1.4 1.1L14 9.5v3a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 12.5zM2 9.5h3.5l1 1.5h3l1-1.5H14"></path></svg>Bandeja<span class="cnt">5</span></a>
+<a class="ni" href="Evolucion.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 13.5h12M4 11V8M7 11V5M10 11V7M13 11V3"></path></svg>Evolución</a>
+</div>
+<div class="navh">Rituales</div>
+<div class="navlist">
+<a class="ni" href="Cierre.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 1 1 6.5 2.5a4.5 4.5 0 0 0 7 7z"></path></svg>Cierre del día</a>
+<a class="ni" href="Revision.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2.5h7l3 3v8H3zM10 2.5v3h3M5.5 9h5M5.5 11.5h3"></path></svg>Revisión semanal</a>
+</div>
+<div style="flex:1 1 auto;min-height:24px"></div>
+<div class="navlist">
+<a class="ni" href="Movil.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="4" y="1.5" width="8" height="13" rx="2"></rect><path d="M7 12h2"></path></svg>Vista móvil</a>
+<a class="ni" href="Ajustes.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 4.5h7M12 4.5h2M2 11.5h2M7 11.5h7"></path><circle cx="10.5" cy="4.5" r="1.5"></circle><circle cx="5.5" cy="11.5" r="1.5"></circle></svg>Ajustes</a>
+</div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+<header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px">
+<div><h1 class="h1">Noviembre 2026</h1><p class="sub">Semana 47 · 16 – 22 nov · 6 h 40 min de foco planificadas</p></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+<button class="btn" type="button" aria-label="Semana anterior"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" style="width:14px;height:14px"><path d="M10 3L5 8l5 5"></path></svg></button>
+<button class="btn" type="button">Hoy</button>
+<button class="btn" type="button" aria-label="Semana siguiente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" style="width:14px;height:14px"><path d="M6 3l5 5-5 5"></path></svg></button>
+<div class="seg" role="group" aria-label="Vista"><a href="Calendario.dc.html">Día</a><a class="on" href="Calendario.dc.html">Semana</a><a href="Calendario.dc.html">Mes</a></div>
+<button class="btn" type="button" style="background:#F2665B;border-color:#F2665B;color:#1A0605;font-weight:600">Nuevo</button>
+</div>
+</header>
+
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px" role="group" aria-label="Filtros">
+<span class="fch"><span class="dot c-uni"></span>Clases</span>
+<span class="fch"><span class="dot c-due"></span>Entregas y exámenes</span>
+<span class="fch"><span class="dot c-tfg"></span>TFG y foco</span>
+<span class="fch"><span class="dot c-gym"></span>Gimnasio</span>
+<span class="fch"><span class="dot c-ocio"></span>Ocio</span>
+<span class="fch" style="color:#A1A1AA">Línea discontinua = planificado</span>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+<div style="flex:999 1 640px;min-width:0;overflow-x:auto;border:1px solid #27272A;border-radius:12px;background:#121214">
+<div style="min-width:820px">
+<div class="grid" style="border-bottom:1px solid #27272A">
+<div></div>
+<div class="dh">Lun<b class="num">16</b></div>
+<div class="dh">Mar<b class="num">17</b></div>
+<div class="dh">Mié<b class="num">18</b></div>
+<div class="dh" style="color:#F79B93">Jue<b class="num" style="color:#F79B93">19</b></div>
+<div class="dh">Vie<b class="num">20</b></div>
+<div class="dh">Sáb<b class="num">21</b></div>
+<div class="dh">Dom<b class="num">22</b></div>
+</div>
+<div class="grid" style="border-bottom:1px solid #27272A">
+<div style="font-size:10.5px;color:#8B8B93;padding:10px 6px 0 0;text-align:right">todo el día</div>
+<div class="ad"></div><div class="ad"></div><div class="ad"></div><div class="ad"></div>
+<div class="ad"><div class="adv">Cuestionario Seguridad</div></div>
+<div class="ad"></div><div class="ad"></div>
+</div>
+<div class="grid" style="padding-top:8px">
+<div>
+<div class="hr num">8:00</div><div class="hr num">9:00</div><div class="hr num">10:00</div><div class="hr num">11:00</div><div class="hr num">12:00</div><div class="hr num">13:00</div><div class="hr num">14:00</div><div class="hr num">15:00</div><div class="hr num">16:00</div><div class="hr num">17:00</div><div class="hr num">18:00</div><div class="hr num">19:00</div><div class="hr num">20:00</div><div class="hr num">21:00</div><div class="hr num">22:00</div>
+</div>
+<div class="col">
+<div class="ev e-uni" style="top:44px;height:86px"><b>Sistemas Distribuidos</b>9:00 – 11:00</div>
+<div class="ev e-uni" style="top:154px;height:86px"><b>Gestión de Proyectos</b>11:30 – 13:30</div>
+<div class="ev e-uni" style="top:308px;height:86px"><b>Calidad del Software</b>15:00 – 17:00</div>
+<div class="ev e-gym" style="top:462px;height:53px"><b>Gimnasio</b>Hecho</div>
+</div>
+<div class="col">
+<div class="ev e-uni" style="top:44px;height:86px"><b>Seguridad</b>9:00 – 11:00</div>
+<div class="ev e-uni" style="top:154px;height:86px"><b>Arquitecturas Cloud</b>11:30 – 13:30</div>
+<div class="ev e-tfg" style="top:396px;height:36px"><b>Foco · Repaso</b></div>
+</div>
+<div class="col">
+<div class="ev e-uni" style="top:44px;height:86px"><b>Lab. Sist. Distribuidos</b>9:00 – 11:00</div>
+<div class="ev e-uni" style="top:154px;height:86px"><b>Calidad del Software</b>11:30 – 13:30</div>
+<div class="ev e-tfg" style="top:381px;height:36px"><b>Foco · Repaso</b></div>
+</div>
+<div class="col" style="background-color:#1A1314">
+<div class="ev e-plan" style="top:88px;height:80px"><b>Foco · TFG</b>2 bloques · Hito 1</div>
+<div class="ev e-plan" style="top:198px;height:36px"><b>Repaso SD</b></div>
+<div class="ev e-plan" style="top:440px;height:54px;border-color:#2E8E78;background:#0F211D;color:#A6E6D5"><b>Gimnasio</b>18:00</div>
+<div style="position:absolute;left:0;right:0;top:75px;height:2px;background:#F2665B"><span style="position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:#F2665B"></span></div>
+</div>
+<div class="col">
+<div class="ev e-plan" style="top:88px;height:80px"><b>Foco · TFG</b>2 bloques</div>
+<div class="ev e-plan" style="top:198px;height:36px"><b>Repaso Calidad</b></div>
+</div>
+<div class="col">
+<div class="ev e-plan" style="top:132px;height:54px;border-color:#2E8E78;background:#0F211D;color:#A6E6D5"><b>Gimnasio</b>11:00</div>
+<div class="ev e-ocio" style="top:396px;height:86px"><b>Ocio libre</b>17:00 – 19:00</div>
+</div>
+<div class="col">
+<div class="ev e-rev" style="top:484px;height:30px"><b>Revisión semanal</b></div>
+</div>
+</div>
+</div>
+</div>
+
+<aside style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:28px">
+<section aria-label="Mes">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><h2 class="lbl">Noviembre</h2><span style="font-size:12px;color:#A1A1AA">— entrega · — hito</span></div>
+<div class="mm" style="color:#8B8B93;margin-bottom:4px"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+<div class="mm">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="42"><span class="{{d.cls}}">{{d.n}}</span></sc-for>
+</div>
+</section>
+<section aria-label="Próximas fechas">
+<h2 class="lbl">Próximas fechas</h2>
+<div class="up"><span class="dot c-due" style="margin-top:7px"></span><div style="flex:1">Cuestionario · Seguridad<div style="font-size:12.5px;color:#A1A1AA">Vie 20 nov · Blackboard</div></div><span class="num" style="color:#F5B544;font-size:13px">1 d</span></div>
+<div class="up"><span class="dot c-due" style="margin-top:7px"></span><div style="flex:1">Práctica 3 · Sistemas Distribuidos<div style="font-size:12.5px;color:#A1A1AA">Lun 23 nov · Blackboard</div></div><span class="num" style="color:#F5B544;font-size:13px">4 d</span></div>
+<div class="up"><span class="dot c-tfg" style="margin-top:7px"></span><div style="flex:1">Hito 1 TFG · Análisis<div style="font-size:12.5px;color:#A1A1AA">Dom 30 nov · hito propio</div></div><span class="num" style="color:#A1A1AA;font-size:13px">11 d</span></div>
+<div class="up"><span class="dot c-due" style="margin-top:7px"></span><div style="flex:1">Informe de pruebas · Calidad<div style="font-size:12.5px;color:#A1A1AA">Mar 1 dic · añadido a mano</div></div><span class="num" style="color:#A1A1AA;font-size:13px">12 d</span></div>
+</section>
+<p style="margin:0;font-size:12.5px;color:#A1A1AA">En el ordenador puedes arrastrar una tarea desde <a href="Tareas.dc.html">Tareas</a> a un hueco libre para convertirla en un bloque planificado.</p>
+</aside>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const days = [];
+    const prev = [26, 27, 28, 29, 30, 31];
+    prev.forEach((n) => days.push({ n, cls: 'md out' }));
+    const due = { 20: 1, 23: 1 };
+    const hito = { 30: 1 };
+    for (let n = 1; n <= 30; n++) {
+      let cls = 'md';
+      if (n === 19) cls = 'md today';
+      else if (due[n]) cls = 'md mark';
+      else if (hito[n]) cls = 'md hito';
+      days.push({ n, cls });
+    }
+    for (let n = 1; days.length < 42; n++) days.push({ n, cls: n === 1 ? 'md mark' : 'md out' });
+    return { days };
+  }
+}
+</script>
+</body>
+</html>

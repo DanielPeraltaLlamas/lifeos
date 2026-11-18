@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Bandeja · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#0E0E10}
+*{box-sizing:border-box}
+a{color:#F79B93;text-decoration:none}a:hover{color:#FBC4BE}
+.app{display:flex;flex-wrap:wrap;gap:12px;padding:12px;min-height:100vh;background:#0E0E10;color:#EDEDEF;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.nav{flex:1 1 236px;padding:16px 12px;background:#151518;border:1px solid #27272A;border-radius:16px;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 14px}
+.logo{width:26px;height:26px;border-radius:7px;background:#F2665B;display:grid;place-items:center;color:#1A0605;font-weight:700;font-size:13px}
+.navlist{display:flex;flex-wrap:wrap;gap:2px}
+.ni{flex:1 1 180px;display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;color:#B4B4BB;font-size:13.5px;font-weight:500;min-height:36px}
+.ni:hover{background:#1C1C1F;color:#F4F4F5}
+.ni.on{background:#222226;color:#FAFAFA}
+.ni svg{width:16px;height:16px;flex:none}
+.cnt{margin-left:auto;font-size:11.5px;color:#A1A1AA}
+.navh{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#8B8B93;padding:14px 10px 4px;font-weight:500}
+.go{display:flex;align-items:center;gap:8px;justify-content:center;margin:0 4px 12px;padding:9px 12px;border-radius:8px;background:#F2665B;color:#1A0605;font-weight:600;font-size:13.5px;min-height:40px}
+.go:hover{background:#F58A81;color:#1A0605}
+.main{flex:999 1 560px;min-width:0;padding:20px 20px 48px}
+.wrap{max-width:820px;margin:0 auto}
+.h1{font-size:22px;font-weight:600;letter-spacing:-.015em;margin:0;color:#FAFAFA}
+.sub{color:#A1A1AA;font-size:13.5px;margin:2px 0 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid #333338;background:#1C1C1F;color:#EDEDEF;font:500 13px Inter,system-ui,sans-serif;cursor:pointer;min-height:36px}
+.btn:hover{background:#27272A;color:#FAFAFA}
+.inp{flex:1;min-width:0;background:#17171A;border:1px solid #4A2A2D;border-radius:10px;padding:12px 14px;color:#EDEDEF;font:15px Inter,system-ui,sans-serif;min-height:48px}
+.inp::placeholder{color:#8B8B93}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sel{background:#1C1C1F;border:1px solid #333338;border-radius:8px;color:#EDEDEF;font:500 13px Inter,system-ui,sans-serif;padding:0 10px;min-height:36px}
+.it{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:14px 16px;background:#18181B;border:1px solid #2A2A2E;border-radius:14px;margin-bottom:10px}
+@media (max-width:800px){.main{padding:20px 16px 56px}.nav{border-right:0;border-bottom:1px solid #27272A}}
+</style>
+</helmet>
+<div class="app">
+<nav class="nav" aria-label="Navegación principal">
+<div class="brand"><div class="logo" aria-hidden="true">L</div><div><div style="font-weight:600;font-size:14px;color:#FAFAFA">Life OS</div><div style="font-size:12px;color:#A1A1AA">Jue 19 nov · 9:42</div></div></div>
+<div class="navlist">
+<a class="ni" href="Main.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"></path></svg>Hoy</a>
+<a class="ni" href="Calendario.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="2"></rect><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3"></path></svg>Calendario</a>
+<a class="ni" href="Tareas.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5L4 6l2.5-2.5M9 5h4.5M2.5 10.5L4 12l2.5-2.5M9 11h4.5"></path></svg>Tareas y proyectos</a>
+<a class="ni" href="Notas.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 4.5a1.5 1.5 0 0 1 1.5-1.5h3l1.5 1.5H13a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 12z"></path></svg>Notas</a>
+<a class="ni" href="Habitos.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.5M13 2.5V5h-2.5"></path></svg>Hábitos</a>
+<a class="ni on" href="Bandeja.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M2 9.5l1.6-5.2A1.5 1.5 0 0 1 5 3.2h6a1.5 1.5 0 0 1 1.4 1.1L14 9.5v3a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 12.5zM2 9.5h3.5l1 1.5h3l1-1.5H14"></path></svg>Bandeja<span class="cnt">{{count}}</span></a>
+<a class="ni" href="Evolucion.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 13.5h12M4 11V8M7 11V5M10 11V7M13 11V3"></path></svg>Evolución</a>
+</div>
+<div class="navh">Rituales</div>
+<div class="navlist">
+<a class="ni" href="Cierre.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 1 1 6.5 2.5a4.5 4.5 0 0 0 7 7z"></path></svg>Cierre del día</a>
+<a class="ni" href="Revision.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2.5h7l3 3v8H3zM10 2.5v3h3M5.5 9h5M5.5 11.5h3"></path></svg>Revisión semanal</a>
+</div>
+<div style="flex:1 1 auto;min-height:24px"></div>
+<div class="navlist">
+<a class="ni" href="Movil.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="4" y="1.5" width="8" height="13" rx="2"></rect><path d="M7 12h2"></path></svg>Vista móvil</a>
+<a class="ni" href="Ajustes.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 4.5h7M12 4.5h2M2 11.5h2M7 11.5h7"></path><circle cx="10.5" cy="4.5" r="1.5"></circle><circle cx="5.5" cy="11.5" r="1.5"></circle></svg>Ajustes</a>
+</div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+<header style="margin-bottom:20px">
+<h1 class="h1">Bandeja</h1>
+<p class="sub">Apunta en 2 segundos y sigue con lo tuyo. Se vacía en la revisión del domingo.</p>
+</header>
+<form style="display:flex;gap:8px;margin-bottom:26px" onSubmit="{{add}}">
+<label class="sr" for="cap3">Apuntar algo</label>
+<input class="inp" id="cap3" type="text" placeholder="Idea, recado, enlace, “tengo que acordarme de…”" value="{{draft}}" onChange="{{onDraft}}">
+<button class="btn" type="submit" style="min-height:48px;padding:0 18px;background:#F2665B;border-color:#F2665B;color:#1A0605;font-weight:600">Apuntar</button>
+</form>
+
+<sc-for list="{{items}}" as="i" hint-placeholder-count="5">
+<div class="it">
+<div style="flex:1 1 300px;min-width:0"><div style="color:#F1F1F2">{{i.t}}</div><div style="font-size:12.5px;color:#A1A1AA">{{i.w}}</div></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<button class="btn" type="button" onClick="{{i.done}}">A tarea</button>
+<label class="sr" for="{{i.sid}}">Proyecto de destino</label>
+<select class="sel" id="{{i.sid}}"><option>TFG</option><option>+ Nuevo proyecto…</option></select>
+<button class="btn" type="button" onClick="{{i.done}}">A notas</button>
+<button class="btn" type="button" onClick="{{i.done}}" aria-label="Descartar">Descartar</button>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+<div style="padding:40px 0;text-align:center;color:#A1A1AA;border-top:1px solid #27272A">Bandeja vacía. Tu cabeza, también.</div>
+</sc-if>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      draft: '',
+      items: [
+        { t: 'Mirar si la API de AniList tiene límite de peticiones', w: 'Hoy 10:31 · desde modo enfoque' },
+        { t: 'Idea TFG: importar también desde Backloggd', w: 'Ayer 22:10 · móvil' },
+        { t: 'Preguntar en clase la fecha del examen de Calidad', w: 'Ayer 12:05 · móvil' },
+        { t: 'Comprar proteína', w: 'Martes · móvil' },
+        { t: 'Artículo: modelar catálogos multimedia en PostgreSQL', w: 'Lunes · enlace' }
+      ]
+    };
+  }
+  renderVals() {
+    const items = this.state.items.map((x, i) => ({
+      t: x.t, w: x.w, sid: 'dest' + i,
+      done: () => this.setState((st) => ({ items: st.items.filter((_, j) => j !== i) }))
+    }));
+    return {
+      items,
+      count: items.length,
+      empty: items.length === 0,
+      draft: this.state.draft,
+      onDraft: (e) => this.setState({ draft: e.target.value }),
+      add: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        const t = this.state.draft.trim();
+        if (!t) return;
+        this.setState((st) => ({ draft: '', items: [{ t, w: 'Ahora mismo' }].concat(st.items) }));
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

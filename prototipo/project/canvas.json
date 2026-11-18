@@ -1,0 +1,193 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-17T18:00:00Z"
+  },
+  "title": "Personal Life OS",
+  "launch": {
+    "view": "focused",
+    "file": "Colores.dc.html"
+  },
+  "pages": [],
+  "boards": {
+    "Colores.dc.html": {
+      "x": 0,
+      "y": -1900,
+      "w": 1440,
+      "h": 1000,
+      "title": "Colores dinámicos",
+      "is_interactive": true,
+      "expand": "fill"
+    },
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1000,
+      "title": "Hoy",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Movil.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Hoy · móvil",
+      "is_interactive": true
+    },
+    "Enfoque.dc.html": {
+      "x": 1990,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Modo enfoque",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Calendario.dc.html": {
+      "x": 0,
+      "y": 1600,
+      "w": 1440,
+      "h": 1000,
+      "title": "Calendario",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Tareas.dc.html": {
+      "x": 1520,
+      "y": 1600,
+      "w": 1440,
+      "h": 1100,
+      "title": "Tareas y proyectos",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Habitos.dc.html": {
+      "x": 3040,
+      "y": 1600,
+      "w": 1440,
+      "h": 1000,
+      "title": "Hábitos",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Notas.dc.html": {
+      "x": 4560,
+      "y": 1600,
+      "w": 1440,
+      "h": 1000,
+      "title": "Notas de proyectos",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Bandeja.dc.html": {
+      "x": 0,
+      "y": 3100,
+      "w": 1440,
+      "h": 900,
+      "title": "Bandeja",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Evolucion.dc.html": {
+      "x": 1520,
+      "y": 3100,
+      "w": 1440,
+      "h": 1150,
+      "title": "Evolución",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Cierre.dc.html": {
+      "x": 0,
+      "y": 4700,
+      "w": 1440,
+      "h": 1000,
+      "title": "Cierre del día",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Revision.dc.html": {
+      "x": 1520,
+      "y": 4700,
+      "w": 1440,
+      "h": 950,
+      "title": "Revisión semanal",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Ajustes.dc.html": {
+      "x": 3040,
+      "y": 4700,
+      "w": 1440,
+      "h": 1150,
+      "title": "Ajustes",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "AndroidInicio.dc.html": {
+      "x": 1520,
+      "y": -1900,
+      "w": 390,
+      "h": 844,
+      "title": "Widgets de Android",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "Colores.dc.html",
+    "AndroidInicio.dc.html",
+    "Main.dc.html",
+    "Movil.dc.html",
+    "Enfoque.dc.html",
+    "Calendario.dc.html",
+    "Tareas.dc.html",
+    "Habitos.dc.html",
+    "Notas.dc.html",
+    "Bandeja.dc.html",
+    "Evolucion.dc.html",
+    "Cierre.dc.html",
+    "Revision.dc.html",
+    "Ajustes.dc.html"
+  ],
+  "notes": {
+    "row0": {
+      "x": 0,
+      "y": -2200,
+      "text": "Colores dinámicos y widgets",
+      "kind": "title1",
+      "maxW": 1910
+    },
+    "row1": {
+      "x": 0,
+      "y": -300,
+      "text": "Núcleo diario: arrancar y concentrarse",
+      "kind": "title1",
+      "maxW": 3430
+    },
+    "row2": {
+      "x": 0,
+      "y": 1300,
+      "text": "Planificar: calendario, proyectos, hábitos y notas",
+      "kind": "title1",
+      "maxW": 6000
+    },
+    "row3": {
+      "x": 0,
+      "y": 2800,
+      "text": "Captura y evolución",
+      "kind": "title1",
+      "maxW": 2960
+    },
+    "row4": {
+      "x": 0,
+      "y": 4400,
+      "text": "Rituales y ajustes",
+      "kind": "title1",
+      "maxW": 4480
+    }
+  },
+  "designSystems": []
+}

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Revisión semanal · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#0B0B0D}
+*{box-sizing:border-box}
+a{color:#F79B93;text-decoration:none}a:hover{color:#FBC4BE}
+.st{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:10px 12px;border-radius:9px;border:0;background:transparent;color:#B4B4BB;font:500 14px Inter,system-ui,sans-serif;cursor:pointer;min-height:44px}
+.st.on{background:#1C1C1F;color:#FAFAFA}
+.st.done{color:#A1A1AA}
+.n{width:22px;height:22px;border-radius:50%;background:#222226;display:grid;place-items:center;font-size:11.5px;flex:none}
+.st.on .n{background:#F2665B;color:#1A0605}
+.row{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid #27272A}
+.big{font-size:24px;font-weight:600;color:#FAFAFA;font-variant-numeric:tabular-nums}
+.sm{font-size:12.5px;color:#A1A1AA}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;border-radius:9px;border:1px solid #333338;background:#1C1C1F;color:#EDEDEF;font:500 14px Inter,system-ui,sans-serif;cursor:pointer;min-height:44px}
+.btnp{background:#F2665B;border-color:#F2665B;color:#1A0605;font-weight:600}
+.inp{width:100%;background:#17171A;border:1px solid #2A2A2E;border-radius:9px;padding:10px 12px;color:#EDEDEF;font:14px Inter,system-ui,sans-serif;min-height:44px}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#0B0B0D;color:#EDEDEF;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;padding:28px 16px 72px">
+<div style="max-width:960px;margin:0 auto">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;gap:12px;flex-wrap:wrap">
+<div><h1 style="margin:0;font-size:24px;font-weight:600;letter-spacing:-.02em;color:#FAFAFA">Revisión semanal</h1><div class="sm">Domingo 22 nov · semana 47 · unos 12 minutos</div></div>
+<a href="Main.dc.html" style="font-size:13px;color:#B4B4BB">Salir</a>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start">
+<nav aria-label="Pasos" style="flex:1 1 220px;display:flex;flex-direction:column;gap:2px;background:#18181B;border:1px solid #2A2A2E;border-radius:16px;padding:10px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="5"><button class="{{s.cls}}" type="button" onClick="{{s.go}}"><span class="n">{{s.n}}</span>{{s.t}}</button></sc-for>
+</nav>
+
+<section style="flex:999 1 480px;min-width:0;background:#18181B;border:1px solid #2A2A2E;border-radius:16px;padding:24px 26px" aria-live="polite">
+<sc-if value="{{s1}}" hint-placeholder-val="{{true}}">
+<h2 style="margin:0 0 18px;font-size:18px;font-weight:600">Cómo fue la semana</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;margin-bottom:22px">
+<div><div class="big">7 h 50</div><div class="sm">Foco · +2 h vs. anterior</div></div>
+<div><div class="big">64 %</div><div class="sm">Plan cumplido</div></div>
+<div><div class="big">3 / 3</div><div class="sm">Gimnasio</div></div>
+<div><div class="big">2,6</div><div class="sm">Cepillados al día</div></div>
+</div>
+<div class="row"><span style="flex:1">Mejor día</span><span class="sm">Jueves · 2 h 30 de foco, plan 2/3</span></div>
+<div class="row"><span style="flex:1">Día más flojo</span><span class="sm">Sábado · sin bloques</span></div>
+<div class="row"><span style="flex:1">Scroll total</span><span class="sm">2 h 41 · de 3 h 30 permitidas</span></div>
+<p style="margin:16px 0 0;color:#B4B4BB">¿Algo que quieras recordar de esta semana?</p>
+<label for="nota" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Nota de la semana</label>
+<input class="inp" id="nota" type="text" placeholder="Opcional · una frase" style="margin-top:8px">
+</sc-if>
+
+<sc-if value="{{s2}}" hint-placeholder-val="{{false}}">
+<h2 style="margin:0 0 18px;font-size:18px;font-weight:600">Qué se acerca</h2>
+<div class="row"><span style="color:#F5B544;font-weight:600;width:44px">1 d</span><span style="flex:1">Práctica 3 · Sistemas Distribuidos</span><span class="sm">lunes</span></div>
+<div class="row"><span style="width:44px;color:#A1A1AA">8 d</span><span style="flex:1">Hito 1 TFG · Análisis de plataformas</span><span class="sm">vas al 57 %</span></div>
+<div class="row"><span style="width:44px;color:#A1A1AA">9 d</span><span style="flex:1">Informe de pruebas · Calidad</span><span class="sm">martes 1</span></div>
+<div style="margin-top:18px;padding:14px 16px;border-radius:10px;border:1px solid #2A2A2E;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+<span style="flex:1 1 260px">¿Hay entregas nuevas en Blackboard que no estén aquí?</span>
+<button class="btn" type="button">Añadir entrega</button>
+</div>
+</sc-if>
+
+<sc-if value="{{s3}}" hint-placeholder-val="{{false}}">
+<h2 style="margin:0 0 6px;font-size:18px;font-weight:600">Vaciar la bandeja</h2>
+<p class="sm" style="margin:0 0 14px">5 elementos · decide qué es cada cosa</p>
+<div class="row"><span style="flex:1">Mirar si la API de AniList tiene límite de peticiones</span><span class="sm">→ Nota TFG</span></div>
+<div class="row"><span style="flex:1">Idea TFG: importar también desde Backloggd</span><span class="sm">→ Nota TFG</span></div>
+<div class="row"><span style="flex:1">Preguntar la fecha del examen de Calidad</span><span class="sm">→ Tarea · lunes</span></div>
+<div class="row"><span style="flex:1">Comprar proteína</span><span class="sm">→ Tarea suelta</span></div>
+<div class="row"><span style="flex:1">Artículo: catálogos multimedia en PostgreSQL</span><span class="sm">→ Hito 2</span></div>
+</sc-if>
+
+<sc-if value="{{s4}}" hint-placeholder-val="{{false}}">
+<h2 style="margin:0 0 6px;font-size:18px;font-weight:600">Tres metas para la semana 48</h2>
+<p class="sm" style="margin:0 0 14px">Lo que haría que la semana fuera buena. El asistente propone; tú decides.</p>
+<div class="row"><span style="width:22px;color:#F79B93;font-weight:600">1</span><span style="flex:1">Cerrar el Hito 1 del TFG (tabla comparativa + alcance)</span></div>
+<div class="row"><span style="width:22px;color:#F79B93;font-weight:600">2</span><span style="flex:1">Entregar la Práctica 3 de Sistemas Distribuidos el lunes</span></div>
+<div class="row"><span style="width:22px;color:#F79B93;font-weight:600">3</span><span style="flex:1">3 sesiones de gimnasio</span></div>
+</sc-if>
+
+<sc-if value="{{s5}}" hint-placeholder-val="{{false}}">
+<h2 style="margin:0 0 18px;font-size:18px;font-weight:600">Ajustes de la semana</h2>
+<div class="row"><span style="flex:1">Primer bloque: ya tienes 14 días de datos (media 13:20). ¿Fijamos objetivo antes de las 12:00?</span><button class="btn btnp" type="button">Fijar</button></div>
+<div class="row"><span style="flex:1">Límite de scroll: has usado el 77 %. ¿Bajamos de 30 a 25 min al día?</span><button class="btn" type="button">Bajar</button></div>
+</sc-if>
+
+<div style="display:flex;justify-content:space-between;margin-top:32px;gap:10px">
+<button class="btn" type="button" onClick="{{prev}}">Anterior</button>
+<sc-if value="{{notLast}}" hint-placeholder-val="{{true}}"><button class="btn btnp" type="button" onClick="{{next}}">Siguiente</button></sc-if>
+<sc-if value="{{last}}" hint-placeholder-val="{{false}}"><a class="btn btnp" href="Main.dc.html">Terminar revisión</a></sc-if>
+</div>
+</section>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":950}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { step: 0 }; }
+  renderVals() {
+    const names = ['Cómo fue la semana', 'Qué se acerca', 'Vaciar la bandeja', 'Tres metas', 'Ajustes'];
+    const k = this.state.step;
+    const steps = names.map((t, i) => ({
+      t, n: i < k ? '✓' : String(i + 1),
+      cls: i === k ? 'st on' : (i < k ? 'st done' : 'st'),
+      go: () => this.setState({ step: i })
+    }));
+    return {
+      steps,
+      s1: k === 0, s2: k === 1, s3: k === 2, s4: k === 3, s5: k === 4,
+      last: k === 4, notLast: k !== 4,
+      prev: () => this.setState((st) => ({ step: Math.max(0, st.step - 1) })),
+      next: () => this.setState((st) => ({ step: Math.min(4, st.step + 1) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

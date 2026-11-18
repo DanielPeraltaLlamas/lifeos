@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Widgets de Android · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&amp;display=swap">
+<style>
+body{margin:0;background:#111318}
+*{box-sizing:border-box}
+a{color:#AAC7FF;text-decoration:none}
+.w{background:#1D2024;border-radius:28px;padding:16px}
+.wt{font-size:13px;font-weight:600;color:#C4C6D0;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tk{display:flex;align-items:center;gap:12px;width:100%;padding:8px 10px;border-radius:16px;background:#282A2F;border:0;color:#E2E2E9;font:500 14px "Roboto Flex",system-ui,sans-serif;text-align:left;cursor:pointer;min-height:48px;margin-bottom:6px}
+.tk.done{color:#8E9099;text-decoration:line-through}
+.cb{width:22px;height:22px;border-radius:7px;border:2px solid #8E9099;display:grid;place-items:center;flex:none}
+.cb.on{background:#AAC7FF;border-color:#AAC7FF}
+.hb{flex:1;min-height:76px;border-radius:20px;border:0;background:#282A2F;color:#E2E2E9;font:500 12.5px "Roboto Flex",system-ui,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.hb.on{background:#284777;color:#D6E3FF}
+.hb b{font-size:20px;font-weight:700}
+.cap{flex:1;min-height:56px;border-radius:28px;border:0;font:600 15px "Roboto Flex",system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.ic{width:52px;height:52px;border-radius:18px;background:rgba(255,255,255,.14)}
+</style>
+</helmet>
+<div style="width:390px;height:844px;position:relative;overflow:hidden;font-family:'Roboto Flex',system-ui,sans-serif;color:#E2E2E9;background:linear-gradient(160deg,#1B2B4A 0%,#0F1A30 45%,#2A2440 100%)">
+
+<button type="button" onClick="{{toggleShade}}" aria-label="Abrir panel de notificaciones" style="position:absolute;top:0;left:0;right:0;height:44px;border:0;background:transparent;color:#C4C6D0;font:500 12px 'Roboto Flex',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+<span style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.4)"></span>
+</button>
+
+<div style="padding:56px 14px 0;display:flex;flex-direction:column;gap:12px">
+<div style="padding:0 8px 6px"><div style="font-size:52px;font-weight:400;line-height:1;letter-spacing:-.02em">9:42</div><div style="font-size:14px;color:#C4C6D0;margin-top:4px">jueves, 19 de noviembre</div></div>
+
+<section class="w" aria-label="Widget: tareas de hoy">
+<div class="wt"><span style="width:8px;height:8px;border-radius:50%;background:#AAC7FF"></span>Hoy · {{doneN}} de 3</div>
+<sc-for list="{{tasks}}" as="t" hint-placeholder-count="3">
+<button class="{{t.cls}}" type="button" onClick="{{t.toggle}}" aria-pressed="{{t.done}}"><span class="{{t.cb}}"><sc-if value="{{t.done}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 16 16" fill="none" stroke="#0A305F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px"><path d="M3.5 8.5l3 3 6-7"></path></svg></sc-if></span>{{t.t}}</button>
+</sc-for>
+</section>
+
+<section class="w" aria-label="Widget: hábitos" style="padding:12px">
+<div style="display:flex;gap:8px">
+<button class="hb" type="button" onClick="{{addTeeth}}" aria-label="Registrar cepillado"><b>{{teeth}}/3</b>Dientes</button>
+<button class="{{showerCls}}" type="button" onClick="{{toggleShower}}" aria-pressed="{{shower}}"><b>{{showerTxt}}</b>Ducha</button>
+<button class="hb" type="button" aria-label="Gimnasio, 1 de 3 esta semana"><b>1/3</b>Gym</button>
+</div>
+</section>
+
+<section aria-label="Widget: captura rápida" style="display:flex;gap:10px">
+<button class="cap" type="button" onClick="{{openNote}}" style="background:#AAC7FF;color:#0A305F">+ Nota</button>
+<button class="cap" type="button" onClick="{{openTask}}" style="background:#284777;color:#D6E3FF">+ Tarea</button>
+</section>
+</div>
+
+<div style="position:absolute;bottom:28px;left:0;right:0;display:flex;justify-content:space-evenly" aria-hidden="true">
+<span class="ic"></span><span class="ic"></span><span class="ic" style="background:#AAC7FF;display:grid;place-items:center;color:#0A305F;font-weight:700">L</span><span class="ic"></span>
+</div>
+
+<sc-if value="{{capOpen}}" hint-placeholder-val="{{false}}">
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end">
+<form onSubmit="{{closeCap}}" style="width:100%;background:#1D2024;border-radius:28px 28px 0 0;padding:20px 18px 28px;display:flex;flex-direction:column;gap:12px">
+<div style="font-size:16px;font-weight:600">{{capTitle}}</div>
+<label for="capin" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">{{capTitle}}</label>
+<input id="capin" type="text" placeholder="Escribe y listo…" style="background:#282A2F;border:0;border-radius:16px;padding:14px 16px;color:#E2E2E9;font:16px 'Roboto Flex',sans-serif;min-height:52px">
+<div style="display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:#C4C6D0">{{capHint}}</div>
+<div style="display:flex;gap:10px;justify-content:flex-end">
+<button type="button" onClick="{{closeCap}}" style="border:0;background:transparent;color:#AAC7FF;font:600 14px 'Roboto Flex',sans-serif;min-height:44px;padding:0 16px;cursor:pointer">Cancelar</button>
+<button type="submit" style="border:0;background:#AAC7FF;color:#0A305F;font:600 14px 'Roboto Flex',sans-serif;min-height:44px;padding:0 22px;border-radius:22px;cursor:pointer">Guardar</button>
+</div>
+</form>
+</div>
+</sc-if>
+
+<sc-if value="{{shade}}" hint-placeholder-val="{{false}}">
+<div style="position:absolute;inset:0;background:rgba(17,19,24,.94);padding:24px 12px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:0 8px 14px"><span style="font-size:15px;font-weight:600">Notificaciones</span><button type="button" onClick="{{toggleShade}}" style="border:0;background:transparent;color:#AAC7FF;font:600 14px 'Roboto Flex',sans-serif;min-height:44px;cursor:pointer">Cerrar</button></div>
+<div style="background:#1D2024;border-radius:24px;padding:16px">
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#C4C6D0"><span style="width:18px;height:18px;border-radius:6px;background:#AAC7FF;display:grid;place-items:center;color:#0A305F;font-size:11px;font-weight:700">L</span>Life OS · fija<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:12px;height:12px;margin-left:auto"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg></div>
+<div style="font-size:15px;font-weight:600;margin:8px 0 2px">{{notifTitle}}</div>
+<div style="font-size:13.5px;color:#C4C6D0">{{notifBody}}</div>
+<div style="display:flex;gap:8px;margin-top:12px">
+<button type="button" onClick="{{markFirst}}" style="flex:1;border:0;border-radius:20px;background:#AAC7FF;color:#0A305F;font:600 13.5px 'Roboto Flex',sans-serif;min-height:44px;cursor:pointer">Hecha</button>
+<button type="button" style="flex:1;border:0;border-radius:20px;background:#284777;color:#D6E3FF;font:600 13.5px 'Roboto Flex',sans-serif;min-height:44px;cursor:pointer">Empezar bloque</button>
+</div>
+</div>
+<p style="font-size:12.5px;color:#8E9099;padding:12px 8px;margin:0">No se puede descartar: desaparece sola cuando completas las tareas del plan de hoy.</p>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { d: [false, false, false], teeth: 1, shower: false, cap: null, shade: false }; }
+  renderVals() {
+    const s = this.state;
+    const names = ['Analizar AniList y MyAnimeList', 'Repasar tema 5 de SD', 'Gimnasio · 18:00'];
+    const tasks = names.map((t, i) => ({
+      t, done: s.d[i], cls: s.d[i] ? 'tk done' : 'tk', cb: s.d[i] ? 'cb on' : 'cb',
+      toggle: () => this.setState((st) => { const d = st.d.slice(); d[i] = !d[i]; return { d }; })
+    }));
+    const pending = names.filter((_, i) => !s.d[i]);
+    const close = (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ cap: null }); };
+    return {
+      tasks, doneN: s.d.filter(Boolean).length,
+      teeth: s.teeth, addTeeth: () => this.setState((st) => ({ teeth: st.teeth >= 4 ? 0 : st.teeth + 1 })),
+      shower: s.shower, showerTxt: s.shower ? '✓' : '—', showerCls: s.shower ? 'hb on' : 'hb',
+      toggleShower: () => this.setState((st) => ({ shower: !st.shower })),
+      capOpen: !!s.cap,
+      capTitle: s.cap === 'nota' ? 'Nueva nota' : 'Nueva tarea',
+      capHint: s.cap === 'nota' ? 'Va a la Bandeja · luego la mandas a un proyecto' : 'Para hoy · puedes cambiar la fecha luego',
+      openNote: () => this.setState({ cap: 'nota' }), openTask: () => this.setState({ cap: 'tarea' }), closeCap: close,
+      shade: s.shade, toggleShade: () => this.setState((st) => ({ shade: !st.shade })),
+      notifTitle: pending.length ? 'Plan de hoy: ' + pending.length + ' pendiente' + (pending.length > 1 ? 's' : '') : 'Plan completado',
+      notifBody: pending.length ? 'Ahora toca: ' + pending[0] : 'Esta notificación ya se puede quitar.',
+      markFirst: () => this.setState((st) => { const d = st.d.slice(); const i = d.indexOf(false); if (i >= 0) d[i] = true; return { d }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

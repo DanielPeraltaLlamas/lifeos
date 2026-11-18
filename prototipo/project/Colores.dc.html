@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Colores dinámicos · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&amp;display=swap">
+<style>
+body{margin:0;background:#16171A}
+*{box-sizing:border-box}
+a{color:#AAC7FF;text-decoration:none}a:hover{color:#D6E3FF}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#16171A;color:#E2E2E9;font-family:'Roboto Flex',system-ui,sans-serif;font-size:14px;line-height:1.5;padding:28px 20px 64px">
+<div style="max-width:1320px;margin:0 auto">
+<header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:24px">
+<div>
+<h1 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Colores desde tu fondo de pantalla</h1>
+<p style="margin:4px 0 0;color:#A9ABB4;max-width:780px">La app no tiene una paleta fija: toma el esquema de colores que Caelestia genera a partir de tu fondo (en el ordenador) y el de Material You (en el móvil). Si cambias de fondo, la app cambia con él. Cuatro fondos de ejemplo:</p>
+</div>
+<div style="display:flex;gap:16px;font-size:13.5px"><a href="AndroidInicio.dc.html">Ver widgets de Android →</a><a href="Main.dc.html">Volver al prototipo →</a></div>
+</header>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px">
+<sc-for list="{{opts}}" as="o" hint-placeholder-count="4">
+<article style="border-radius:24px;overflow:hidden;border:1px solid #2A2B30;background:#1C1D21">
+<div style="height:90px;background:{{o.wall}};display:flex;align-items:flex-end;padding:12px 14px"><span style="font-size:12px;font-weight:600;color:#fff;background:rgba(0,0,0,.35);padding:3px 9px;border-radius:10px">Fondo: {{o.name}}</span></div>
+<div style="padding:14px;background:{{o.surface}};display:flex;flex-direction:column;gap:10px">
+<div style="border-radius:20px;padding:16px;background:{{o.pc}}">
+<div style="font-size:11px;font-weight:600;letter-spacing:.06em;color:{{o.onPc}};opacity:.8">LO PRIMERO</div>
+<div style="font-size:17px;font-weight:600;color:{{o.onPc}};margin:4px 0 12px;line-height:1.25">Analizar AniList y MyAnimeList</div>
+<span style="display:inline-block;padding:8px 16px;border-radius:20px;background:{{o.primary}};color:{{o.onPrimary}};font-weight:600;font-size:13px">Empezar · 50 min</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+<div style="border-radius:18px;padding:12px;background:{{o.sc}}">
+<div style="font-size:12.5px;font-weight:600;color:{{o.text}};margin-bottom:6px">Plan de hoy</div>
+<div style="display:flex;gap:8px;align-items:center;font-size:12px;color:{{o.text}};padding:3px 0"><span style="width:8px;height:8px;border-radius:50%;background:{{o.primary}}"></span>TFG</div>
+<div style="display:flex;gap:8px;align-items:center;font-size:12px;color:{{o.text}};padding:3px 0"><span style="width:8px;height:8px;border-radius:50%;background:{{o.muted}}"></span>Repaso SD</div>
+<div style="display:flex;gap:8px;align-items:center;font-size:12px;color:{{o.text}};padding:3px 0"><span style="width:8px;height:8px;border-radius:50%;background:{{o.tertiary}}"></span>Gimnasio</div>
+</div>
+<div style="border-radius:18px;padding:12px;background:{{o.sc}}">
+<div style="font-size:12.5px;font-weight:600;color:{{o.text}};margin-bottom:6px">Se acerca</div>
+<div style="display:flex;gap:8px;font-size:12px;padding:3px 0"><span style="color:{{o.error}};font-weight:700;width:30px">1 d</span><span style="color:{{o.text}}">Cuestionario</span></div>
+<div style="display:flex;gap:8px;font-size:12px;padding:3px 0"><span style="color:{{o.error}};font-weight:700;width:30px">4 d</span><span style="color:{{o.text}}">Práctica 3</span></div>
+<div style="display:flex;gap:8px;font-size:12px;padding:3px 0"><span style="color:{{o.muted}};width:30px">11 d</span><span style="color:{{o.muted}}">Hito 1</span></div>
+</div>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+
+<section style="margin-top:24px;padding:18px 20px;border-radius:20px;background:#1C1D21;border:1px solid #2A2B30;font-size:13.5px;color:#C4C6D0">
+<b style="color:#E2E2E9">Qué se mantiene fijo:</b> la estructura, los iconos y el significado de cada color (principal = trabajo/TFG, terciario = hábitos, error = entregas urgentes). <b style="color:#E2E2E9">Qué cambia:</b> los tonos exactos, que salen de tu fondo. Si Caelestia está en modo claro, la app también.
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { opts: [
+      { name: 'noche azul', wall: 'linear-gradient(160deg,#1B2B4A,#0F1A30 50%,#2A2440)',
+        surface: '#111318', sc: '#1D2024', pc: '#284777', onPc: '#D6E3FF', primary: '#AAC7FF', onPrimary: '#0A305F', tertiary: '#DDBCE0', error: '#FFB4AB', text: '#E2E2E9', muted: '#8E9099' },
+      { name: 'bosque', wall: 'linear-gradient(160deg,#1F3A24,#2F4F2A 50%,#0E1A10)',
+        surface: '#10140F', sc: '#1C211B', pc: '#1F5129', onPc: '#B7F1B9', primary: '#9CD49F', onPrimary: '#003915', tertiary: '#A1CED6', error: '#FFB4AB', text: '#E0E4DC', muted: '#8B9387' },
+      { name: 'atardecer', wall: 'linear-gradient(160deg,#5A2A1A,#A0522D 50%,#2A1A2A)',
+        surface: '#1A120E', sc: '#271E19', pc: '#6E3A1E', onPc: '#FFDBC9', primary: '#FFB68C', onPrimary: '#522300', tertiary: '#D2C78E', error: '#FFB4AB', text: '#F0DFD7', muted: '#A08D84' },
+      { name: 'cerezo (modo claro)', wall: 'linear-gradient(160deg,#F7D6DE,#E9A9B8 50%,#FBEFF2)',
+        surface: '#FFF8F8', sc: '#F6E9EB', pc: '#FFD9DF', onPc: '#3B0716', primary: '#8E4957', onPrimary: '#FFFFFF', tertiary: '#7C5635', error: '#BA1A1A', text: '#22191B', muted: '#6F5D60' }
+    ] };
+  }
+}
+</script>
+</body>
+</html>

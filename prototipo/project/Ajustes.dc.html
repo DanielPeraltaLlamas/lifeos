@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Ajustes · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#0E0E10}
+*{box-sizing:border-box}
+a{color:#F79B93;text-decoration:none}a:hover{color:#FBC4BE}
+.app{display:flex;flex-wrap:wrap;gap:12px;padding:12px;min-height:100vh;background:#0E0E10;color:#EDEDEF;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.nav{flex:1 1 236px;padding:16px 12px;background:#151518;border:1px solid #27272A;border-radius:16px;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 14px}
+.logo{width:26px;height:26px;border-radius:7px;background:#F2665B;display:grid;place-items:center;color:#1A0605;font-weight:700;font-size:13px}
+.navlist{display:flex;flex-wrap:wrap;gap:2px}
+.ni{flex:1 1 180px;display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;color:#B4B4BB;font-size:13.5px;font-weight:500;min-height:36px}
+.ni:hover{background:#1C1C1F;color:#F4F4F5}
+.ni.on{background:#222226;color:#FAFAFA}
+.ni svg{width:16px;height:16px;flex:none}
+.cnt{margin-left:auto;font-size:11.5px;color:#A1A1AA}
+.navh{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#8B8B93;padding:14px 10px 4px;font-weight:500}
+.go{display:flex;align-items:center;gap:8px;justify-content:center;margin:0 4px 12px;padding:9px 12px;border-radius:8px;background:#F2665B;color:#1A0605;font-weight:600;font-size:13.5px;min-height:40px}
+.go:hover{background:#F58A81;color:#1A0605}
+.main{flex:999 1 560px;min-width:0;padding:20px 20px 48px}
+.wrap{max-width:820px;margin:0 auto}
+.h1{font-size:22px;font-weight:600;letter-spacing:-.015em;margin:0;color:#FAFAFA}
+.sub{color:#A1A1AA;font-size:13.5px;margin:2px 0 0}
+.h2{font-size:15px;font-weight:600;margin:0 0 4px;color:#FAFAFA}
+.sec{padding:20px 22px;background:#18181B;border:1px solid #2A2A2E;border-radius:16px;margin-bottom:14px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 0}
+.rl{flex:1 1 260px;min-width:0}
+.sm{font-size:12.5px;color:#A1A1AA}
+.tg{width:44px;height:26px;border-radius:13px;border:0;background:#333338;position:relative;cursor:pointer;padding:0;flex:none}
+.tg span{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#D4D4D8;transition:left .15s}
+.tg.on{background:#F2665B}
+.tg.on span{left:21px;background:#1A0605}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:7px;background:#1C1C1F;border:1px solid #2A2A2E;font-size:12.5px;color:#D4D4D8}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:6px 14px;border-radius:8px;border:1px solid #333338;background:#1C1C1F;color:#EDEDEF;font:500 13px Inter,system-ui,sans-serif;cursor:pointer;min-height:36px}
+.ok{color:#4FC1A6}.warn{color:#B79CF5}
+@media (max-width:800px){.main{padding:20px 16px 56px}.nav{border-right:0;border-bottom:1px solid #27272A}}
+</style>
+</helmet>
+<div class="app">
+<nav class="nav" aria-label="Navegación principal">
+<div class="brand"><div class="logo" aria-hidden="true">L</div><div><div style="font-weight:600;font-size:14px;color:#FAFAFA">Life OS</div><div style="font-size:12px;color:#A1A1AA">Jue 19 nov · 9:42</div></div></div>
+<div class="navlist">
+<a class="ni" href="Main.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"></path></svg>Hoy</a>
+<a class="ni" href="Calendario.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="2"></rect><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3"></path></svg>Calendario</a>
+<a class="ni" href="Tareas.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5L4 6l2.5-2.5M9 5h4.5M2.5 10.5L4 12l2.5-2.5M9 11h4.5"></path></svg>Tareas y proyectos</a>
+<a class="ni" href="Notas.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 4.5a1.5 1.5 0 0 1 1.5-1.5h3l1.5 1.5H13a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 12z"></path></svg>Notas</a>
+<a class="ni" href="Habitos.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.5M13 2.5V5h-2.5"></path></svg>Hábitos</a>
+<a class="ni" href="Bandeja.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M2 9.5l1.6-5.2A1.5 1.5 0 0 1 5 3.2h6a1.5 1.5 0 0 1 1.4 1.1L14 9.5v3a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 12.5zM2 9.5h3.5l1 1.5h3l1-1.5H14"></path></svg>Bandeja<span class="cnt">5</span></a>
+<a class="ni" href="Evolucion.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 13.5h12M4 11V8M7 11V5M10 11V7M13 11V3"></path></svg>Evolución</a>
+</div>
+<div class="navh">Rituales</div>
+<div class="navlist">
+<a class="ni" href="Cierre.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 1 1 6.5 2.5a4.5 4.5 0 0 0 7 7z"></path></svg>Cierre del día</a>
+<a class="ni" href="Revision.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2.5h7l3 3v8H3zM10 2.5v3h3M5.5 9h5M5.5 11.5h3"></path></svg>Revisión semanal</a>
+</div>
+<div style="flex:1 1 auto;min-height:24px"></div>
+<div class="navlist">
+<a class="ni" href="Movil.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="4" y="1.5" width="8" height="13" rx="2"></rect><path d="M7 12h2"></path></svg>Vista móvil</a>
+<a class="ni on" href="Ajustes.dc.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 4.5h7M12 4.5h2M2 11.5h2M7 11.5h7"></path><circle cx="10.5" cy="4.5" r="1.5"></circle><circle cx="5.5" cy="11.5" r="1.5"></circle></svg>Ajustes</a>
+</div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+<header style="margin-bottom:22px"><h1 class="h1">Ajustes</h1><p class="sub">Todo lo que define cómo te ayuda el sistema.</p></header>
+
+<section class="sec" aria-label="Bloqueo">
+<h2 class="h2">Bloqueo de distracciones</h2>
+<p class="sm" style="margin:0 0 8px">Se aplica a la vez en el móvil y en el ordenador.</p>
+<div class="row"><div class="rl"><div style="font-weight:500">Siempre limitado</div><div class="sm">Bloqueado por defecto, con un límite diario compartido</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"><span class="pill">TikTok</span><span class="pill">Instagram</span><span class="pill">YouTube Shorts</span><span class="pill">+ Añadir</span></div></div><span class="pill" style="font-weight:600;color:#FAFAFA">30 min / día</span></div>
+<div class="row"><div class="rl"><div style="font-weight:500">Durante los bloques de enfoque</div><div class="sm">Libre el resto del tiempo</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"><span class="pill">Discord</span><span class="pill">Steam</span><span class="pill">Lutris</span><span class="pill">youtube.com</span><span class="pill">reddit.com</span><span class="pill">twitch.tv</span><span class="pill">+ Añadir</span></div></div></div>
+<div class="row"><div class="rl"><div style="font-weight:500">Modo estricto</div><div class="sm">No se puede saltar el bloqueo durante un bloque (solo terminarlo)</div></div><button class="{{strictCls}}" type="button" role="switch" aria-checked="{{strict}}" aria-label="Modo estricto" onClick="{{toggleStrict}}"><span></span></button></div>
+</section>
+
+<section class="sec" aria-label="Dispositivos">
+<h2 class="h2">Dispositivos</h2>
+<div class="row"><div class="rl"><div style="font-weight:500">Poco X7 Pro · Android</div><div class="sm">App de bloqueo activa · tiempo de uso compartido</div></div><span class="ok" style="font-size:13px">● Conectado</span></div>
+<div class="row"><div class="rl"><div style="font-weight:500">PC · Linux</div><div class="sm">Agente de bloqueo + extensión del navegador</div></div><span class="ok" style="font-size:13px">● Conectado</span></div>
+</section>
+
+<section class="sec" aria-label="Rituales y enfoque">
+<h2 class="h2">Rituales y enfoque</h2>
+<div class="row"><div class="rl"><div style="font-weight:500">Recordatorio del cierre del día</div></div><span class="pill">23:00</span></div>
+<div class="row"><div class="rl"><div style="font-weight:500">Revisión semanal</div></div><span class="pill">Domingo · 19:00</span></div>
+<div class="row"><div class="rl"><div style="font-weight:500">Duración de los bloques</div></div><span class="pill">50 min + 10 de descanso</span></div>
+<div class="row"><div class="rl"><div style="font-weight:500">Ocio como recompensa</div><div class="sm">Mostrar "Día cumplido" al completar el plan</div></div><button class="{{rewardCls}}" type="button" role="switch" aria-checked="{{reward}}" aria-label="Ocio como recompensa" onClick="{{toggleReward}}"><span></span></button></div>
+</section>
+
+<section class="sec" aria-label="Integraciones">
+<h2 class="h2">Integraciones</h2>
+<div class="row"><div class="rl"><div style="font-weight:500">Blackboard</div><div class="sm">Calendario externo no disponible en tu universidad · las entregas se añaden a mano</div></div><span class="warn" style="font-size:13px">Manual</span></div>
+</section>
+
+<section class="sec" aria-label="Horario">
+<h2 class="h2">Horario de la universidad</h2>
+<div class="row"><div class="rl"><div style="font-weight:500">Lunes a miércoles · 9:00 – 17:00</div><div class="sm">7 asignaturas · TFG y prácticas como proyectos</div></div><button class="btn" type="button">Editar</button></div>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1150}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { strict: true, reward: true }; }
+  renderVals() {
+    const s = this.state;
+    return {
+      strict: s.strict, reward: s.reward,
+      strictCls: s.strict ? 'tg on' : 'tg',
+      rewardCls: s.reward ? 'tg on' : 'tg',
+      toggleStrict: () => this.setState((st) => ({ strict: !st.strict })),
+      toggleReward: () => this.setState((st) => ({ reward: !st.reward }))
+    };
+  }
+}
+</script>
+</body>
+</html>

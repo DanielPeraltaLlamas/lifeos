@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Modo enfoque · Life OS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#0B0B0D}
+*{box-sizing:border-box}
+a{color:#F79B93;text-decoration:none}a:hover{color:#FBC4BE}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:10px;border:1px solid #333338;background:#1C1C1F;color:#EDEDEF;font:500 14px Inter,system-ui,sans-serif;cursor:pointer;min-height:44px}
+.btn:hover{background:#27272A;color:#FAFAFA}
+.blk{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:8px;background:#17171A;border:1px solid #27272A;font-size:12.5px;color:#B4B4BB}
+.inp{flex:1;min-width:0;background:#17171A;border:1px solid #2A2A2E;border-radius:10px;padding:10px 14px;color:#EDEDEF;font:14px Inter,system-ui,sans-serif;min-height:44px}
+.inp::placeholder{color:#8B8B93}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#0B0B0D;color:#EDEDEF;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;display:flex;flex-direction:column">
+<header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:18px 28px">
+<div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#A1A1AA"><span style="width:8px;height:8px;border-radius:50%;background:#F2665B"></span>Modo enfoque · Bloque 1 de 2</div>
+<a class="btn" href="Main.dc.html" style="padding:8px 14px;min-height:40px;font-size:13px">Salir del enfoque</a>
+</header>
+
+<main style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px 40px;text-align:center">
+<div style="font-size:12.5px;font-weight:600;letter-spacing:.06em;color:#F79B93;text-transform:uppercase">TFG · Hito 1 · Análisis de plataformas</div>
+<h1 style="margin:10px 0 0;font-size:24px;font-weight:600;letter-spacing:-.015em;color:#FAFAFA;max-width:640px">Analizar AniList y MyAnimeList: funcionalidades clave</h1>
+
+<div role="timer" aria-live="off" style="font-size:clamp(88px,16vw,168px);font-weight:600;letter-spacing:-.04em;line-height:1;margin:36px 0 22px;font-variant-numeric:tabular-nums;color:{{timerColor}}">{{time}}</div>
+
+<div style="width:min(520px,100%);height:4px;border-radius:2px;background:#222226;overflow:hidden;margin-bottom:28px"><div style="height:100%;background:#F2665B;width:{{pct}}"></div></div>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+<button class="btn" type="button" onClick="{{toggle}}" style="min-width:132px">{{toggleLabel}}</button>
+<a class="btn" href="Main.dc.html" style="background:#F2665B;border-color:#F2665B;color:#1A0605;font-weight:600">Terminar bloque</a>
+</div>
+<div style="margin-top:14px;font-size:13px;color:#A1A1AA">Después: descanso de 10 min · luego el bloque 2</div>
+
+<section aria-label="Bloqueado ahora" style="margin-top:56px;max-width:720px">
+<div style="font-size:12px;font-weight:500;color:#A1A1AA;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px">Bloqueado hasta que termine el bloque · móvil y ordenador</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+<span class="blk"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg>Discord</span>
+<span class="blk"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg>Steam</span>
+<span class="blk"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg>Lutris</span>
+<span class="blk"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg>YouTube</span>
+<span class="blk"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg>Reddit</span>
+<span class="blk"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg>Twitch</span>
+<span class="blk" style="color:#B79CF5;border-color:#3A2F55"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg>TikTok · Instagram (siempre limitados)</span>
+</div>
+</section>
+
+<form style="margin-top:40px;width:min(560px,100%);display:flex;gap:8px" onSubmit="{{noop}}">
+<label class="sr" for="cap2">Apuntar sin salir del enfoque</label>
+<input class="inp" id="cap2" type="text" placeholder="¿Se te ocurre algo? Apúntalo aquí y sigue…">
+<button class="btn" type="submit">A la bandeja</button>
+</form>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { left: 50 * 60, running: true };
+  }
+  componentDidMount() {
+    this.iv = setInterval(() => {
+      if (this.state.running && this.state.left > 0) this.setState((st) => ({ left: st.left - 1 }));
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.iv); }
+  renderVals() {
+    const l = this.state.left;
+    const mm = String(Math.floor(l / 60)).padStart(2, '0');
+    const ss = String(l % 60).padStart(2, '0');
+    return {
+      time: mm + ':' + ss,
+      pct: ((1 - l / 3000) * 100).toFixed(2) + '%',
+      timerColor: this.state.running ? '#FAFAFA' : '#8B8B93',
+      toggleLabel: this.state.running ? 'Pausar' : 'Reanudar',
+      toggle: () => this.setState((st) => ({ running: !st.running })),
+      noop: (e) => { if (e && e.preventDefault) e.preventDefault(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

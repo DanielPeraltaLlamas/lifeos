@@ -1,0 +1,12 @@
+# Build
+build/
+.gradle/
+.kotlin/
+*.apk
+local.properties
+# IDE
+.idea/
+*.iml
+# Secrets
+.env
+secrets.properties
