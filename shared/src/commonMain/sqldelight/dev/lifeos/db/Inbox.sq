@@ -1,0 +1,18 @@
+-- source: DESKTOP | ANDROID | WIDGET | FOCUS
+CREATE TABLE inbox_item (
+    id TEXT NOT NULL PRIMARY KEY,
+    text TEXT NOT NULL,
+    source TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+selectAll:
+SELECT * FROM inbox_item WHERE deleted_at IS NULL ORDER BY created_at DESC;
+
+insert:
+INSERT INTO inbox_item(id, text, source, created_at, updated_at) VALUES (?, ?, ?, ?, ?);
+
+softDelete:
+UPDATE inbox_item SET deleted_at = :now, updated_at = :now WHERE id = :id;

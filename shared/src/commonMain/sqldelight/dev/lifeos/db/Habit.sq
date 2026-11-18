@@ -1,0 +1,57 @@
+-- period: DAY | WEEK. target = mínimo; target_max = cifra "perfecta" (opcional).
+CREATE TABLE habit (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    period TEXT NOT NULL,
+    target INTEGER NOT NULL,
+    target_max INTEGER,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE TABLE habit_log (
+    id TEXT NOT NULL PRIMARY KEY,
+    habit_id TEXT NOT NULL,
+    date TEXT NOT NULL,
+    logged_at INTEGER NOT NULL,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE INDEX habit_log_habit_date ON habit_log(habit_id, date);
+
+selectAll:
+SELECT * FROM habit WHERE deleted_at IS NULL ORDER BY sort_order, created_at;
+
+insert:
+INSERT INTO habit(id, name, period, target, target_max, sort_order, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE habit SET name = ?, period = ?, target = ?, target_max = ?, updated_at = ? WHERE id = ?;
+
+softDelete:
+UPDATE habit SET deleted_at = :now, updated_at = :now WHERE id = :id;
+
+maxSort:
+SELECT coalesce(max(sort_order), 0) FROM habit;
+
+logsBetween:
+SELECT habit_id, date, count(*) AS n FROM habit_log
+WHERE deleted_at IS NULL AND date >= :from AND date <= :to
+GROUP BY habit_id, date;
+
+insertLog:
+INSERT INTO habit_log(id, habit_id, date, logged_at, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?);
+
+lastLogOn:
+SELECT id FROM habit_log
+WHERE habit_id = ? AND date = ? AND deleted_at IS NULL
+ORDER BY logged_at DESC LIMIT 1;
+
+softDeleteLog:
+UPDATE habit_log SET deleted_at = :now, updated_at = :now WHERE id = :id;

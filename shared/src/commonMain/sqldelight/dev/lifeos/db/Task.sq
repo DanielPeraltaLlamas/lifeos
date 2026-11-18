@@ -1,0 +1,48 @@
+-- Fechas como texto ISO (yyyy-MM-dd); instantes en milisegundos.
+-- project_id NULL = tarea suelta. planned_date = día en cuyo plan está.
+CREATE TABLE task (
+    id TEXT NOT NULL PRIMARY KEY,
+    project_id TEXT,
+    milestone_id TEXT,
+    title TEXT NOT NULL,
+    notes TEXT,
+    due_date TEXT,
+    planned_date TEXT,
+    estimate_blocks INTEGER,
+    done_at INTEGER,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE INDEX task_project ON task(project_id);
+CREATE INDEX task_planned ON task(planned_date);
+
+selectAll:
+SELECT * FROM task WHERE deleted_at IS NULL ORDER BY done_at IS NOT NULL, coalesce(due_date, '9999'), created_at;
+
+selectById:
+SELECT * FROM task WHERE id = ?;
+
+insert:
+INSERT INTO task(id, project_id, milestone_id, title, notes, due_date, planned_date, estimate_blocks, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE task SET project_id = ?, milestone_id = ?, title = ?, notes = ?, due_date = ?, estimate_blocks = ?, updated_at = ?
+WHERE id = ?;
+
+setDone:
+UPDATE task SET done_at = ?, updated_at = ? WHERE id = ?;
+
+setPlanned:
+UPDATE task SET planned_date = ?, updated_at = ? WHERE id = ?;
+
+softDelete:
+UPDATE task SET deleted_at = :now, updated_at = :now WHERE id = :id;
+
+softDeleteByProject:
+UPDATE task SET deleted_at = :now, updated_at = :now WHERE project_id = :projectId AND deleted_at IS NULL;
+
+detachMilestone:
+UPDATE task SET milestone_id = NULL, updated_at = :now WHERE milestone_id = :milestoneId;

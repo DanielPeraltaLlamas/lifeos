@@ -1,0 +1,19 @@
+-- Una fila por día; el id es la propia fecha (yyyy-MM-dd) para que dos
+-- dispositivos no creen planes distintos para el mismo día.
+CREATE TABLE daily_plan (
+    id TEXT NOT NULL PRIMARY KEY,
+    first_task_id TEXT,
+    chosen_at INTEGER,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+selectByDate:
+SELECT * FROM daily_plan WHERE id = ? AND deleted_at IS NULL;
+
+ensure:
+INSERT OR IGNORE INTO daily_plan(id, created_at, updated_at) VALUES (:date, :now, :now);
+
+setFirst:
+UPDATE daily_plan SET first_task_id = :taskId, chosen_at = :now, updated_at = :now, deleted_at = NULL WHERE id = :date;

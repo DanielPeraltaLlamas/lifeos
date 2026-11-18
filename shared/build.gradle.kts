@@ -9,10 +9,20 @@ plugins {
 kotlin {
     jvmToolchain(21)
 
+    compilerOptions {
+        optIn.addAll(
+            "kotlin.time.ExperimentalTime",
+            "kotlin.uuid.ExperimentalUuidApi",
+            "androidx.compose.material3.ExperimentalMaterial3Api",
+            "androidx.compose.foundation.layout.ExperimentalLayoutApi",
+        )
+    }
+
     android {
         namespace = "dev.lifeos.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
+        androidResources { enable = true }
     }
 
     jvm("desktop")
@@ -23,6 +33,8 @@ kotlin {
             api(libs.compose.foundation)
             api(libs.compose.ui)
             api(libs.compose.material3)
+            api(libs.compose.material.icons)
+            implementation(libs.compose.components.resources)
             api(libs.lifecycle.viewmodel.compose)
             api(libs.kotlinx.coroutines.core)
             api(libs.kotlinx.datetime)
@@ -35,15 +47,18 @@ kotlin {
             implementation(libs.sqldelight.android.driver)
             implementation(libs.kotlinx.coroutines.android)
         }
-        val desktopMain by getting {
+        getByName("desktopMain") {
             dependencies {
                 implementation(libs.sqldelight.sqlite.driver)
                 implementation(libs.kotlinx.coroutines.swing)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
-        val desktopTest by getting {
+        getByName("desktopTest") {
             dependencies {
                 implementation(libs.sqldelight.sqlite.driver)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(compose.desktop.currentOs)
             }
         }
     }
@@ -55,4 +70,8 @@ sqldelight {
             packageName.set("dev.lifeos.db")
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "dev.lifeos.resources"
 }

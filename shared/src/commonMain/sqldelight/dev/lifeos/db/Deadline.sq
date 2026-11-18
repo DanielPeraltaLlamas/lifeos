@@ -1,0 +1,31 @@
+-- Entregas y exámenes. kind: DELIVERY | EXAM
+CREATE TABLE deadline (
+    id TEXT NOT NULL PRIMARY KEY,
+    project_id TEXT,
+    title TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    due_date TEXT NOT NULL,
+    done_at INTEGER,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+selectAll:
+SELECT * FROM deadline WHERE deleted_at IS NULL ORDER BY due_date;
+
+insert:
+INSERT INTO deadline(id, project_id, title, kind, due_date, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE deadline SET project_id = ?, title = ?, kind = ?, due_date = ?, updated_at = ? WHERE id = ?;
+
+setDone:
+UPDATE deadline SET done_at = ?, updated_at = ? WHERE id = ?;
+
+softDelete:
+UPDATE deadline SET deleted_at = :now, updated_at = :now WHERE id = :id;
+
+softDeleteByProject:
+UPDATE deadline SET deleted_at = :now, updated_at = :now WHERE project_id = :projectId AND deleted_at IS NULL;

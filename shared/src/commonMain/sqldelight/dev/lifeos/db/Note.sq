@@ -1,0 +1,20 @@
+-- kind: IDEA | NOTE | LINK
+CREATE TABLE note (
+    id TEXT NOT NULL PRIMARY KEY,
+    project_id TEXT,
+    kind TEXT NOT NULL,
+    body TEXT NOT NULL,
+    url TEXT,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+selectAll:
+SELECT * FROM note WHERE deleted_at IS NULL ORDER BY created_at DESC;
+
+insert:
+INSERT INTO note(id, project_id, kind, body, url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+softDelete:
+UPDATE note SET deleted_at = :now, updated_at = :now WHERE id = :id;

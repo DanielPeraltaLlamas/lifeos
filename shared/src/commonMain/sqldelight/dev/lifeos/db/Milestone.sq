@@ -1,0 +1,31 @@
+CREATE TABLE milestone (
+    id TEXT NOT NULL PRIMARY KEY,
+    project_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    deliverable TEXT,
+    due_date TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE INDEX milestone_project ON milestone(project_id);
+
+selectAll:
+SELECT * FROM milestone WHERE deleted_at IS NULL ORDER BY due_date;
+
+selectByProject:
+SELECT * FROM milestone WHERE project_id = ? AND deleted_at IS NULL ORDER BY due_date;
+
+insert:
+INSERT INTO milestone(id, project_id, title, deliverable, due_date, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE milestone SET title = ?, deliverable = ?, due_date = ?, updated_at = ? WHERE id = ?;
+
+softDelete:
+UPDATE milestone SET deleted_at = :now, updated_at = :now WHERE id = :id;
+
+softDeleteByProject:
+UPDATE milestone SET deleted_at = :now, updated_at = :now WHERE project_id = :projectId AND deleted_at IS NULL;

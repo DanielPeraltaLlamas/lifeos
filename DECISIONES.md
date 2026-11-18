@@ -1,6 +1,6 @@
 # Personal Life OS — Registro de decisiones
 
-**Fase actual:** 3 · Desarrollo. **Arquitectura APROBADA (17/11)**: ver ARQUITECTURA.md. Sin código todavía; el usuario pidió parar. Ver CONTINUAR.md para retomar.
+**Fase actual:** 3 · Desarrollo. Arquitectura aprobada (17/11). **Entrega 1 (Base) construida el 18/11**, pendiente de prueba del usuario. Ver CONTINUAR.md para retomar.
 **Fase 3, respuestas del usuario (17/11):** navegadores Zen (personal) y Firefox (uni). Supabase aceptado (alternativas explicadas: servidor en el PC + Tailscale, PocketBase en un VPS, Firebase). Autoriza instalar JDK 21 y Android SDK y crear el repositorio git (hecho).
 **Fase 2 aprobada:** 17/11/2026 (prototipo + widgets + colores dinámicos).
 **Inicio:** 2026-11-17
@@ -81,6 +81,10 @@
   - Asignaturas en gris.
 - **Prácticas:** no aparecen en el sistema hasta que las consiga. Entonces se reorganiza el horario.
 - **Dispositivos:** móvil y ordenador por igual → requisito: sincronización entre ambos y diseño responsive real (no "versión móvil recortada").
+
+- **Git solo en local (18/11):** el usuario no quiere subir el proyecto a su cuenta de GitHub. Nada de remotos ni de push.
+- **Entrega 1 (18/11):** las tarjetas Agenda y Asistente de Hoy y el botón «Empezar» de Lo primero se dejan para las entregas en las que existen el Calendario, el asistente y el modo Enfoque, para no tener botones sin función.
+- **Datos iniciales (18/11):** solo se precargan datos reales: el TFG, sus hitos H1–H5 y los tres hábitos. Las asignaturas del prototipo no se precargan; las crea el usuario.
 
 ## Ideas aparcadas / a validar
 _(ninguna todavía)_
