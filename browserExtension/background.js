@@ -14,6 +14,10 @@ async function refresh() {
   }
   const started = next.focus && !status.focus;
   status = next;
+  if (next.webFocus || next.webAlways) {
+    setLists(next.webAlways, next.webFocus);
+    browser.storage.local.set({ webAlways: next.webAlways, webFocus: next.webFocus });
+  }
   if (started) closeOpenTabs();
 }
 
@@ -56,4 +60,6 @@ setInterval(refresh, 15000);
 browser.alarms.create("refresh", { periodInMinutes: 0.5 });
 browser.alarms.onAlarm.addListener(refresh);
 browser.runtime.onStartup.addListener(refresh);
+// Últimas listas conocidas, por si el agente está apagado.
+browser.storage.local.get(["webAlways", "webFocus"]).then((v) => setLists(v.webAlways, v.webFocus), () => {});
 refresh();

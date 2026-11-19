@@ -17,11 +17,17 @@ object Usage {
     }.timeInMillis
 
     /** Tiempo en primer plano hoy de las apps con límite (0 si falta el permiso). */
-    fun limitedTodayMs(context: Context): Long {
+    fun limitedTodayMs(context: Context): Long = limitedMs(context, startOfToday(), System.currentTimeMillis())
+
+    /** Lo mismo para un día cualquiera (hace `daysAgo` días). */
+    fun limitedDayMs(context: Context, daysAgo: Int): Long {
+        val start = startOfToday() - daysAgo * 86_400_000L
+        return limitedMs(context, start, minOf(start + 86_400_000L, System.currentTimeMillis()))
+    }
+
+    private fun limitedMs(context: Context, from: Long, now: Long): Long {
         if (!hasUsageAccess(context)) return 0
         val usm = context.getSystemService(UsageStatsManager::class.java)
-        val from = startOfToday()
-        val now = System.currentTimeMillis()
         // Se pide desde un poco antes de medianoche para saber qué estaba abierto a esa hora.
         val events = usm.queryEvents(from - 6 * 3_600_000L, now)
         val list = mutableListOf<Triple<String, Boolean, Long>>()
@@ -38,7 +44,7 @@ object Usage {
         // Los eventos de antes de medianoche solo sirven para saber qué estaba abierto.
         val before = list.filter { it.third < from }
         val openAtMidnight = before.groupBy { it.first }.mapNotNull { (pkg, ev) -> pkg.takeIf { ev.last().second } }
-        val today = openAtMidnight.map { Triple(it, true, from) } + list.filter { it.third >= from }
+        val today = openAtMidnight.map { Triple(it, true, from) } + list.filter { it.third in from..now }
         return BlockRules.foregroundMs(today, BlockRules.LIMITED.keys, from, now)
     }
 

@@ -1,0 +1,22 @@
+-- Revisión semanal; id = lunes de la semana. goals: una meta por línea.
+CREATE TABLE week_review (
+    id TEXT NOT NULL PRIMARY KEY,
+    note TEXT,
+    goals TEXT NOT NULL DEFAULT '',
+    done_at INTEGER,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+selectById:
+SELECT * FROM week_review WHERE id = ? AND deleted_at IS NULL;
+
+ensure:
+INSERT OR IGNORE INTO week_review(id, created_at, updated_at) VALUES (:id, :now, :now);
+
+save:
+UPDATE week_review SET note = ?, goals = ?, updated_at = ? WHERE id = ?;
+
+finish:
+UPDATE week_review SET done_at = :now, updated_at = :now WHERE id = :id;

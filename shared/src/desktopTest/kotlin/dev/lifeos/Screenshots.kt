@@ -60,11 +60,11 @@ class Screenshots {
         r
     }
 
-    private fun shot(name: String, screen: Screen, width: Int, height: Int, density: Float = 1f, repo: Repository = sampleRepo()) {
+    private fun shot(name: String, screen: Screen, width: Int, height: Int, density: Float = 1f, repo: Repository = sampleRepo(), ritual: Ritual? = null) {
         val out = dir ?: return
         out.mkdirs()
         ImageComposeScene(width, height, Density(density)) {
-            App(repo, if (width / density < 600) Source.ANDROID else Source.DESKTOP, screen)
+            App(repo, if (width / density < 600) Source.ANDROID else Source.DESKTOP, screen, initialRitual = ritual)
         }.use { scene ->
             // Varios fotogramas para que carguen la fuente y los Flows.
             var image = scene.render(0)
@@ -93,6 +93,14 @@ class Screenshots {
         }
         shot("desktop-focus", Screen.TODAY, 1280, 860, repo = repo)
         shot("phone-focus", Screen.TODAY, 1080, 2400, 2.75f, repo = repo)
+    }
+
+    @Test
+    fun rituals() {
+        Ritual.entries.forEach { r ->
+            shot("desktop-ritual-${r.name.lowercase()}", Screen.TODAY, 1280, 1300, ritual = r)
+            shot("phone-ritual-${r.name.lowercase()}", Screen.TODAY, 1080, 2400, 2.75f, ritual = r)
+        }
     }
 
     @Test

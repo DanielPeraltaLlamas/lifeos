@@ -50,12 +50,12 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.lifeos.data.BREAK_MS
 import dev.lifeos.data.Dates
 import dev.lifeos.data.FocusMath
 import dev.lifeos.data.Source
 import dev.lifeos.data.isDone
 import dev.lifeos.db.Focus_session
+import dev.lifeos.ui.LocalPrefs
 import dev.lifeos.ui.LocalRepository
 import dev.lifeos.ui.LocalSource
 import dev.lifeos.ui.LocalToday
@@ -97,6 +97,7 @@ fun FocusHost(content: @Composable () -> Unit) {
         lastActive = active
     }
 
+    val breakMs = LocalPrefs.current.breakMs
     val s = active
     when {
         s != null -> FocusScreen(s)
@@ -106,7 +107,7 @@ fun FocusHost(content: @Composable () -> Unit) {
     (after as? AfterFocus.Ask)?.let { a ->
         AfterBlockDialog(
             a.session,
-            onBreak = { after = AfterFocus.Break(a.session, nowMs() + BREAK_MS) },
+            onBreak = { after = AfterFocus.Break(a.session, nowMs() + breakMs) },
             onClose = { after = null },
         )
     }
@@ -189,7 +190,7 @@ private fun FocusScreen(s: Focus_session) {
                     }
                     val next = if (s.block_index < s.block_total) " · luego el bloque ${s.block_index + 1}" else ""
                     Text(
-                        "Termina a las ${Dates.time(FocusMath.endsAt(s, now))} · después, descanso de 10 min$next",
+                        "Termina a las ${Dates.time(FocusMath.endsAt(s, now))} · después, descanso de ${LocalPrefs.current.breakMin} min$next",
                         style = MaterialTheme.typography.bodySmall, color = cs.onSurfaceVariant,
                         modifier = Modifier.padding(top = 6.dp), textAlign = TextAlign.Center,
                     )
@@ -235,12 +236,12 @@ private fun AfterBlockDialog(s: Focus_session, onBreak: () -> Unit, onClose: () 
         title = { Text("Bloque terminado") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text("50 minutos en «${s.title}».", style = MaterialTheme.typography.bodyMedium)
+                Text("${s.planned_ms / 60_000} minutos en «${s.title}».", style = MaterialTheme.typography.bodyMedium)
                 if (task != null && !task.isDone) {
                     Spacer(Modifier.height(8.dp))
                     TextButton(onClick = { act { setTaskDone(task.id, true) }; onClose() }) { Text("La tarea está hecha") }
                 }
-                TextButton(onClick = onBreak) { Text("Descanso de 10 min") }
+                TextButton(onClick = onBreak) { Text("Descanso de ${LocalPrefs.current.breakMin} min") }
                 TextButton(onClick = { act { startFocus(s.title, s.task_id, s.project_id, todayStart) }; onClose() }) {
                     Text("Otro bloque ya")
                 }

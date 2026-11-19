@@ -6,7 +6,8 @@ CREATE TABLE daily_plan (
     chosen_at INTEGER,
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL,
-    deleted_at INTEGER
+    deleted_at INTEGER,
+    closed_at INTEGER
 );
 
 selectByDate:
@@ -17,3 +18,9 @@ INSERT OR IGNORE INTO daily_plan(id, created_at, updated_at) VALUES (:date, :now
 
 setFirst:
 UPDATE daily_plan SET first_task_id = :taskId, chosen_at = :now, updated_at = :now, deleted_at = NULL WHERE id = :date;
+
+setClosed:
+UPDATE daily_plan SET closed_at = :now, updated_at = :now WHERE id = :date;
+
+selectBetween:
+SELECT * FROM daily_plan WHERE id >= :from AND id <= :to AND deleted_at IS NULL ORDER BY id;

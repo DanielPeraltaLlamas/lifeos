@@ -1,0 +1,14 @@
+-- Preferencias que se comparten entre dispositivos (Ajustes); id = clave.
+CREATE TABLE pref (
+    id TEXT NOT NULL PRIMARY KEY,
+    value TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+selectAll:
+SELECT * FROM pref WHERE deleted_at IS NULL;
+
+put:
+INSERT OR REPLACE INTO pref(id, value, created_at, updated_at) VALUES (?, ?, ?, ?);

@@ -36,7 +36,7 @@ class BlockActivity : ComponentActivity() {
         val text = if (focusEnd > 0) {
             "Estás en un bloque de enfoque. Se desbloquea a las ${Dates.time(focusEnd)}."
         } else {
-            "Ya has usado hoy la hora y media de TikTok e Instagram. Mañana vuelves a tenerla."
+            "Ya has usado hoy tu tiempo de TikTok e Instagram. Mañana vuelves a tenerlo."
         }
         setContent {
             LifeOsTheme {

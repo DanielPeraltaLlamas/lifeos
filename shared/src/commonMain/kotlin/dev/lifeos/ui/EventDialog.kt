@@ -69,12 +69,14 @@ fun EventDialog(
     initialDate: LocalDate,
     initialStart: Int = 9 * 60,
     occurrence: LocalDate? = null,
+    initialKind: EventKind = EventKind.CLASS,
+    initialProject: String? = null,
     onDismiss: () -> Unit,
 ) {
     val act = rememberActions()
     var title by remember { mutableStateOf(event?.title ?: "") }
-    var kind by remember { mutableStateOf(event?.kindEnum ?: EventKind.CLASS) }
-    var projectId by remember { mutableStateOf(event?.project_id) }
+    var kind by remember { mutableStateOf(event?.kindEnum ?: initialKind) }
+    var projectId by remember { mutableStateOf(event?.project_id ?: initialProject) }
     var date by remember { mutableStateOf<LocalDate?>(event?.startDate ?: initialDate) }
     var start by remember { mutableStateOf(event?.start_min?.toInt() ?: initialStart) }
     var end by remember { mutableStateOf(event?.end_min?.toInt() ?: minOf(initialStart + 60, DAY_END)) }
@@ -141,7 +143,7 @@ fun EventDialog(
             Button(onClick = {
                 act { startFocus(event.title, null, event.project_id) }
                 onDismiss()
-            }) { Text("Empezar bloque ahora · 50 min") }
+            }) { Text("Empezar bloque ahora · ${LocalPrefs.current.blockMin} min") }
         }
         if (event != null) {
             if (event.isWeekly) {

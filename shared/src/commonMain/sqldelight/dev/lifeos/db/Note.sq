@@ -7,7 +7,8 @@ CREATE TABLE note (
     url TEXT,
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL,
-    deleted_at INTEGER
+    deleted_at INTEGER,
+    title TEXT
 );
 
 selectAll:
@@ -15,6 +16,12 @@ SELECT * FROM note WHERE deleted_at IS NULL ORDER BY created_at DESC;
 
 insert:
 INSERT INTO note(id, project_id, kind, body, url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+insertFull:
+INSERT INTO note(id, project_id, kind, title, body, url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE note SET project_id = ?, kind = ?, title = ?, body = ?, url = ?, updated_at = ? WHERE id = ?;
 
 softDelete:
 UPDATE note SET deleted_at = :now, updated_at = :now WHERE id = :id;

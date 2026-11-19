@@ -202,8 +202,9 @@ private fun ProjectDetail(
     val selectedMilestone = milestones.firstOrNull { it.id == selectedMilestoneId } ?: currentMilestone
 
     val todayStart = todayStartMs()
+    val blockMin = dev.lifeos.ui.LocalPrefs.current.blockMin
     fun taskMenu(t: Task) = listOfNotNull(
-        if (!t.isDone) MenuAction("Empezar bloque · 50 min") { act { startFocus(t.title, t.id, t.project_id, todayStart) } } else null,
+        if (!t.isDone) MenuAction("Empezar bloque · $blockMin min") { act { startFocus(t.title, t.id, t.project_id, todayStart) } } else null,
         MenuAction("Editar") { openDialog(TasksDialog.EditTask(t, t.project_id, t.milestone_id)) },
         if (t.planned_date == today.toString()) MenuAction("Quitar de hoy") { act { setTaskPlanned(t.id, null) } }
         else MenuAction("Añadir a hoy") { act { setTaskPlanned(t.id, today) } },

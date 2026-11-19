@@ -26,6 +26,7 @@ import androidx.compose.material.icons.outlined.Loop
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.TipsAndUpdates
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
@@ -88,12 +89,18 @@ fun taskContext(t: Task, projects: Map<String, Project>, milestones: List<Milest
     return if (idx >= 0) "${p.name} · H${idx + 1}" else p.name
 }
 
-fun estimateText(t: Task): String? = t.estimate_blocks?.toInt()?.takeIf { it > 0 }?.let {
-    if (it == 1) "1 bloque × 50 min" else "$it bloques × 50 min"
+fun estimateText(t: Task, blockMin: Int = 50): String? = t.estimate_blocks?.toInt()?.takeIf { it > 0 }?.let {
+    if (it == 1) "1 bloque × $blockMin min" else "$it bloques × $blockMin min"
 }
 
 @Composable
-fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> Unit, extras: (@Composable () -> Unit)? = null) {
+fun TodayScreen(
+    wide: Boolean,
+    onOpenHabits: () -> Unit,
+    onOpenCalendar: () -> Unit,
+    onOpenRitual: (dev.lifeos.Ritual) -> Unit = {},
+    extras: (@Composable () -> Unit)? = null,
+) {
     val repo = LocalRepository.current
     val today = LocalToday.current
     val act = rememberActions()
@@ -119,6 +126,7 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
     }
 
     var dialog by remember { mutableStateOf<TodayDialog?>(null) }
+    var planStudyFor by remember { mutableStateOf<String?>(null) }
     val todayStart = todayStartMs()
 
     val hour = Dates.hourNow()
@@ -154,6 +162,10 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
             onDone = { done -> first?.let { t -> act { setTaskDone(t.id, done) } } },
         )
         Spacer(Modifier.height(14.dp))
+        RitualBanner(plan?.closed_at, onOpenRitual)
+        AssistantCard(
+            onPlanStudy = { pid -> dialog = null; planStudyFor = pid; dialog = TodayDialog.PlanStudy },
+        )
         if (extras != null) {
             extras()
             Spacer(Modifier.height(14.dp))
@@ -209,6 +221,10 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
         TodayDialog.NewTask -> TaskDialog(null, projects, milestones, onDismiss = { dialog = null })
         TodayDialog.NewDeadline -> DeadlineDialog(projects, null) { dialog = null }
         TodayDialog.NewEvent -> EventDialog(null, projects, today, initialStart = ((Dates.hourNow() + 1).coerceAtMost(22)) * 60) { dialog = null }
+        TodayDialog.PlanStudy -> EventDialog(
+            null, projects, today, initialStart = ((Dates.hourNow() + 1).coerceAtMost(22)) * 60,
+            initialKind = EventKind.STUDY, initialProject = planStudyFor,
+        ) { dialog = null }
         TodayDialog.PickFirst -> {
             val open = tasks.filter { !it.isDone }
                 .sortedWith(compareBy<Task> { it.planned_date != today.toString() }.thenBy { it.due_date ?: "9999" })
@@ -238,7 +254,83 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
     }
 }
 
-private enum class TodayDialog { Capture, NewTask, NewDeadline, NewEvent, PickFirst, AddToPlan }
+/** Avisos del asistente por reglas (solo si hay algo que decir). */
+@Composable
+private fun AssistantCard(onPlanStudy: (String?) -> Unit) {
+    val repo = LocalRepository.current
+    val today = LocalToday.current
+    val prefs = dev.lifeos.ui.LocalPrefs.current
+    val deadlines by repo.deadlines.collectAsState(emptyList())
+    val events by repo.events.collectAsState(emptyList())
+    val milestones by repo.milestones.collectAsState(emptyList())
+    val projects by repo.projects.collectAsState(emptyList())
+    val tasks by repo.tasks.collectAsState(emptyList())
+    val habits by repo.habits.collectAsState(emptyList())
+    val inbox by repo.inbox.collectAsState(emptyList())
+    val counts by remember(today) { repo.habitCounts(today.plusDays(-HABIT_HISTORY_DAYS), today) }.collectAsState(emptyMap())
+    val dayStart = todayStartMs()
+    val focus by remember(dayStart) { repo.focusBetween(dayStart, dayStart + 86_400_000) }.collectAsState(emptyList())
+    val usage by remember(today) { repo.usageBetween(today, today) }.collectAsState(emptyList())
+    val hints = dev.lifeos.data.Assistant.hints(
+        dev.lifeos.data.AssistantInput(
+            today, Dates.hourNow(), deadlines, events, milestones, projects, tasks, habits, counts,
+            inbox.size, focus, usage.firstOrNull()?.scroll_ms, prefs,
+        ),
+    )
+    if (hints.isEmpty()) return
+    val cs = MaterialTheme.colorScheme
+    Card("Asistente", Modifier.fillMaxWidth().padding(bottom = 14.dp), icon = Icons.Outlined.TipsAndUpdates) {
+        hints.forEach { h ->
+            Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text(h.text, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                if (h.kind == dev.lifeos.data.Hint.Kind.PLAN_STUDY) {
+                    TextButton(onClick = { onPlanStudy(h.projectId) }) { Text("Planificar") }
+                }
+            }
+        }
+    }
+}
+
+/** Por la noche propone el cierre del día; el día de la revisión, la revisión semanal. */
+@Composable
+private fun RitualBanner(closedAt: Long?, onOpen: (dev.lifeos.Ritual) -> Unit) {
+    val repo = LocalRepository.current
+    val today = LocalToday.current
+    val prefs = dev.lifeos.ui.LocalPrefs.current
+    val weekStart = Dates.weekStart(today)
+    val review by remember(weekStart) { repo.weekReview(weekStart) }.collectAsState(null)
+    val hour = Dates.hourNow()
+    val showClose = closedAt == null && hour >= prefs.closeHour
+    val showReview = review?.done_at == null && today.dayOfWeek.ordinal + 1 == prefs.reviewDay && hour >= 9
+    if (!showClose && !showReview) return
+    val cs = MaterialTheme.colorScheme
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.padding(bottom = 14.dp)) {
+        if (showReview) {
+            Card(null, Modifier.fillMaxWidth(), color = cs.tertiaryContainer, padding = 16.dp) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Revisión semanal", style = MaterialTheme.typography.titleSmall, color = cs.onTertiaryContainer)
+                        Text("10–15 minutos para mirar la semana y elegir tres metas.", style = MaterialTheme.typography.bodySmall, color = cs.onTertiaryContainer)
+                    }
+                    Button(onClick = { onOpen(dev.lifeos.Ritual.REVIEW) }) { Text("Empezar") }
+                }
+            }
+        }
+        if (showClose) {
+            Card(null, Modifier.fillMaxWidth(), color = cs.secondaryContainer, padding = 16.dp) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Cierra el día", style = MaterialTheme.typography.titleSmall, color = cs.onSecondaryContainer)
+                        Text("Unos 2 minutos: qué tal fue y qué será lo primero mañana.", style = MaterialTheme.typography.bodySmall, color = cs.onSecondaryContainer)
+                    }
+                    Button(onClick = { onOpen(dev.lifeos.Ritual.CLOSE) }) { Text("Cerrar") }
+                }
+            }
+        }
+    }
+}
+
+private enum class TodayDialog { Capture, NewTask, NewDeadline, NewEvent, PlanStudy, PickFirst, AddToPlan }
 
 @Composable
 private fun FirstCard(
@@ -291,7 +383,7 @@ private fun FirstCard(
                     Text("Hecho. Lo siguiente está en tu plan.", color = cs.onPrimaryContainer, modifier = Modifier.weight(1f, fill = false))
                     TextButton(onClick = { onDone(false) }) { Text("Deshacer") }
                 } else {
-                    Button(onClick = onStart) { Icon(Icons.Outlined.PlayArrow, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Empezar · 50 min") }
+                    Button(onClick = onStart) { Icon(Icons.Outlined.PlayArrow, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Empezar · ${dev.lifeos.ui.LocalPrefs.current.blockMin} min") }
                     OutlinedButton(onClick = { onDone(true) }) { Icon(Icons.Outlined.Check, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Hecha") }
                     OutlinedButton(onClick = onChoose) { Text("Cambiar") }
                 }
@@ -312,6 +404,7 @@ private fun PlanCard(
     onStart: (Task) -> Unit,
 ) {
     val done = planned.count { it.isDone }
+    val blockMin = dev.lifeos.ui.LocalPrefs.current.blockMin
     Card(
         "Plan de hoy", modifier, icon = Icons.Outlined.ChecklistRtl,
         action = {
@@ -330,7 +423,7 @@ private fun PlanCard(
                 onToggle = { onToggle(t, it) },
                 accent = projectAccent(t.project_id?.let(projects::get)),
                 menu = listOfNotNull(
-                    if (!t.isDone) MenuAction("Empezar bloque · 50 min") { onStart(t) } else null,
+                    if (!t.isDone) MenuAction("Empezar bloque · $blockMin min") { onStart(t) } else null,
                     MenuAction("Quitar del plan") { onRemove(t) },
                 ),
             )

@@ -78,7 +78,7 @@ fun BlockerCard() {
                     }) { Text("2 · Permitir acceso al uso") }
                 }
             } else {
-                val limit = BlockRules.DAILY_LIMIT_MS
+                val limit = dev.lifeos.ui.LocalPrefs.current.scrollLimitMs
                 val usedMin = used / 60_000
                 Text(
                     if (used >= limit) "TikTok e Instagram: límite de hoy agotado"

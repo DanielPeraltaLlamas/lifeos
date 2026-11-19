@@ -1,0 +1,17 @@
+-- Minutos de scroll (TikTok + Instagram) por día; id = fecha. Lo escribe el móvil.
+CREATE TABLE usage_log (
+    id TEXT NOT NULL PRIMARY KEY,
+    scroll_ms INTEGER NOT NULL DEFAULT 0,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+selectBetween:
+SELECT * FROM usage_log WHERE id >= :from AND id <= :to AND deleted_at IS NULL ORDER BY id;
+
+selectById:
+SELECT * FROM usage_log WHERE id = ?;
+
+upsert:
+INSERT OR REPLACE INTO usage_log(id, scroll_ms, created_at, updated_at) VALUES (?, ?, ?, ?);

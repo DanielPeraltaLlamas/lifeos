@@ -63,6 +63,19 @@ class Repository(
     fun focusBetween(from: Long, to: Long): Flow<List<Focus_session>> =
         db.focusSessionQueries.selectBetween(from, to).asFlow().mapToList(io)
 
+    fun dailyPlans(from: LocalDate, to: LocalDate): Flow<List<Daily_plan>> =
+        db.dailyPlanQueries.selectBetween(from.toString(), to.toString()).asFlow().mapToList(io)
+
+    fun usageBetween(from: LocalDate, to: LocalDate): Flow<List<dev.lifeos.db.Usage_log>> =
+        db.usageLogQueries.selectBetween(from.toString(), to.toString()).asFlow().mapToList(io)
+
+    fun weekReview(weekStart: LocalDate): Flow<dev.lifeos.db.Week_review?> =
+        db.weekReviewQueries.selectById(weekStart.toString()).asFlow().mapToOneOrNull(io)
+
+    /** Preferencias compartidas (Ajustes): clave -> valor. */
+    val prefs: Flow<Prefs> =
+        db.prefQueries.selectAll().asFlow().mapToList(io).map { rows -> Prefs(rows.associate { it.id to it.value_ }) }
+
     fun dailyPlan(date: LocalDate): Flow<Daily_plan?> =
         db.dailyPlanQueries.selectByDate(date.toString()).asFlow().mapToOneOrNull(io)
 
@@ -171,6 +184,24 @@ class Repository(
             db.dailyPlanQueries.ensure(date.toString(), t)
             db.dailyPlanQueries.setFirst(taskId, t, date.toString())
             if (taskId != null) db.taskQueries.setPlanned(date.toString(), t, taskId)
+        }
+    }
+
+    /**
+     * Cierre del día: lo elegido pasa al plan de mañana (y `first` será lo primero);
+     * lo que quedó pendiente hoy y no se eligió sale del plan. El día queda cerrado.
+     */
+    suspend fun closeDay(today: LocalDate, tomorrow: LocalDate, chosen: List<String>, first: String?) = write {
+        db.transaction {
+            val t = now()
+            db.taskQueries.selectAll().executeAsList()
+                .filter { it.planned_date == today.toString() && it.done_at == null && it.id !in chosen }
+                .forEach { db.taskQueries.setPlanned(null, t, it.id) }
+            chosen.forEach { db.taskQueries.setPlanned(tomorrow.toString(), t, it) }
+            db.dailyPlanQueries.ensure(tomorrow.toString(), t)
+            if (first != null) db.dailyPlanQueries.setFirst(first, t, tomorrow.toString())
+            db.dailyPlanQueries.ensure(today.toString(), t)
+            db.dailyPlanQueries.setClosed(t, today.toString())
         }
     }
 
@@ -298,8 +329,9 @@ class Repository(
             val index = doneToday + 1
             val total = maxOf(task?.estimate_blocks?.toInt() ?: 1, index)
             val id = newId()
+            val prefs = Prefs(db.prefQueries.selectAll().executeAsList().associate { it.id to it.value_ })
             db.focusSessionQueries.insert(
-                id, taskId, projectId ?: task?.project_id, title.trim(), t, BLOCK_MS,
+                id, taskId, projectId ?: task?.project_id, title.trim(), t, prefs.blockMs,
                 index.toLong(), total.toLong(), t, t,
             )
             id
@@ -362,6 +394,59 @@ class Repository(
             db.noteQueries.insert(newId(), projectId, kind.name, item.text, url, t, t)
             db.inboxQueries.softDelete(t, item.id)
         }
+    }
+
+    // ---------- Notas ----------
+    suspend fun addNote(projectId: String?, kind: NoteKind, title: String?, body: String, url: String?): String = write {
+        val id = newId()
+        val t = now()
+        db.noteQueries.insertFull(id, projectId, kind.name, title?.trim()?.ifEmpty { null }, body.trim(), url?.trim()?.ifEmpty { null }, t, t)
+        id
+    }
+
+    suspend fun updateNote(id: String, projectId: String?, kind: NoteKind, title: String?, body: String, url: String?) = write {
+        db.noteQueries.update(projectId, kind.name, title?.trim()?.ifEmpty { null }, body.trim(), url?.trim()?.ifEmpty { null }, now(), id)
+    }
+
+    suspend fun deleteNote(id: String) = write { db.noteQueries.softDelete(now(), id) }
+
+    /** Convierte un proyecto personal en uno con hitos (pasa a tipo TFG/proyecto con fecha). */
+    suspend fun setProjectKind(id: String, kind: ProjectKind) = write {
+        val p = db.projectQueries.selectById(id).executeAsOneOrNull() ?: return@write
+        db.projectQueries.update(p.name, kind.name, p.description, p.due_date, now(), id)
+    }
+
+    // ---------- Uso del móvil ----------
+    /** Guarda los minutos de scroll de un día (solo si cambian, para no sincronizar de más). */
+    suspend fun putScroll(date: LocalDate, ms: Long) = write {
+        val old = db.usageLogQueries.selectById(date.toString()).executeAsOneOrNull()
+        if (old == null || kotlin.math.abs(old.scroll_ms - ms) >= 60_000) {
+            val t = now()
+            db.usageLogQueries.upsert(date.toString(), ms, old?.created_at ?: t, t)
+        }
+    }
+
+    // ---------- Revisión semanal ----------
+    suspend fun saveWeekReview(weekStart: LocalDate, note: String?, goals: List<String>) = write {
+        db.transaction {
+            val t = now()
+            db.weekReviewQueries.ensure(weekStart.toString(), t)
+            db.weekReviewQueries.save(note?.trim()?.ifEmpty { null }, goals.map { it.trim() }.filter { it.isNotEmpty() }.joinToString("\n"), t, weekStart.toString())
+        }
+    }
+
+    suspend fun finishWeekReview(weekStart: LocalDate) = write {
+        db.transaction {
+            val t = now()
+            db.weekReviewQueries.ensure(weekStart.toString(), t)
+            db.weekReviewQueries.finish(t, weekStart.toString())
+        }
+    }
+
+    // ---------- Preferencias compartidas ----------
+    suspend fun putPref(key: String, value: String) = write {
+        val t = now()
+        db.prefQueries.put(key, value, t, t)
     }
 
     // ---------- Ajustes ----------

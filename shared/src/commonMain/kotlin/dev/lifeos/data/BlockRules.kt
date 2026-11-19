@@ -6,6 +6,7 @@ package dev.lifeos.data
  * - Discord: solo durante los bloques.
  */
 object BlockRules {
+    /** Por defecto; el de verdad viene de Ajustes (Prefs.scrollLimitMs). */
     const val DAILY_LIMIT_MS = 90 * 60_000L
 
     /** Paquetes de Android de cada app (varias versiones según región). */
@@ -29,10 +30,10 @@ object BlockRules {
     }
 
     /** Devuelve por qué se bloquea `pkg`, o null si se puede usar. */
-    fun check(pkg: String, focusEndsAt: Long?, usedTodayMs: Long): Reason? = when {
+    fun check(pkg: String, focusEndsAt: Long?, usedTodayMs: Long, limitMs: Long = DAILY_LIMIT_MS): Reason? = when {
         pkg !in LIMITED && pkg !in FOCUS_ONLY -> null
         focusEndsAt != null -> Reason.Focus(focusEndsAt)
-        pkg in LIMITED && usedTodayMs >= DAILY_LIMIT_MS -> Reason.DailyLimit
+        pkg in LIMITED && usedTodayMs >= limitMs -> Reason.DailyLimit
         else -> null
     }
 

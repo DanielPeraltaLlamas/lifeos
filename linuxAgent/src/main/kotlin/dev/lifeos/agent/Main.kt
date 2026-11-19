@@ -38,7 +38,8 @@ fun main(): Unit = runBlocking {
     val focus = repo.activeFocus.stateIn(scope, SharingStarted.Eagerly, null)
     Enforcer { focus.value?.let { s -> FocusMath.endsAt(s, System.currentTimeMillis()).takeIf { FocusMath.remaining(s, System.currentTimeMillis()) > 0 } } }
         .start(scope)
-    StatusServer { focus.value }.start()
+    val prefs = repo.prefs.stateIn(scope, SharingStarted.Eagerly, dev.lifeos.data.Prefs())
+    StatusServer({ focus.value }, { prefs.value }).start()
 
     println("Life OS agent en marcha")
     awaitCancellation()

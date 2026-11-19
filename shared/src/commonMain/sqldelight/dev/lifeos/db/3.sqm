@@ -1,0 +1,29 @@
+-- Versión 3 -> 4: Entrega 6 (cierre del día, notas con título, uso diario, revisión semanal y preferencias).
+ALTER TABLE daily_plan ADD COLUMN closed_at INTEGER;
+ALTER TABLE note ADD COLUMN title TEXT;
+
+CREATE TABLE usage_log (
+    id TEXT NOT NULL PRIMARY KEY,
+    scroll_ms INTEGER NOT NULL DEFAULT 0,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE TABLE week_review (
+    id TEXT NOT NULL PRIMARY KEY,
+    note TEXT,
+    goals TEXT NOT NULL DEFAULT '',
+    done_at INTEGER,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE TABLE pref (
+    id TEXT NOT NULL PRIMARY KEY,
+    value TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);

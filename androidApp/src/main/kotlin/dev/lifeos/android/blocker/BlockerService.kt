@@ -27,6 +27,9 @@ class BlockerService : AccessibilityService() {
     private val focus by lazy {
         (application as LifeOsApp).repository.activeFocus.stateIn(scope, SharingStarted.Eagerly, null)
     }
+    private val prefs by lazy {
+        (application as LifeOsApp).repository.prefs.stateIn(scope, SharingStarted.Eagerly, dev.lifeos.data.Prefs())
+    }
 
     /** Los teclados abren ventanas propias; no cuentan como cambiar de app. */
     private val keyboards by lazy {
@@ -42,7 +45,7 @@ class BlockerService : AccessibilityService() {
     }
 
     override fun onServiceConnected() {
-        focus // empieza a escuchar la base de datos
+        focus; prefs // empieza a escuchar la base de datos
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
@@ -61,7 +64,7 @@ class BlockerService : AccessibilityService() {
         val now = System.currentTimeMillis()
         val endsAt = focus.value?.takeIf { FocusMath.remaining(it, now) > 0 }?.let { FocusMath.endsAt(it, now) }
         val used = if (pkg in BlockRules.LIMITED) Usage.limitedTodayMs(this) else 0
-        val reason = BlockRules.check(pkg, endsAt, used) ?: return false
+        val reason = BlockRules.check(pkg, endsAt, used, prefs.value.scrollLimitMs) ?: return false
         current = null
         handler.removeCallbacks(recheck)
         performGlobalAction(GLOBAL_ACTION_HOME)

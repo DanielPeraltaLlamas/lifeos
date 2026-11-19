@@ -16,6 +16,7 @@ import kotlinx.datetime.LocalDate
 val LocalRepository = compositionLocalOf<Repository> { error("Sin repositorio") }
 val LocalSource = compositionLocalOf { Source.DESKTOP }
 val LocalToday = compositionLocalOf<LocalDate> { error("Sin fecha") }
+val LocalPrefs = compositionLocalOf { dev.lifeos.data.Prefs() }
 
 /** Lanza una escritura en la base de datos sin bloquear la interfaz. */
 class Actions(private val scope: CoroutineScope, val repo: Repository) {

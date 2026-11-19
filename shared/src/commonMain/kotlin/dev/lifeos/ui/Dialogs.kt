@@ -204,9 +204,10 @@ fun TaskDialog(
             ) { milestoneId = it }
         }
         DateField("Fecha límite", due, { due = it })
+        val blockMin = LocalPrefs.current.blockMin
         Picker(
             "Estimación",
-            (0..6).map { it to if (it == 0) "Sin estimar" else "$it bloque${if (it > 1) "s" else ""} de 50 min" },
+            (0..6).map { it to if (it == 0) "Sin estimar" else "$it bloque${if (it > 1) "s" else ""} de $blockMin min" },
             blocks,
         ) { blocks = it }
         if (task == null) {

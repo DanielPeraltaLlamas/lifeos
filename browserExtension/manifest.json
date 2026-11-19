@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Life OS · bloqueo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Bloquea webs de distracción durante los bloques de enfoque de Life OS.",
   "browser_specific_settings": {
     "gecko": {
@@ -10,7 +10,7 @@
       "data_collection_permissions": { "required": ["none"] }
     }
   },
-  "permissions": ["webRequest", "webRequestBlocking", "tabs", "alarms"],
+  "permissions": ["webRequest", "webRequestBlocking", "tabs", "alarms", "storage"],
   "host_permissions": ["<all_urls>", "http://127.0.0.1/*"],
   "background": { "scripts": ["rules.js", "background.js"] },
   "icons": { "48": "icon.svg", "96": "icon.svg" }
