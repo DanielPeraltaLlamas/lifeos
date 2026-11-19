@@ -10,7 +10,7 @@ _Fase 3 · Paso 1 · Pendiente de aprobación · 17/11/2026_
 |---|---|
 | Widgets en Android (tareas, hábitos, captura) | App **nativa** de Android; una web/PWA no puede crearlos |
 | Bloqueo de TikTok/Instagram (límite) y de Discord en bloques | Servicio nativo en Android (AccessibilityService + UsageStats) |
-| Notificación fija hasta completar el plan | Servicio en primer plano en Android + notificaciones D-Bus en Linux |
+| ~~Notificación fija hasta completar el plan~~ (eliminada el 19/11) | — |
 | Colores del fondo vía Caelestia | App local de escritorio que lea `~/.local/state/caelestia/scheme.json` (comprobado: roles de Material 3 en hex) y detecte sus cambios |
 | Bloquear Discord, Steam y Lutris en Linux | Agente local con acceso a los procesos |
 | Mismos datos en móvil y ordenador, también sin conexión | Base de datos local en cada dispositivo + sincronización |
@@ -70,7 +70,7 @@ lifeos/
 - **Linux:** durante un bloque, el agente cierra Discord, Steam y Lutris si se abren. La extensión del navegador bloquea las webs de la lista y consulta al agente en `localhost` si hay un bloque activo.
 - **Con sinceridad:** en tu propio ordenador eres administrador, así que siempre podrás saltarte el bloqueo si te empeñas. El objetivo es añadir fricción, no ser una cárcel. En Android es bastante más firme.
 
-### Notificación fija
+### Notificación fija (eliminada el 19/11, no se hace)
 - **Android:** notificación en curso ligada a un servicio en primer plano. Si se desliza (Android 14+ lo permite), se vuelve a publicar al momento. Desaparece al completar el plan.
 - **Linux:** notificación D-Bus con urgencia crítica, que el demonio de notificaciones de Caelestia mantiene hasta que se descarta. Si la quitas con tareas pendientes, se reenvía.
 
@@ -108,6 +108,6 @@ Cada entrega se puede usar de verdad antes de pasar a la siguiente:
 2. **Calendario** (adelantado el 19/11): día, semana y mes, eventos semanales y tarjeta Agenda en Hoy. ✅
 3. **Sincronización** con Supabase y acceso con tu cuenta. ✅
 4. **Enfoque y bloqueo:** temporizador, bloqueo en Android, agente de Linux y extensión del navegador. ✅
-5. **Widgets y notificación fija.**
+5. **Widgets** (la notificación fija se eliminó el 19/11).
 6. **El resto:** Notas, Cierre del día, Revisión semanal, Evolución, asistente por reglas y Ajustes.
 7. **Calidad:** pruebas de flujos, persistencia, sincronización, móvil y escritorio, y que no haya botones sin función.

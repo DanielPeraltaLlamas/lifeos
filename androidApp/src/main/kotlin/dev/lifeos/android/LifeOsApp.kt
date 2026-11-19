@@ -1,6 +1,7 @@
 package dev.lifeos.android
 
 import android.app.Application
+import dev.lifeos.android.widget.startWidgetUpdates
 import dev.lifeos.data.FocusWatcher
 import dev.lifeos.data.Repository
 import dev.lifeos.data.backupDatabase
@@ -28,5 +29,6 @@ class LifeOsApp : Application() {
             onChange = { focusNotifier.render(it) },
             onFinished = { focusNotifier.showFinished(it.title) },
         ).start(scope)
+        startWidgetUpdates(this, repository, scope)
     }
 }

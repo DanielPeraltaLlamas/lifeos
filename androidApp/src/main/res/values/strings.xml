@@ -2,4 +2,10 @@
 <resources>
     <string name="blocker_label">Life OS · bloqueo</string>
     <string name="blocker_description">Life OS solo mira qué app tienes delante para bloquear TikTok e Instagram cuando pasas del límite diario, y TikTok, Instagram y Discord durante los bloques de enfoque. No lee el contenido de la pantalla ni lo que escribes.</string>
+    <string name="widget_today">Life OS · Hoy</string>
+    <string name="widget_today_desc">Lo primero y el plan de hoy</string>
+    <string name="widget_habits">Life OS · Hábitos</string>
+    <string name="widget_habits_desc">Hábitos de hoy con botón para registrar</string>
+    <string name="widget_capture">Life OS · Apuntar</string>
+    <string name="widget_capture_desc">Apunta una nota o una tarea sin abrir la app</string>
 </resources>

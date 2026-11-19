@@ -99,6 +99,7 @@
 - **Entrega 4d, Extensión del navegador (19/11):** hecha y probada en Zen y Firefox. Firmada por Mozilla como «unlisted» (`scripts/sign-extension.sh`; claves `amo.issuer`/`amo.secret` en `local.properties`). Durante un bloque bloquea YouTube, Reddit, Twitch y Discord web (también pestañas ya abiertas y navegación interna de YouTube); TikTok e Instagram, siempre en el PC. Consulta el agente cada 15 s. Si se cambia la extensión, hay que subir `version` en el manifest y volver a firmar.
 - **Arreglo (19/11):** `PRAGMA data_version` no servía para notar los cambios del otro proceso (app ↔ agente); ahora se vigila la fecha y el tamaño del archivo de la base. Prueba: `ExternalChangesTest`.
 - **Entrega 4 (Enfoque y bloqueo): COMPLETA (19/11).**
+- **Notificación fija del plan: ELIMINADA (19/11),** por decisión del usuario. La Entrega 5 queda solo con los widgets de Android (tareas de hoy, hábitos y captura rápida).
 
 ## Ideas aparcadas / a validar
 _(ninguna todavía)_
