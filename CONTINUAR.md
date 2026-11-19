@@ -81,7 +81,8 @@ _Última sesión: 19/11/2026 (Entregas 1 a 7 hechas)_
 
 ## Siguiente paso
 1. **Todas las entregas del plan están hechas (19/11).** Queda que el usuario use la app unos días y dé feedback.
-2. Pendientes sueltos: Autoinicio de Life OS en HyperOS (a mano); iCal de Blackboard (si existe); arrastrar tareas al calendario; bajar la memoria del agente (~165 MB).
+2. Pendientes sueltos (opcionales): iCal de Blackboard (si existe); arrastrar tareas al calendario; bajar la memoria del agente (~165 MB).
+3. Estado al cerrar la sesión del 19/11: todo instalado y funcionando. PC: app en el lanzador (Caelestia) y autostart de Hyprland, agente `lifeos-agent` activo, extensión 1.1.0 en Zen y Firefox. Móvil: app con bloqueo (accesibilidad + acceso al uso + Autoinicio en segundo plano + sin optimización de batería) y widgets. Sincronización con Supabase funcionando en los dos.
 - Hechas el 19/11: sincronizar al volver a la app, 4a (modo enfoque), 4b (bloqueo en Android) 4c (agente de Linux, instalado con `scripts/install-agent.sh`; tras cambiar el código del agente hay que volver a ejecutarlo) y 4d (extensión firmada, `scripts/sign-extension.sh`, instalada en Zen y Firefox).
 - Móvil por adb inalámbrico: `adb pair IP:PUERTO CÓDIGO` y luego `adb connect` al puerto de `adb mdns services`. Pedir el código al usuario cada vez.
 
