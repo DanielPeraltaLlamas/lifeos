@@ -156,8 +156,13 @@ class SyncEngine(
     }
 
     private suspend fun token(): String {
-        val s = session ?: error("sin sesión")
+        var s = session ?: error("sin sesión")
         if (s.accessToken.isNotEmpty() && s.expiresAt - 60_000 > now()) return s.accessToken
+        // En el PC, la app y el agente comparten la sesión: si el otro ya la renovó,
+        // se usa su token nuevo (cada token de renovación solo vale una vez).
+        val stored = withContext(io) { getSetting(KEY_REFRESH) }
+        if (stored == null) throw SessionExpired()
+        if (stored != s.refreshToken) s = s.copy(refreshToken = stored)
         val fresh = try {
             remote!!.refresh(s.refreshToken)
         } catch (e: ApiException) {

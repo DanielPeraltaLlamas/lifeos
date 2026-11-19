@@ -11,6 +11,9 @@ import dev.lifeos.App
 import dev.lifeos.data.Repository
 import dev.lifeos.data.Source
 import dev.lifeos.data.FocusWatcher
+import dev.lifeos.data.agentRunning
+import dev.lifeos.data.desktopNotify
+import dev.lifeos.data.watchExternalChanges
 import dev.lifeos.data.backupDatabase
 import dev.lifeos.data.createDriver
 import dev.lifeos.db.LifeOsDatabase
@@ -25,7 +28,9 @@ fun main() {
     val sync = createSyncEngine(driver, repository, backup = { backupDatabase() })
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     sync.start(scope)
-    FocusWatcher(repository, onFinished = { s -> notifyBlockFinished(s.title) }).start(scope)
+    watchExternalChanges(driver, scope)
+    // Si el agente está en marcha, el aviso de fin lo da él (así no sale dos veces).
+    FocusWatcher(repository, onFinished = { s -> if (!agentRunning()) notifyBlockFinished(s.title) }).start(scope)
     application {
         Window(
             onCloseRequest = ::exitApplication,
@@ -46,11 +51,6 @@ fun main() {
 
 /** Notificación del escritorio (la muestra el demonio de Caelestia) y un pitido. */
 private fun notifyBlockFinished(title: String) {
-    runCatching {
-        ProcessBuilder(
-            "notify-send", "-a", "Life OS", "-u", "critical", "-i", "alarm-symbolic",
-            "Bloque terminado", "50 minutos en «$title». Toca descanso.",
-        ).start()
-    }
+    desktopNotify("Bloque terminado", "50 minutos en «$title». Toca descanso.", critical = true)
     runCatching { java.awt.Toolkit.getDefaultToolkit().beep() }
 }

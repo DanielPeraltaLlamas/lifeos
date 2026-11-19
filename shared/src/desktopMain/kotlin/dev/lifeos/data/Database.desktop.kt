@@ -22,7 +22,9 @@ fun createDriver(path: Path? = defaultDatabasePath()): SqlDriver {
         Files.createDirectories(path.parent)
         "jdbc:sqlite:$path"
     }
-    return JdbcSqliteDriver(url, Properties(), LifeOsDatabase.Schema)
+    // La app y el agente abren la misma base: si uno escribe, el otro espera hasta 5 s.
+    val props = Properties().apply { put("busy_timeout", "5000") }
+    return JdbcSqliteDriver(url, props, LifeOsDatabase.Schema)
 }
 
 fun createDatabase(path: Path? = defaultDatabasePath()): LifeOsDatabase = LifeOsDatabase(createDriver(path))
