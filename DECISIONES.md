@@ -89,6 +89,7 @@
 - **Orden de entregas (19/11):** el Calendario se adelanta a la Entrega 2. La sincronización con Supabase pasa a la 3 (y se corre el resto).
 - **Entrega 2, Calendario (19/11):** vistas de día, semana y mes (semana por defecto en el ordenador; día en el móvil). Eventos con hora de cuatro tipos: clase, estudio, gimnasio y otro, opcionalmente ligados a una asignatura o proyecto, con lugar y repetición semanal (con fecha de fin opcional). Un evento semanal se puede borrar solo un día, desde un día en adelante o entero; las ediciones se aplican a toda la serie. En la fila «todo el día» salen entregas, exámenes, hitos y tareas con fecha límite (y, en la vista de día, las tareas del plan). Al pulsar cualquiera se edita. Panel lateral: mes en miniatura y próximas fechas. En Hoy aparece la tarjeta Agenda (eventos de hoy, con «Ahora») y el subtítulo dice cuántas clases hay. Colores desde el tema dinámico; estudio con borde discontinuo (planificado). Las entregas ya se pueden editar.
 - **Pendiente del calendario:** importar el iCal de Blackboard (sin verificar que exista), arrastrar tareas a huecos libres y los bloques de enfoque reales (Entrega de Enfoque).
+- **Horario real cargado (19/11), solo en el PC:** asignaturas Paradigmas, Visión por Computador, Proyectos 3, Dirección de Proyectos, Aprendizaje Automático y Proyectos 4, con sus 7 clases semanales (lunes, martes y miércoles). El usuario confirma que se ven bien. En el móvil no están hasta que haya sincronización.
 
 ## Ideas aparcadas / a validar
 _(ninguna todavía)_
