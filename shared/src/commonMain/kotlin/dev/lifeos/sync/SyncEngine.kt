@@ -86,7 +86,31 @@ class SyncEngine(
         }
     }
 
-    fun syncNow() { kick.trySend(Unit) }
+    /** En modo pasivo, "sincronizar ahora" se le pide a quien sincroniza de verdad (el agente). */
+    var onSyncNowPassive: (() -> Unit)? = null
+    private var passive = false
+
+    fun syncNow() { if (passive) onSyncNowPassive?.invoke() else kick.trySend(Unit) }
+
+    /**
+     * Modo pasivo (app del PC con el agente en marcha): no hace peticiones ni renueva
+     * la sesión; solo lee de la base el estado que deja el agente. Así nunca hay dos
+     * procesos renovando el mismo token (Supabase cerraría la sesión).
+     */
+    fun startPassive(scope: CoroutineScope) {
+        if (remote == null) return
+        passive = true
+        scope.launch {
+            while (true) {
+                val (refresh, email, last) = withContext(io) { Triple(getSetting(KEY_REFRESH), getSetting(KEY_EMAIL), getSetting(KEY_LAST)?.toLongOrNull()) }
+                _state.update {
+                    if (refresh == null) it.copy(status = SyncState.Status.SIGNED_OUT, email = null, lastSync = null)
+                    else it.copy(status = if (it.status == SyncState.Status.SIGNED_OUT) SyncState.Status.IDLE else it.status, email = email, lastSync = last)
+                }
+                delay(5_000)
+            }
+        }
+    }
 
     /** Al abrir la app o volver a ella. Si se sincronizó hace menos de 20 s, no hace nada. */
     fun onAppVisible() {
@@ -118,7 +142,7 @@ class SyncEngine(
             val s = r.signIn(email.trim(), password)
             withContext(io) { switchUser(s.userId); saveSession(s) }
             _state.update { it.copy(email = s.email, status = SyncState.Status.IDLE, message = null) }
-            kick.trySend(Unit)
+            syncNow()
             null
         } catch (e: CancellationException) { throw e } catch (e: Throwable) { authMessage(e) }
     }
@@ -176,6 +200,8 @@ class SyncEngine(
 
     suspend fun syncOnce() = mutex.withLock {
         val r = remote ?: return@withLock
+        // Otro proceso (la app del PC) puede haber iniciado sesión en la base compartida.
+        if (session == null) restoreSession()
         if (session == null) return@withLock
         _state.update { it.copy(status = SyncState.Status.SYNCING, message = null) }
         try {

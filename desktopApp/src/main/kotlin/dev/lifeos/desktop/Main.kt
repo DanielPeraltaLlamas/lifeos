@@ -12,6 +12,7 @@ import dev.lifeos.data.Repository
 import dev.lifeos.data.Source
 import dev.lifeos.data.FocusWatcher
 import dev.lifeos.data.agentRunning
+import dev.lifeos.data.agentSyncNow
 import dev.lifeos.data.desktopNotify
 import dev.lifeos.data.watchExternalChanges
 import dev.lifeos.data.backupDatabase
@@ -27,7 +28,13 @@ fun main() {
     val repository = Repository(LifeOsDatabase(driver))
     val sync = createSyncEngine(driver, repository, backup = { backupDatabase() })
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    sync.start(scope)
+    // Si el agente está en marcha, sincroniza él; la app solo muestra el estado.
+    if (agentRunning()) {
+        sync.onSyncNowPassive = { agentSyncNow() }
+        sync.startPassive(scope)
+    } else {
+        sync.start(scope)
+    }
     watchExternalChanges(driver, scope)
     // Si el agente está en marcha, el aviso de fin lo da él (así no sale dos veces).
     FocusWatcher(repository, onFinished = { s -> if (!agentRunning()) notifyBlockFinished(s.title) }).start(scope)

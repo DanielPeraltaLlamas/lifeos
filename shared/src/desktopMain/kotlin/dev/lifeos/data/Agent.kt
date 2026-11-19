@@ -21,3 +21,12 @@ fun desktopNotify(title: String, body: String, critical: Boolean = false) {
         ).start()
     }
 }
+
+/** Pide al agente que sincronice ya. */
+fun agentSyncNow() {
+    runCatching {
+        val c = URI("http://127.0.0.1:$AGENT_PORT/sync").toURL().openConnection() as HttpURLConnection
+        c.connectTimeout = 500; c.readTimeout = 500
+        c.responseCode
+    }
+}

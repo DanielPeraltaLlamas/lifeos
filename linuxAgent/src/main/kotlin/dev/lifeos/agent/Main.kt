@@ -30,7 +30,8 @@ fun main(): Unit = runBlocking {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     watchExternalChanges(driver, scope)
-    createSyncEngine(driver, repo, backup = { backupDatabase() }).start(scope, focusPollMs = 30_000)
+    val sync = createSyncEngine(driver, repo, backup = { backupDatabase() })
+    sync.start(scope, focusPollMs = 30_000)
     FocusWatcher(repo, onFinished = { s ->
         desktopNotify("Bloque terminado", "50 minutos en «${s.title}». Toca descanso.", critical = true)
     }).start(scope)
@@ -39,7 +40,7 @@ fun main(): Unit = runBlocking {
     Enforcer { focus.value?.let { s -> FocusMath.endsAt(s, System.currentTimeMillis()).takeIf { FocusMath.remaining(s, System.currentTimeMillis()) > 0 } } }
         .start(scope)
     val prefs = repo.prefs.stateIn(scope, SharingStarted.Eagerly, dev.lifeos.data.Prefs())
-    StatusServer({ focus.value }, { prefs.value }).start()
+    StatusServer({ focus.value }, { prefs.value }, onSync = { sync.syncNow() }).start()
 
     println("Life OS agent en marcha")
     awaitCancellation()

@@ -18,10 +18,12 @@ import java.net.InetSocketAddress
  *   GET /status -> {"focus": true, "endsAt": 1795..., "title": "...", "webFocus": [...], "webAlways": [...]}
  * Lo usan la app (para no avisar dos veces) y la extensión del navegador.
  */
-class StatusServer(private val current: () -> Focus_session?, private val prefs: () -> Prefs) {
+class StatusServer(private val current: () -> Focus_session?, private val prefs: () -> Prefs, private val onSync: () -> Unit = {}) {
     fun start() {
         val server = HttpServer.create(InetSocketAddress(InetAddress.getLoopbackAddress(), AGENT_PORT), 0)
         server.createContext("/ping") { ex -> ex.sendResponseHeaders(200, -1); ex.close() }
+        // La app del PC pide "sincronizar ahora" (ella no sincroniza si el agente está en marcha).
+        server.createContext("/sync") { ex -> onSync(); ex.sendResponseHeaders(204, -1); ex.close() }
         server.createContext("/status") { ex ->
             val now = System.currentTimeMillis()
             val s = current()?.takeIf { FocusMath.remaining(it, now) > 0 }
