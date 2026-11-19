@@ -10,6 +10,7 @@ import androidx.compose.ui.window.rememberWindowState
 import dev.lifeos.App
 import dev.lifeos.data.Repository
 import dev.lifeos.data.Source
+import dev.lifeos.data.FocusWatcher
 import dev.lifeos.data.backupDatabase
 import dev.lifeos.data.createDriver
 import dev.lifeos.db.LifeOsDatabase
@@ -22,7 +23,9 @@ fun main() {
     val driver = createDriver()
     val repository = Repository(LifeOsDatabase(driver))
     val sync = createSyncEngine(driver, repository, backup = { backupDatabase() })
-    sync.start(CoroutineScope(SupervisorJob() + Dispatchers.Default))
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    sync.start(scope)
+    FocusWatcher(repository, onFinished = { s -> notifyBlockFinished(s.title) }).start(scope)
     application {
         Window(
             onCloseRequest = ::exitApplication,
@@ -39,4 +42,15 @@ fun main() {
             App(repository, Source.DESKTOP, sync = sync)
         }
     }
+}
+
+/** Notificación del escritorio (la muestra el demonio de Caelestia) y un pitido. */
+private fun notifyBlockFinished(title: String) {
+    runCatching {
+        ProcessBuilder(
+            "notify-send", "-a", "Life OS", "-u", "critical", "-i", "alarm-symbolic",
+            "Bloque terminado", "50 minutos en «$title». Toca descanso.",
+        ).start()
+    }
+    runCatching { java.awt.Toolkit.getDefaultToolkit().beep() }
 }

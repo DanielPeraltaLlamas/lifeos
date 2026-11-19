@@ -6,6 +6,7 @@ import app.cash.sqldelight.coroutines.mapToOneOrNull
 import dev.lifeos.db.Daily_plan
 import dev.lifeos.db.Deadline
 import dev.lifeos.db.Event
+import dev.lifeos.db.Focus_session
 import dev.lifeos.db.Habit
 import dev.lifeos.db.Inbox_item
 import dev.lifeos.db.LifeOsDatabase
@@ -54,6 +55,13 @@ class Repository(
     val inbox: Flow<List<Inbox_item>> = db.inboxQueries.selectAll().asFlow().mapToList(io)
     val notes: Flow<List<Note>> = db.noteQueries.selectAll().asFlow().mapToList(io)
     val events: Flow<List<Event>> = db.eventQueries.selectAll().asFlow().mapToList(io)
+
+    /** El bloque de enfoque en marcha (en cualquier dispositivo), o null. */
+    val activeFocus: Flow<Focus_session?> = db.focusSessionQueries.selectActive().asFlow().mapToOneOrNull(io)
+
+    /** Bloques que empezaron entre dos instantes (milisegundos). */
+    fun focusBetween(from: Long, to: Long): Flow<List<Focus_session>> =
+        db.focusSessionQueries.selectBetween(from, to).asFlow().mapToList(io)
 
     fun dailyPlan(date: LocalDate): Flow<Daily_plan?> =
         db.dailyPlanQueries.selectByDate(date.toString()).asFlow().mapToOneOrNull(io)
@@ -270,6 +278,58 @@ class Repository(
             val e = db.eventQueries.selectById(id).executeAsOneOrNull() ?: return@transaction
             if (date <= e.startDate) db.eventQueries.softDelete(now(), id)
             else db.eventQueries.setUntil(date.plusDays(-1).toString(), now(), id)
+        }
+    }
+
+    // ---------- Enfoque ----------
+    /**
+     * Empieza un bloque. Si ya hay uno en marcha, no crea otro y devuelve ese.
+     * Para una tarea, el número de bloque cuenta los que ya hizo hoy.
+     */
+    suspend fun startFocus(title: String, taskId: String? = null, projectId: String? = null, todayStart: Long? = null): String = write {
+        db.transactionWithResult {
+            val t = now()
+            db.focusSessionQueries.selectActive().executeAsOneOrNull()
+                ?.takeIf { FocusMath.remaining(it, t) > 0 }?.let { return@transactionWithResult it.id }
+            val task = taskId?.let { db.taskQueries.selectById(it).executeAsOneOrNull() }
+            val doneToday = if (taskId != null && todayStart != null)
+                db.focusSessionQueries.selectBetween(todayStart, t + 1).executeAsList().count { it.task_id == taskId && it.ended_at != null }
+            else 0
+            val index = doneToday + 1
+            val total = maxOf(task?.estimate_blocks?.toInt() ?: 1, index)
+            val id = newId()
+            db.focusSessionQueries.insert(
+                id, taskId, projectId ?: task?.project_id, title.trim(), t, BLOCK_MS,
+                index.toLong(), total.toLong(), t, t,
+            )
+            id
+        }
+    }
+
+    suspend fun pauseFocus(id: String) = write {
+        db.transaction {
+            val s = db.focusSessionQueries.selectActive().executeAsOneOrNull()?.takeIf { it.id == id } ?: return@transaction
+            val t = now()
+            if (s.paused_at == null && FocusMath.pauseLeft(s, t) > 0) db.focusSessionQueries.setPause(t, s.paused_ms, t, id)
+        }
+    }
+
+    suspend fun resumeFocus(id: String) = write {
+        db.transaction {
+            val s = db.focusSessionQueries.selectActive().executeAsOneOrNull()?.takeIf { it.id == id } ?: return@transaction
+            val t = now()
+            if (s.paused_at != null) db.focusSessionQueries.setPause(null, FocusMath.totalPause(s, t), t, id)
+        }
+    }
+
+    /** Cierra el bloque si ya cumplió su tiempo. Devuelve true si lo ha cerrado ahora. */
+    suspend fun finishFocusIfDue(id: String): Boolean = write {
+        db.transactionWithResult {
+            val s = db.focusSessionQueries.selectActive().executeAsOneOrNull()?.takeIf { it.id == id } ?: return@transactionWithResult false
+            val t = now()
+            if (FocusMath.remaining(s, t) > 0) return@transactionWithResult false
+            db.focusSessionQueries.finish(FocusMath.finishedAt(s, t), t, id)
+            true
         }
     }
 

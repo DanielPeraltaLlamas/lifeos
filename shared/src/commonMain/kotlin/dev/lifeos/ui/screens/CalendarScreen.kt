@@ -86,6 +86,7 @@ import dev.lifeos.ui.MilestoneDialog
 import dev.lifeos.ui.TaskDialog
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
@@ -138,7 +139,10 @@ fun CalendarScreen(wide: Boolean) {
         CalView.WEEK -> Dates.weekStart(anchor).let { it to it.plusDays(6) }
         CalView.MONTH -> monthGrid(anchor).let { it.first() to it.last() }
     }
-    val occs = CalendarMath.occurrences(events, from, to)
+    val fromMs = from.atStartOfDayIn(Dates.zone).toEpochMilliseconds()
+    val toMs = to.plusDays(1).atStartOfDayIn(Dates.zone).toEpochMilliseconds()
+    val focus by remember(fromMs, toMs) { repo.focusBetween(fromMs, toMs) }.collectAsState(emptyList())
+    val occs = CalendarMath.occurrences(events + CalendarMath.focusAsEvents(focus, Dates.nowMs()), from, to)
     val items = CalendarMath.dayItems(deadlines, milestones, tasks, projectById, from, to, includePlanned = view == CalView.DAY)
 
     fun step(sign: Int) = go(
@@ -220,7 +224,7 @@ fun CalendarScreen(wide: Boolean) {
                         projects = projectById,
                         compact = !wide && view == CalView.WEEK,
                         onSlot = { d, min -> dialog = CalDialog.NewEvent(d, min) },
-                        onEvent = { dialog = CalDialog.EditEvent(it) },
+                        onEvent = { if (!it.event.id.startsWith(CalendarMath.FOCUS_PREFIX)) dialog = CalDialog.EditEvent(it) },
                         onItem = { dialog = CalDialog.Item(it) },
                         onDay = { go(it); view = CalView.DAY },
                     )
@@ -282,6 +286,7 @@ private fun eventTone(kind: EventKind): Tone {
         EventKind.STUDY -> Tone(cs.primaryContainer, cs.onPrimaryContainer, dashed = true)
         EventKind.GYM -> Tone(cs.tertiaryContainer, cs.onTertiaryContainer)
         EventKind.OTHER -> Tone(cs.secondaryContainer, cs.onSecondaryContainer)
+        EventKind.FOCUS -> Tone(cs.primary, cs.onPrimary)
     }
 }
 
@@ -304,6 +309,7 @@ private fun strongColor(kind: EventKind): Color {
         EventKind.STUDY -> cs.primary
         EventKind.GYM -> cs.tertiary
         EventKind.OTHER -> cs.secondary
+        EventKind.FOCUS -> cs.primary
     }
 }
 
@@ -336,6 +342,7 @@ private fun Legend() {
         entry(strongColor(EventKind.STUDY), "Estudio")
         entry(strongColor(EventKind.GYM), "Gimnasio")
         entry(strongColor(EventKind.OTHER), "Otros")
+        entry(strongColor(EventKind.FOCUS), "Foco hecho")
         entry(cs.error, "Entregas y exámenes")
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Outlined.Flag, null, Modifier.size(14.dp), tint = cs.primary); Spacer(Modifier.width(4.dp))

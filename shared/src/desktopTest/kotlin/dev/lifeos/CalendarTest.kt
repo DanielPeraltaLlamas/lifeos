@@ -115,6 +115,7 @@ class CalendarTest {
         r1.addTask("Tarea de antes")
         // Dejarla como estaba en la Entrega 1.
         JdbcSqliteDriver("jdbc:sqlite:$path", Properties()).use { d ->
+            d.execute(null, "DROP TABLE focus_session", 0)
             d.execute(null, "DROP INDEX event_date", 0)
             d.execute(null, "DROP TABLE event", 0)
             d.execute(null, "PRAGMA user_version = 1", 0)

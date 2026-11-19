@@ -88,7 +88,7 @@ class SyncTest {
             }, 0).value
             assertEquals(cols, t.names, "Columnas de ${t.name}")
         }
-        val sql = java.io.File("../supabase/migrations/0001_sync.sql").readText()
+        val sql = java.io.File("../supabase/migrations").listFiles()!!.sorted().joinToString("\n") { it.readText() }
         SYNC_TABLES.forEach { t ->
             assertTrue("create table if not exists public.${t.name} (" in sql, "Falta ${t.name} en el SQL")
             t.names.forEach { c -> assertTrue(Regex("\\n  $c (text|bigint)").containsMatchIn(sql.substringAfter("public.${t.name} (")), "Falta ${t.name}.$c en el SQL") }

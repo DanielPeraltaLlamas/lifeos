@@ -60,10 +60,9 @@ class Screenshots {
         r
     }
 
-    private fun shot(name: String, screen: Screen, width: Int, height: Int, density: Float = 1f) {
+    private fun shot(name: String, screen: Screen, width: Int, height: Int, density: Float = 1f, repo: Repository = sampleRepo()) {
         val out = dir ?: return
         out.mkdirs()
-        val repo = sampleRepo()
         ImageComposeScene(width, height, Density(density)) {
             App(repo, if (width / density < 600) Source.ANDROID else Source.DESKTOP, screen)
         }.use { scene ->
@@ -82,6 +81,18 @@ class Screenshots {
     fun desktop() {
         Screen.entries.forEach { shot("desktop-${it.name.lowercase()}", it, 1280, 860) }
         shot("desktop-narrow-today", Screen.TODAY, 908, 1000)
+    }
+
+    @Test
+    fun focus() {
+        if (dir == null) return
+        val repo = sampleRepo()
+        runBlocking {
+            val t = repo.tasks.first().first { it.title.startsWith("Analizar AniList") }
+            repo.startFocus(t.title, t.id, t.project_id)
+        }
+        shot("desktop-focus", Screen.TODAY, 1280, 860, repo = repo)
+        shot("phone-focus", Screen.TODAY, 1080, 2400, 2.75f, repo = repo)
     }
 
     @Test

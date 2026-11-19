@@ -1,0 +1,37 @@
+-- Bloques de enfoque. Un bloque está en marcha si ended_at es NULL.
+-- Tiempo transcurrido = ahora - started_at - paused_ms - (ahora - paused_at si está en pausa).
+-- No se puede terminar antes de tiempo: ended_at se pone al cumplir planned_ms.
+CREATE TABLE focus_session (
+    id TEXT NOT NULL PRIMARY KEY,
+    task_id TEXT,
+    project_id TEXT,
+    title TEXT NOT NULL,
+    started_at INTEGER NOT NULL,
+    planned_ms INTEGER NOT NULL,
+    paused_ms INTEGER NOT NULL DEFAULT 0,
+    paused_at INTEGER,
+    ended_at INTEGER,
+    block_index INTEGER NOT NULL DEFAULT 1,
+    block_total INTEGER NOT NULL DEFAULT 1,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE INDEX focus_session_started ON focus_session(started_at);
+
+selectActive:
+SELECT * FROM focus_session WHERE ended_at IS NULL AND deleted_at IS NULL ORDER BY started_at DESC LIMIT 1;
+
+selectBetween:
+SELECT * FROM focus_session WHERE deleted_at IS NULL AND started_at >= :from AND started_at < :to ORDER BY started_at;
+
+insert:
+INSERT INTO focus_session(id, task_id, project_id, title, started_at, planned_ms, block_index, block_total, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+setPause:
+UPDATE focus_session SET paused_at = ?, paused_ms = ?, updated_at = ? WHERE id = ?;
+
+finish:
+UPDATE focus_session SET ended_at = ?, paused_at = NULL, updated_at = ? WHERE id = ? AND ended_at IS NULL;

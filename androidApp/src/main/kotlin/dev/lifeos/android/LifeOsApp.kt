@@ -1,6 +1,7 @@
 package dev.lifeos.android
 
 import android.app.Application
+import dev.lifeos.data.FocusWatcher
 import dev.lifeos.data.Repository
 import dev.lifeos.data.backupDatabase
 import dev.lifeos.data.createDriver
@@ -16,8 +17,16 @@ class LifeOsApp : Application() {
     val repository: Repository by lazy { Repository(LifeOsDatabase(driver)) }
     val sync: SyncEngine by lazy { createSyncEngine(driver, repository, backup = { backupDatabase(this) }) }
 
+    val focusNotifier by lazy { FocusNotifier(this) }
+
     override fun onCreate() {
         super.onCreate()
-        sync.start(CoroutineScope(SupervisorJob() + Dispatchers.Default))
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        sync.start(scope)
+        FocusWatcher(
+            repository,
+            onChange = { focusNotifier.render(it) },
+            onFinished = { focusNotifier.showFinished(it.title) },
+        ).start(scope)
     }
 }

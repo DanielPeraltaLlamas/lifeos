@@ -76,6 +76,8 @@ object Dates {
 
     fun hourNow(clock: Clock = Clock.System): Int = clock.now().toLocalDateTime(zone).hour
 
+    fun nowMs(clock: Clock = Clock.System): Long = clock.now().toEpochMilliseconds()
+
     /** Minutos desde medianoche, ahora. */
     fun minuteNow(clock: Clock = Clock.System): Int = clock.now().toLocalDateTime(zone).let { it.hour * 60 + it.minute }
 

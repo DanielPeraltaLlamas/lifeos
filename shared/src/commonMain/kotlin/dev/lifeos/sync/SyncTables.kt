@@ -12,6 +12,7 @@ internal val SYNC_TABLES: List<SyncTable> = listOf(
     SyncTable("inbox_item", listOf("id" to Col.TEXT, "text" to Col.TEXT, "source" to Col.TEXT, "created_at" to Col.INT, "updated_at" to Col.INT, "deleted_at" to Col.INT)),
     SyncTable("note", listOf("id" to Col.TEXT, "project_id" to Col.TEXT, "kind" to Col.TEXT, "body" to Col.TEXT, "url" to Col.TEXT, "created_at" to Col.INT, "updated_at" to Col.INT, "deleted_at" to Col.INT)),
     SyncTable("event", listOf("id" to Col.TEXT, "project_id" to Col.TEXT, "title" to Col.TEXT, "kind" to Col.TEXT, "date" to Col.TEXT, "start_min" to Col.INT, "end_min" to Col.INT, "repeat_weekly" to Col.INT, "until_date" to Col.TEXT, "skip_dates" to Col.TEXT, "location" to Col.TEXT, "created_at" to Col.INT, "updated_at" to Col.INT, "deleted_at" to Col.INT)),
+    SyncTable("focus_session", listOf("id" to Col.TEXT, "task_id" to Col.TEXT, "project_id" to Col.TEXT, "title" to Col.TEXT, "started_at" to Col.INT, "planned_ms" to Col.INT, "paused_ms" to Col.INT, "paused_at" to Col.INT, "ended_at" to Col.INT, "block_index" to Col.INT, "block_total" to Col.INT, "created_at" to Col.INT, "updated_at" to Col.INT, "deleted_at" to Col.INT)),
 )
 
 enum class Col { TEXT, INT }

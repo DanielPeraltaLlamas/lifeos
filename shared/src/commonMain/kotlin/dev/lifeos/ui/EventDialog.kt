@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
@@ -103,7 +104,7 @@ fun EventDialog(
         onDismiss = onDismiss,
     ) {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            EventKind.entries.forEach { k ->
+            EventKind.entries.filter { it != EventKind.FOCUS }.forEach { k ->
                 FilterChip(selected = kind == k, onClick = { kind = k }, label = { Text(k.label) })
             }
         }
@@ -136,6 +137,12 @@ fun EventDialog(
         }
         if (weekly) DateField("Hasta", until, { until = it })
         OutlinedTextField(location, { location = it }, label = { Text("Lugar (opcional)") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+        if (event != null && event.kindEnum == EventKind.STUDY) {
+            Button(onClick = {
+                act { startFocus(event.title, null, event.project_id) }
+                onDismiss()
+            }) { Text("Empezar bloque ahora · 50 min") }
+        }
         if (event != null) {
             if (event.isWeekly) {
                 Text(

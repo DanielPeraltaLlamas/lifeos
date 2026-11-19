@@ -61,6 +61,7 @@ import dev.lifeos.ui.LocalSource
 import dev.lifeos.ui.LocalToday
 import dev.lifeos.ui.rememberToday
 import dev.lifeos.ui.screens.CalendarScreen
+import dev.lifeos.ui.screens.FocusHost
 import dev.lifeos.ui.screens.HabitsScreen
 import dev.lifeos.ui.screens.InboxScreen
 import dev.lifeos.ui.screens.TasksScreen
@@ -90,7 +91,7 @@ fun App(repository: Repository, source: Source, initialScreen: Screen = Screen.T
     ) {
         LifeOsTheme {
             Surface(color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxSize()) {
-                Shell(initialScreen)
+                FocusHost { Shell(initialScreen) }
             }
         }
     }

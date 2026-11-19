@@ -3,13 +3,17 @@ package dev.lifeos.data
 import dev.lifeos.data.Dates.plusDays
 import dev.lifeos.db.Deadline
 import dev.lifeos.db.Event
+import dev.lifeos.db.Focus_session
 import dev.lifeos.db.Milestone
 import dev.lifeos.db.Project
 import dev.lifeos.db.Task
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.daysUntil
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
-enum class EventKind(val label: String) { CLASS("Clase"), STUDY("Estudio"), GYM("Gimnasio"), OTHER("Otro") }
+/** FOCUS no se crea a mano: son los bloques de enfoque hechos, que el calendario pinta como eventos. */
+enum class EventKind(val label: String) { CLASS("Clase"), STUDY("Estudio"), GYM("Gimnasio"), OTHER("Otro"), FOCUS("Foco") }
 
 val Event.kindEnum: EventKind get() = runCatching { EventKind.valueOf(kind) }.getOrDefault(EventKind.OTHER)
 val Event.startDate: LocalDate get() = LocalDate.parse(date)
@@ -84,6 +88,22 @@ object CalendarMath {
         }
         flush()
         return result
+    }
+
+    const val FOCUS_PREFIX = "focus:"
+
+    /** Los bloques de enfoque como eventos de un día (el que está en marcha llega hasta su fin previsto). */
+    fun focusAsEvents(sessions: List<Focus_session>, now: Long): List<Event> = sessions.mapNotNull { s ->
+        val end = s.ended_at ?: FocusMath.endsAt(s, now)
+        val a = Instant.fromEpochMilliseconds(s.started_at).toLocalDateTime(Dates.zone)
+        val b = Instant.fromEpochMilliseconds(end).toLocalDateTime(Dates.zone)
+        val startMin = a.hour * 60 + a.minute
+        val endMin = if (b.date == a.date) b.hour * 60 + b.minute else 24 * 60 - 1
+        if (endMin <= startMin) return@mapNotNull null
+        Event(
+            FOCUS_PREFIX + s.id, s.project_id, s.title, EventKind.FOCUS.name, a.date.toString(),
+            startMin.toLong(), endMin.toLong(), 0, null, "", null, s.created_at, s.updated_at, null,
+        )
     }
 
     /** Entregas, exámenes, hitos y tareas con fecha límite entre dos fechas (incluidas). */

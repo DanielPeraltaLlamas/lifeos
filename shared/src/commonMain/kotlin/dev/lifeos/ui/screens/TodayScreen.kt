@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.ChecklistRtl
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Loop
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Button
@@ -118,6 +119,7 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
     }
 
     var dialog by remember { mutableStateOf<TodayDialog?>(null) }
+    val todayStart = todayStartMs()
 
     val hour = Dates.hourNow()
     val greeting = when (hour) { in 6..13 -> "Buenos días"; in 14..20 -> "Buenas tardes"; else -> "Buenas noches" }
@@ -148,6 +150,7 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
             chosenAt = plan?.chosen_at,
             wide = wide,
             onChoose = { dialog = TodayDialog.PickFirst },
+            onStart = { first?.let { t -> act { startFocus(t.title, t.id, t.project_id, todayStart) } } },
             onDone = { done -> first?.let { t -> act { setTaskDone(t.id, done) } } },
         )
         Spacer(Modifier.height(14.dp))
@@ -164,6 +167,7 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
                 onToggle = { t, d -> act { setTaskDone(t.id, d) } },
                 onRemove = { t -> act { setTaskPlanned(t.id, null) } },
                 onAdd = { dialog = TodayDialog.AddToPlan },
+                onStart = { t -> act { startFocus(t.title, t.id, t.project_id, todayStart) } },
             )
         }
         val habitsCard: @Composable (Modifier) -> Unit = { m ->
@@ -240,6 +244,7 @@ private fun FirstCard(
     wide: Boolean,
     onChoose: () -> Unit,
     onDone: (Boolean) -> Unit,
+    onStart: () -> Unit,
 ) {
     val cs = MaterialTheme.colorScheme
     Card(
@@ -282,7 +287,8 @@ private fun FirstCard(
                     Text("Hecho. Lo siguiente está en tu plan.", color = cs.onPrimaryContainer, modifier = Modifier.weight(1f, fill = false))
                     TextButton(onClick = { onDone(false) }) { Text("Deshacer") }
                 } else {
-                    Button(onClick = { onDone(true) }) { Icon(Icons.Outlined.Check, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Hecha") }
+                    Button(onClick = onStart) { Icon(Icons.Outlined.PlayArrow, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Empezar · 50 min") }
+                    OutlinedButton(onClick = { onDone(true) }) { Icon(Icons.Outlined.Check, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Hecha") }
                     OutlinedButton(onClick = onChoose) { Text("Cambiar") }
                 }
             }
@@ -299,6 +305,7 @@ private fun PlanCard(
     onToggle: (Task, Boolean) -> Unit,
     onRemove: (Task) -> Unit,
     onAdd: () -> Unit,
+    onStart: (Task) -> Unit,
 ) {
     val done = planned.count { it.isDone }
     Card(
@@ -318,7 +325,10 @@ private fun PlanCard(
                 done = t.isDone,
                 onToggle = { onToggle(t, it) },
                 accent = projectAccent(t.project_id?.let(projects::get)),
-                menu = listOf(MenuAction("Quitar del plan") { onRemove(t) }),
+                menu = listOfNotNull(
+                    if (!t.isDone) MenuAction("Empezar bloque · 50 min") { onStart(t) } else null,
+                    MenuAction("Quitar del plan") { onRemove(t) },
+                ),
             )
         }
         Spacer(Modifier.weight(1f, fill = true).height(0.dp))
@@ -425,6 +435,7 @@ private fun AgendaCard(
                 EventKind.STUDY -> cs.primary
                 EventKind.GYM -> cs.tertiary
                 EventKind.OTHER -> cs.secondary
+                EventKind.FOCUS -> cs.primary
             }
             Row(Modifier.fillMaxWidth().padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(

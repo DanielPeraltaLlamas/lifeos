@@ -1,0 +1,19 @@
+-- Versión 2 -> 3: bloques de enfoque (Entrega 4a).
+CREATE TABLE focus_session (
+    id TEXT NOT NULL PRIMARY KEY,
+    task_id TEXT,
+    project_id TEXT,
+    title TEXT NOT NULL,
+    started_at INTEGER NOT NULL,
+    planned_ms INTEGER NOT NULL,
+    paused_ms INTEGER NOT NULL DEFAULT 0,
+    paused_at INTEGER,
+    ended_at INTEGER,
+    block_index INTEGER NOT NULL DEFAULT 1,
+    block_total INTEGER NOT NULL DEFAULT 1,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE INDEX focus_session_started ON focus_session(started_at);
