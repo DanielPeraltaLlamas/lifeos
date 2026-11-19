@@ -80,7 +80,9 @@ _Última sesión: 19/11/2026_
   Ojo: AGP 9 exige el plugin `com.android.kotlin.multiplatform.library` para el módulo compartido y trae Kotlin integrado (no aplicar `kotlin-android`).
 
 ## Siguiente paso
-1. Propuesta pendiente de respuesta: sincronizar al volver a la app (onResume en Android, foco de ventana en el PC).
-2. Entrega 4: Enfoque y bloqueo (ver ARQUITECTURA.md §6).
+1. Entrega 4c: agente de Linux (servicio systemd de usuario que cierra Discord, Steam y Lutris durante los bloques, sincroniza y responde en localhost a la extensión).
+2. Entrega 4d: extensión para Zen y Firefox (necesita firma de Mozilla; el usuario aún no tiene cuenta).
+- Hechas el 19/11: sincronizar al volver a la app, 4a (modo enfoque) y 4b (bloqueo en Android).
+- Móvil por adb inalámbrico: `adb pair IP:PUERTO CÓDIGO` y luego `adb connect` al puerto de `adb mdns services`. Pedir el código al usuario cada vez.
 
 **Pedir confirmación al usuario antes de empezar cada entrega.**
