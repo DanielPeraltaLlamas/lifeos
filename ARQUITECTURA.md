@@ -106,7 +106,7 @@ Cada entrega se puede usar de verdad antes de pasar a la siguiente:
 
 1. **Base:** esqueleto del proyecto, modelo y base de datos local, tema dinámico. Pantallas Hoy, Tareas y proyectos, Hábitos y Bandeja en escritorio y Android. ✅
 2. **Calendario** (adelantado el 19/11): día, semana y mes, eventos semanales y tarjeta Agenda en Hoy. ✅
-3. **Sincronización** con Supabase y acceso con tu cuenta.
+3. **Sincronización** con Supabase y acceso con tu cuenta. ✅
 4. **Enfoque y bloqueo:** temporizador, bloqueo en Android, agente de Linux y extensión del navegador.
 5. **Widgets y notificación fija.**
 6. **El resto:** Notas, Cierre del día, Revisión semanal, Evolución, asistente por reglas y Ajustes.

@@ -53,7 +53,10 @@ import dev.lifeos.data.Repository
 import dev.lifeos.data.Source
 import dev.lifeos.data.seedIfNeeded
 import dev.lifeos.theme.LifeOsTheme
+import dev.lifeos.sync.SyncEngine
 import dev.lifeos.ui.LocalRepository
+import dev.lifeos.ui.LocalSync
+import dev.lifeos.ui.SyncStatusRow
 import dev.lifeos.ui.LocalSource
 import dev.lifeos.ui.LocalToday
 import dev.lifeos.ui.rememberToday
@@ -75,7 +78,7 @@ enum class Screen(val title: String, val short: String, val icon: ImageVector) {
 private val WIDE = 840.dp
 
 @Composable
-fun App(repository: Repository, source: Source, initialScreen: Screen = Screen.TODAY) {
+fun App(repository: Repository, source: Source, initialScreen: Screen = Screen.TODAY, sync: SyncEngine? = null) {
     LaunchedEffect(repository) { repository.seedIfNeeded() }
     val today by rememberToday()
 
@@ -83,6 +86,7 @@ fun App(repository: Repository, source: Source, initialScreen: Screen = Screen.T
         LocalRepository provides repository,
         LocalSource provides source,
         LocalToday provides today,
+        LocalSync provides sync,
     ) {
         LifeOsTheme {
             Surface(color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxSize()) {
@@ -181,6 +185,8 @@ private fun Sidebar(current: Screen, inboxCount: Int, onSelect: (Screen) -> Unit
                 )
                 Spacer(Modifier.height(2.dp))
             }
+            Spacer(Modifier.weight(1f))
+            SyncStatusRow()
         }
     }
 }

@@ -15,7 +15,10 @@ import dev.lifeos.db.Project
 import dev.lifeos.db.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import dev.lifeos.data.Dates.plusDays
@@ -35,7 +38,12 @@ class Repository(
     private val io = Dispatchers.IO
     private fun now() = clock.now().toEpochMilliseconds()
     private fun newId() = Uuid.random().toString()
-    private suspend fun <T> write(block: () -> T): T = withContext(io) { block() }
+    private val _localChanges = MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+    /** Emite tras cada escritura local (la sincronización lo usa para subir cambios). */
+    val localChanges: SharedFlow<Unit> = _localChanges
+
+    private suspend fun <T> write(block: () -> T): T = withContext(io) { block() }.also { _localChanges.tryEmit(Unit) }
 
     // ---------- Lecturas ----------
     val projects: Flow<List<Project>> = db.projectQueries.selectAll().asFlow().mapToList(io)

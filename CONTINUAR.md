@@ -5,7 +5,7 @@ _Última sesión: 19/11/2026_
 ## Dónde estamos
 - **Fase 1 (descubrimiento):** terminada. Ver `PROPUESTA.md` (está desactualizada en algunos puntos: manda `DECISIONES.md`).
 - **Fase 2 (diseño):** **aprobada.** Prototipo navegable: https://claude.ai/artifact/YPhWZsZa7GHJU3ashSwJ9x. Copia local de sus archivos en `prototipo/project/`.
-- **Fase 3 (desarrollo):** arquitectura aprobada (`ARQUITECTURA.md`). **Entrega 1 (Base) hecha el 18/11 y probada por el usuario el 19/11: funciona en el PC y en el móvil.** **Entrega 2 (Calendario) hecha el 19/11**, pendiente de que el usuario la pruebe.
+- **Fase 3 (desarrollo):** arquitectura aprobada (`ARQUITECTURA.md`). **Entrega 1 (Base) hecha el 18/11 y probada por el usuario el 19/11: funciona en el PC y en el móvil.** **Entregas 2 (Calendario) y 3 (Sincronización con Supabase) hechas y probadas el 19/11.**
 - **Git: todo en local.** Nunca añadir remoto ni subir a GitHub (lo pidió el usuario).
 
 ## Documentos (léelos en este orden)
@@ -51,12 +51,17 @@ _Última sesión: 19/11/2026_
 - `ui/screens/CalendarScreen.kt` y `ui/EventDialog.kt`. Tarjeta Agenda en Hoy.
 - En Hoy, la cuadrícula queda como en el prototipo: Agenda + Se acerca, y debajo Plan + Hábitos.
 
+## Qué incluye la Entrega 3 (Sincronización)
+- `sync/SupabaseApi.kt` (Auth + PostgREST con Ktor), `sync/SyncEngine.kt` (subir, bajar, conflictos y primera vez), `ui/SyncUi.kt` (estado en el menú lateral del PC y nube en Hoy en el móvil).
+- Pruebas en `SyncTest.kt` con un servidor falso que aplica las mismas reglas que el SQL.
+- Copias antes de reemplazar datos: en el PC, `~/.local/share/lifeos/lifeos.db.copia-*`; en Android, `files/copias/`.
+
 ## Entorno ya preparado (17/11)
 - `git init` hecho en esta carpeta (rama `main`, `.gitignore` creado). Aún sin commits.
 - Android SDK en `~/Android/Sdk`: cmdline-tools, platform-tools, platforms;android-36 y build-tools;36.0.0, con licencias aceptadas.
 - JDK 21 (Temurin 21.0.13) en `~/.jdks/jdk-21.0.13+9`. El JDK del sistema es el 27, demasiado nuevo para Gradle y Kotlin: hay que usar el 21 (`JAVA_HOME=~/.jdks/jdk-21.0.13+9`).
 - Hecho el 18/11: wrapper de Gradle 9.9.1, `local.properties` y la plataforma `android-37.0` (Compose 1.12 obliga a compileSdk 37).
-- **Pendiente:** crear la cuenta de Supabase (la crea el usuario; hace falta para la Entrega 2).
+- Supabase: proyecto «LifeOs» (https://cvxdryjkglastqukzbhg.supabase.co). URL y clave publishable en `local.properties` (`supabase.url`, `supabase.key`); al compilar se genera `SupabaseConfig`. Tablas: `supabase/migrations/0001_sync.sql` (se pega en el SQL Editor). Si se añade una tabla o columna local, hay que añadirla también en `sync/SyncTables.kt` y en un SQL nuevo (la prueba `SyncTest.specMatchesLocalSchema` lo vigila).
 - Versiones estables encontradas el 17/11/2026, para revisar al retomar:
 
 | Componente | Versión |
@@ -75,7 +80,7 @@ _Última sesión: 19/11/2026_
   Ojo: AGP 9 exige el plugin `com.android.kotlin.multiplatform.library` para el módulo compartido y trae Kotlin integrado (no aplicar `kotlin-android`).
 
 ## Siguiente paso
-1. Que el usuario pruebe el Calendario (Entrega 2) en el PC y el móvil.
-2. Entrega 3: sincronización con Supabase. Hace falta la cuenta.
+1. Propuesta pendiente de respuesta: sincronizar al volver a la app (onResume en Android, foco de ventana en el PC).
+2. Entrega 4: Enfoque y bloqueo (ver ARQUITECTURA.md §6).
 
 **Pedir confirmación al usuario antes de empezar cada entrega.**

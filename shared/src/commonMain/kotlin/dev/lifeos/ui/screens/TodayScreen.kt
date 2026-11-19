@@ -71,6 +71,7 @@ import dev.lifeos.ui.EventDialog
 import dev.lifeos.ui.LocalRepository
 import dev.lifeos.ui.LocalToday
 import dev.lifeos.ui.MenuAction
+import dev.lifeos.ui.SyncIconButton
 import dev.lifeos.ui.TaskDialog
 import dev.lifeos.ui.TaskPickerDialog
 import dev.lifeos.ui.TaskRow
@@ -135,6 +136,7 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
                     Icon(Icons.Outlined.Add, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Nueva tarea")
                 }
             } else {
+                SyncIconButton()
                 IconButton(onClick = { dialog = TodayDialog.Capture }) { Icon(Icons.Outlined.Edit, "Apuntar en la bandeja") }
                 FilledTonalIconButton(onClick = { dialog = TodayDialog.NewTask }) { Icon(Icons.Outlined.Add, "Nueva tarea") }
             }

@@ -11,7 +11,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        val repository = (application as LifeOsApp).repository
-        setContent { App(repository, Source.ANDROID) }
+        val app = application as LifeOsApp
+        setContent { App(app.repository, Source.ANDROID, sync = app.sync) }
     }
 }
