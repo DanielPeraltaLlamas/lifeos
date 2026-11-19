@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dev.lifeos.App
+import dev.lifeos.android.blocker.BlockerCard
 import dev.lifeos.data.Source
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
             requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
         }
         val app = application as LifeOsApp
-        setContent { App(app.repository, Source.ANDROID, sync = app.sync) }
+        setContent { App(app.repository, Source.ANDROID, sync = app.sync, todayExtras = { BlockerCard() }) }
     }
 
     override fun onResume() {

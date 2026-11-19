@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blocker_label">Life OS · bloqueo</string>
+    <string name="blocker_description">Life OS solo mira qué app tienes delante para bloquear TikTok e Instagram cuando pasas del límite diario, y TikTok, Instagram y Discord durante los bloques de enfoque. No lee el contenido de la pantalla ni lo que escribes.</string>
+</resources>

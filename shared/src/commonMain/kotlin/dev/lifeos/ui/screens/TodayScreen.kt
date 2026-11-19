@@ -93,7 +93,7 @@ fun estimateText(t: Task): String? = t.estimate_blocks?.toInt()?.takeIf { it > 0
 }
 
 @Composable
-fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> Unit) {
+fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> Unit, extras: (@Composable () -> Unit)? = null) {
     val repo = LocalRepository.current
     val today = LocalToday.current
     val act = rememberActions()
@@ -154,6 +154,10 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> U
             onDone = { done -> first?.let { t -> act { setTaskDone(t.id, done) } } },
         )
         Spacer(Modifier.height(14.dp))
+        if (extras != null) {
+            extras()
+            Spacer(Modifier.height(14.dp))
+        }
 
         val upcoming: @Composable (Modifier) -> Unit = { m ->
             UpcomingCard(today, deadlines, milestones, projectById, tasks, m, onAdd = { dialog = TodayDialog.NewDeadline })

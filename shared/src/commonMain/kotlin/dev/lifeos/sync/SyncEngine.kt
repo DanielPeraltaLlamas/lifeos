@@ -74,12 +74,14 @@ class SyncEngine(
     private fun now() = clock.now().toEpochMilliseconds()
 
     /** Arranca: recupera la sesión y sincroniza al abrir, tras cada cambio y cada 2 minutos. */
-    fun start(scope: CoroutineScope) {
+    fun start(scope: CoroutineScope, focusPollMs: Long? = null) {
         if (remote == null) return
         scope.launch {
             restoreSession()
             launch { repo.localChanges.debounce(2_000).collect { kick.trySend(Unit) } }
             launch { while (true) { kick.trySend(Unit); delay(120_000) } }
+            // En el móvil: mirar a menudo solo los bloques de enfoque, para bloquear apps a tiempo.
+            if (focusPollMs != null) launch { while (true) { delay(focusPollMs); pullFocus() } }
             for (k in kick) syncOnce()
         }
     }
@@ -193,6 +195,24 @@ class SyncEngine(
         }
     }
 
+    /** Baja solo los cambios de los bloques de enfoque (una petición). */
+    private suspend fun pullFocus() {
+        val r = remote ?: return
+        if (session == null || !mutex.tryLock()) return
+        try {
+            if (withContext(io) { getSetting(KEY_INITIALIZED) } == null) return
+            val t = token()
+            val table = tables.first { it.name == "focus_session" }
+            pullTables(r, t, listOf(table))
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Throwable) {
+            // Se reintentará en la siguiente vuelta o en la sincronización completa.
+        } finally {
+            mutex.unlock()
+        }
+    }
+
     private suspend fun firstSync(r: Remote, token: String) {
         val cloudHasData = tables.any { r.hasRows(token, it.name) }
         withContext(io) {
@@ -226,9 +246,11 @@ class SyncEngine(
         }
     }
 
-    private suspend fun pull(r: Remote, token: String) {
+    private suspend fun pull(r: Remote, token: String) = pullTables(r, token, tables)
+
+    private suspend fun pullTables(r: Remote, token: String, which: List<SyncTable>) {
         val touched = mutableSetOf<String>()
-        for (t in tables) {
+        for (t in which) {
             val saved = withContext(io) { getSetting(pullKey(t))?.toLongOrNull() ?: -1L }
             // Pequeño margen por si dos escrituras del servidor se cruzaron; aplicar dos veces no hace daño.
             var since = if (saved < 0) -1L else saved - MARGIN

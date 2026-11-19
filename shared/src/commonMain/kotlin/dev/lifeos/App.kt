@@ -79,7 +79,14 @@ enum class Screen(val title: String, val short: String, val icon: ImageVector) {
 private val WIDE = 840.dp
 
 @Composable
-fun App(repository: Repository, source: Source, initialScreen: Screen = Screen.TODAY, sync: SyncEngine? = null) {
+fun App(
+    repository: Repository,
+    source: Source,
+    initialScreen: Screen = Screen.TODAY,
+    sync: SyncEngine? = null,
+    /** Tarjetas propias de la plataforma bajo «Lo primero» (en Android, la del bloqueo). */
+    todayExtras: (@Composable () -> Unit)? = null,
+) {
     LaunchedEffect(repository) { repository.seedIfNeeded() }
     val today by rememberToday()
 
@@ -91,14 +98,14 @@ fun App(repository: Repository, source: Source, initialScreen: Screen = Screen.T
     ) {
         LifeOsTheme {
             Surface(color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxSize()) {
-                FocusHost { Shell(initialScreen) }
+                FocusHost { Shell(initialScreen, todayExtras) }
             }
         }
     }
 }
 
 @Composable
-private fun Shell(initialScreen: Screen) {
+private fun Shell(initialScreen: Screen, todayExtras: (@Composable () -> Unit)?) {
     var screen by rememberSaveable { mutableStateOf(initialScreen) }
     var tasksSelection by rememberSaveable { mutableStateOf<String?>(null) }
     val inboxCount by LocalRepository.current.inbox.collectAsState(emptyList())
@@ -116,7 +123,7 @@ private fun Shell(initialScreen: Screen) {
                 ) {
                     Box(Modifier.widthIn(max = 1200.dp)) {
                         when (screen) {
-                            Screen.TODAY -> TodayScreen(wide, onOpenHabits = { screen = Screen.HABITS }, onOpenCalendar = { screen = Screen.CALENDAR })
+                            Screen.TODAY -> TodayScreen(wide, onOpenHabits = { screen = Screen.HABITS }, onOpenCalendar = { screen = Screen.CALENDAR }, extras = todayExtras)
                             Screen.CALENDAR -> CalendarScreen(wide)
                             Screen.TASKS -> TasksScreen(wide, tasksSelection) { tasksSelection = it }
                             Screen.HABITS -> HabitsScreen()

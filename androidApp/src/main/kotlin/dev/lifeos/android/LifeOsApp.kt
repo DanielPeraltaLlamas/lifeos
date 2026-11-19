@@ -22,7 +22,7 @@ class LifeOsApp : Application() {
     override fun onCreate() {
         super.onCreate()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-        sync.start(scope)
+        sync.start(scope, focusPollMs = 60_000)
         FocusWatcher(
             repository,
             onChange = { focusNotifier.render(it) },
