@@ -1,6 +1,6 @@
 # Cómo retomar el proyecto
 
-_Última sesión: 19/11/2026 (Entregas 2, 3 y 4 hechas)_
+_Última sesión: 19/11/2026 (Entregas 2, 3, 4 y 5 hechas)_
 
 ## Dónde estamos
 - **Fase 1 (descubrimiento):** terminada. Ver `PROPUESTA.md` (está desactualizada en algunos puntos: manda `DECISIONES.md`).
@@ -80,7 +80,7 @@ _Última sesión: 19/11/2026 (Entregas 2, 3 y 4 hechas)_
   Ojo: AGP 9 exige el plugin `com.android.kotlin.multiplatform.library` para el módulo compartido y trae Kotlin integrado (no aplicar `kotlin-android`).
 
 ## Siguiente paso
-1. Entrega 5: widgets de Android y notificación fija (ARQUITECTURA.md §6). Pedir confirmación antes de empezar.
+1. Entrega 6 (ARQUITECTURA.md §6): Notas, Cierre del día, Revisión semanal, Evolución, asistente por reglas y Ajustes. Pedir confirmación y proponer orden antes de empezar.
 - Hechas el 19/11: sincronizar al volver a la app, 4a (modo enfoque), 4b (bloqueo en Android) 4c (agente de Linux, instalado con `scripts/install-agent.sh`; tras cambiar el código del agente hay que volver a ejecutarlo) y 4d (extensión firmada, `scripts/sign-extension.sh`, instalada en Zen y Firefox).
 - Móvil por adb inalámbrico: `adb pair IP:PUERTO CÓDIGO` y luego `adb connect` al puerto de `adb mdns services`. Pedir el código al usuario cada vez.
 

@@ -100,6 +100,7 @@
 - **Arreglo (19/11):** `PRAGMA data_version` no servía para notar los cambios del otro proceso (app ↔ agente); ahora se vigila la fecha y el tamaño del archivo de la base. Prueba: `ExternalChangesTest`.
 - **Entrega 4 (Enfoque y bloqueo): COMPLETA (19/11).**
 - **Notificación fija del plan: ELIMINADA (19/11),** por decisión del usuario. La Entrega 5 queda solo con los widgets de Android (tareas de hoy, hábitos y captura rápida).
+- **Entrega 5, Widgets (19/11): COMPLETA y probada.** Tres widgets Glance con Material You: «Hoy» (lo primero con Empezar · 50 min, plan con casillas), «Hábitos» (botón + por hábito) y «Apuntar» (+ Nota a la Bandeja, + Tarea con «Para hoy»). Lección: en Glance los datos se escuchan dentro de `provideContent` (la sesión sigue viva y `updateAll` no vuelve a llamar a `provideGlance`).
 
 ## Ideas aparcadas / a validar
 _(ninguna todavía)_
