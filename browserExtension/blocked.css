@@ -1,0 +1,20 @@
+:root {
+  --bg: #fdf8fb; --fg: #1d1b1e; --muted: #625b63; --accent: #7a4f74;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151215; --fg: #ebe0e7; --muted: #cfc3cd; --accent: #e8b7dd; }
+}
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--bg); color: var(--fg);
+  font: 16px/1.5 "Roboto Flex", Roboto, system-ui, sans-serif;
+  display: grid; place-items: center; padding: 16px; box-sizing: border-box;
+}
+main { max-width: 520px; text-align: center; }
+.label { color: var(--accent); font-weight: 600; letter-spacing: .02em; margin: 0 0 8px; }
+h1 { font-size: 28px; font-weight: 500; margin: 0 0 12px; }
+p { color: var(--muted); margin: 0 0 8px; }
+.clock { font-size: 72px; font-weight: 300; color: var(--fg); font-variant-numeric: tabular-nums; margin: 20px 0; }
+.site { font-size: 13px; word-break: break-all; }
+a { display: inline-block; margin-top: 20px; color: var(--accent); font-weight: 600; }
