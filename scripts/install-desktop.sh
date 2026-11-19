@@ -12,6 +12,7 @@ DATA="${XDG_DATA_HOME:-$HOME/.local/share}"
 DEST="$DATA/lifeos/app"
 DESKTOP="$DATA/applications/lifeos.desktop"
 ICON="$DATA/icons/hicolor/scalable/apps/lifeos.svg"
+ICON_PNG="$DATA/icons/hicolor/256x256/apps/lifeos.png"
 HYPR="$HOME/.config/caelestia/hypr-user.lua"
 BEGIN="-- >>> Life OS (scripts/install-desktop.sh) >>>"
 END="-- <<< Life OS <<<"
@@ -22,7 +23,7 @@ remove_autostart() {
 
 if [ "${1:-}" = "--remove" ]; then
     remove_autostart
-    rm -rf "$DEST" "$DESKTOP" "$ICON"
+    rm -rf "$DEST" "$DESKTOP" "$ICON" "$ICON_PNG"
     update-desktop-database "$DATA/applications" 2>/dev/null || true
     echo "Life OS quitado del lanzador y del autostart."
     exit 0
@@ -36,8 +37,9 @@ mkdir -p "$(dirname "$DEST")"
 rm -rf "$DEST"
 cp -r "$ROOT/desktopApp/build/compose/binaries/main/app/lifeos" "$DEST"
 
-mkdir -p "$(dirname "$ICON")" "$(dirname "$DESKTOP")"
+mkdir -p "$(dirname "$ICON")" "$(dirname "$ICON_PNG")" "$(dirname "$DESKTOP")"
 cp "$ROOT/desktopApp/icons/lifeos.svg" "$ICON"
+cp "$ROOT/desktopApp/icons/lifeos.png" "$ICON_PNG"
 cat > "$DESKTOP" <<DESK
 [Desktop Entry]
 Type=Application
@@ -45,7 +47,7 @@ Name=Life OS
 GenericName=Planificador personal
 Comment=Hoy, calendario, tareas, hábitos y modo enfoque
 Exec=$DEST/bin/lifeos
-Icon=lifeos
+Icon=$ICON_PNG
 Terminal=false
 Categories=Office;ProjectManagement;Utility;
 Keywords=tareas;hábitos;calendario;enfoque;TFG;
