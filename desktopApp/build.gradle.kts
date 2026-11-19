@@ -19,10 +19,16 @@ dependencies {
 compose.desktop {
     application {
         mainClass = "dev.lifeos.desktop.MainKt"
+        // Algunos componentes (SQLite) usan módulos de Java que no entran por defecto.
+        jvmArgs("-Xmx384m")
         nativeDistributions {
             targetFormats(TargetFormat.AppImage)
             packageName = "lifeos"
-            packageVersion = "0.1.0"
+            packageVersion = "1.0.0"
+            modules("java.instrument", "java.management", "java.sql", "jdk.unsupported")
+            linux {
+                iconFile.set(project.file("icons/lifeos.png"))
+            }
         }
     }
 }

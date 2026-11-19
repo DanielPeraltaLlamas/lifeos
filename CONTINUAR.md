@@ -24,7 +24,7 @@ _Última sesión: 19/11/2026 (Entregas 1 a 7 hechas)_
 - **Stack:** Kotlin Multiplatform + Compose Multiplatform (Android + Linux), SQLite/SQLDelight, sincronización con Supabase (aceptado; alternativa futura: servidor en el PC + Tailscale).
 
 ## Cómo se ejecuta
-- Escritorio: `./gradlew :desktopApp:run`. Datos en `~/.local/share/lifeos/lifeos.db`.
+- Escritorio: instalada en el lanzador y en el autostart de Hyprland con `./scripts/install-desktop.sh` (app empaquetada en `~/.local/share/lifeos/app`; bloque marcado en `~/.config/caelestia/hypr-user.lua`; `--remove` lo quita). Tras cambiar el código, volver a ejecutar el script. Para desarrollo: `./gradlew :desktopApp:run`. Datos en `~/.local/share/lifeos/lifeos.db`.
 - Android: `./gradlew :androidApp:assembleDebug` → `androidApp/build/outputs/apk/debug/androidApp-debug.apk`. adb no ve el móvil por USB, así que se manda con KDE Connect: `kdeconnect-cli -n "POCO X7 Pro" --share <apk>` y se instala a mano.
 - Pruebas: `./gradlew :shared:desktopTest`.
 - Capturas sin ventana (escritorio y móvil): `SCREENSHOTS_DIR=/ruta ./gradlew :shared:desktopTest --tests '*Screenshots*'`.
