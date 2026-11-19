@@ -1,3 +1,5 @@
+@file:OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+
 package dev.lifeos.android.widget
 
 import android.content.Context
@@ -45,7 +47,10 @@ import dev.lifeos.data.HabitMath
 import dev.lifeos.data.HabitPeriod
 import dev.lifeos.data.isDone
 import dev.lifeos.data.periodEnum
+import androidx.compose.runtime.collectAsState
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 
 // ------------------------------------------------------------------ piezas comunes
 
@@ -98,15 +103,22 @@ class TodayWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val repo = app(context).repository
-        val today = Dates.today()
-        val tasks = repo.tasks.first()
-        val plan = repo.dailyPlan(today).first()
-        val firstId = plan?.first_task_id
-        val rows = tasks.filter { it.planned_date == today.toString() || it.id == firstId }
-            .map { TodayRow(it.id, it.title, it.isDone, it.id == firstId) }
-            .sortedWith(compareBy({ !it.first }, { it.done }))
-        val focus = repo.activeFocus.first()
-        provideContent { GlanceTheme { TodayContent(rows, focus?.title) } }
+        // Los datos se escuchan dentro de la sesión: Glance la mantiene viva y,
+        // si se leyeran una sola vez, el widget no cambiaría al tocarlo.
+        val flow = Dates.todayFlow().flatMapLatest { today ->
+            combine(repo.tasks, repo.dailyPlan(today), repo.activeFocus) { tasks, plan, focus ->
+                val firstId = plan?.first_task_id
+                val rows = tasks.filter { it.planned_date == today.toString() || it.id == firstId }
+                    .map { TodayRow(it.id, it.title, it.isDone, it.id == firstId) }
+                    .sortedWith(compareBy({ !it.first }, { it.done }))
+                rows to focus?.title
+            }
+        }
+        val initial = flow.first()
+        provideContent {
+            val (rows, focusTitle) = flow.collectAsState(initial).value
+            GlanceTheme { TodayContent(rows, focusTitle) }
+        }
     }
 }
 
@@ -172,17 +184,22 @@ class HabitsWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val repo = app(context).repository
-        val today = Dates.today()
-        val habits = repo.habits.first()
-        val counts = repo.habitCounts(today.plusDays(-HABIT_HISTORY_DAYS), today).first()
-        val rows = habits.map { h ->
-            val c = counts[h.id] ?: emptyMap()
-            val cur = HabitMath.current(h, c, today)
-            val target = h.target.toInt()
-            val unit = if (h.periodEnum == HabitPeriod.WEEK) " sem." else ""
-            HabitRow(h.id, h.name, "$cur/$target$unit", cur >= target)
+        val flow = Dates.todayFlow().flatMapLatest { today ->
+            combine(repo.habits, repo.habitCounts(today.plusDays(-HABIT_HISTORY_DAYS), today)) { habits, counts ->
+                habits.map { h ->
+                    val c = counts[h.id] ?: emptyMap()
+                    val cur = HabitMath.current(h, c, today)
+                    val target = h.target.toInt()
+                    val unit = if (h.periodEnum == HabitPeriod.WEEK) " sem." else ""
+                    HabitRow(h.id, h.name, "$cur/$target$unit", cur >= target)
+                }
+            }
         }
-        provideContent { GlanceTheme { HabitsContent(rows) } }
+        val initial = flow.first()
+        provideContent {
+            val rows = flow.collectAsState(initial).value
+            GlanceTheme { HabitsContent(rows) }
+        }
     }
 }
 
