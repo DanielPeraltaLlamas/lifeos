@@ -31,6 +31,10 @@ class BlockActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        // Atrás (botón o gesto) también lleva al inicio, nunca de vuelta a la app bloqueada.
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() = goHome()
+        })
         val app = intent.getStringExtra(EXTRA_APP) ?: "Esta app"
         val focusEnd = intent.getLongExtra(EXTRA_FOCUS_END, 0L)
         val text = if (focusEnd > 0) {
@@ -64,8 +68,6 @@ class BlockActivity : ComponentActivity() {
         finish()
     }
 
-    @Deprecated("Atrás también lleva al inicio")
-    override fun onBackPressed() { goHome() }
 
     companion object {
         const val EXTRA_APP = "app"

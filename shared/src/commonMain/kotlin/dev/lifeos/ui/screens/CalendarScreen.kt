@@ -518,8 +518,9 @@ private fun EventBlock(occ: Occurrence, projects: Map<String, Project>, compact:
                     overflow = TextOverflow.Ellipsis,
                     color = tone.content.copy(alpha = 0.8f),
                 )
-                if (narrow && long && e.location != null) {
-                    Text(e.location!!, style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis, color = tone.content.copy(alpha = 0.8f))
+                val location = e.location
+                if (narrow && long && location != null) {
+                    Text(location, style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis, color = tone.content.copy(alpha = 0.8f))
                 }
             }
         }

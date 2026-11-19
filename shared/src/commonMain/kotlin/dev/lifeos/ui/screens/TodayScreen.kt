@@ -377,12 +377,13 @@ private fun FirstCard(
                 estimateText(task)?.let { Chip(it, color = cs.surfaceContainerHighest.copy(alpha = 0.6f)) }
             }
             Spacer(Modifier.height(18.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                if (done) {
-                    Icon(Icons.Outlined.Check, null, tint = cs.onPrimaryContainer)
-                    Text("Hecho. Lo siguiente está en tu plan.", color = cs.onPrimaryContainer, modifier = Modifier.weight(1f, fill = false))
-                    TextButton(onClick = { onDone(false) }) { Text("Deshacer") }
-                } else {
+            if (done) Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Outlined.Check, null, tint = cs.onPrimaryContainer)
+                Text("Hecho. Lo siguiente está en tu plan.", color = cs.onPrimaryContainer, modifier = Modifier.weight(1f, fill = false))
+                TextButton(onClick = { onDone(false) }) { Text("Deshacer") }
+            } else {
+                // En el móvil no caben los tres en una fila: pasan a la siguiente.
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(onClick = onStart) { Icon(Icons.Outlined.PlayArrow, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Empezar · ${dev.lifeos.ui.LocalPrefs.current.blockMin} min") }
                     OutlinedButton(onClick = { onDone(true) }) { Icon(Icons.Outlined.Check, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Hecha") }
                     OutlinedButton(onClick = onChoose) { Text("Cambiar") }

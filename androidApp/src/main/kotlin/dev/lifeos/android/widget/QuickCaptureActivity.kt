@@ -35,6 +35,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.lifecycleScope
 import dev.lifeos.android.LifeOsApp
 import dev.lifeos.data.Dates
@@ -100,7 +101,7 @@ class QuickCaptureActivity : ComponentActivity() {
                 }
             }
         }
-        window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.argb(0x66, 0, 0, 0)))
+        window.setBackgroundDrawable(android.graphics.Color.argb(0x66, 0, 0, 0).toDrawable())
     }
 
     companion object {

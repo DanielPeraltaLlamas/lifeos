@@ -1,7 +1,7 @@
 package dev.lifeos.android.blocker
 
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -72,7 +72,7 @@ fun BlockerCard() {
                 if (!usage) {
                     FilledTonalButton(onClick = {
                         context.startActivity(
-                            Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS, Uri.parse("package:${context.packageName}"))
+                            Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS, "package:${context.packageName}".toUri())
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         )
                     }) { Text("2 · Permitir acceso al uso") }

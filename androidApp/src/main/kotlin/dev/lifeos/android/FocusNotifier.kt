@@ -70,6 +70,7 @@ class FocusNotifier(private val context: Context) {
         scheduleEnd(endsAt!!, s.title)
     }
 
+    @android.annotation.SuppressLint("MissingPermission") // se comprueba canScheduleExactAlarms()
     private fun scheduleEnd(at: Long, title: String) {
         val pi = alarmIntent(title)
         if (Build.VERSION.SDK_INT < 31 || alarms.canScheduleExactAlarms()) {

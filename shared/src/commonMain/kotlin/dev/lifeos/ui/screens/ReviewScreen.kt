@@ -131,7 +131,7 @@ fun ReviewScreen(onClose: () -> Unit) {
 
         when (step) {
             0 -> RitualSection("1", "Cómo fue la semana") {
-                val weekPlanned = tasks.filter { it.planned_date != null && it.planned_date!! >= week.toString() && it.planned_date!! <= weekEnd.toString() }
+                val weekPlanned = tasks.filter { t -> t.planned_date?.let { it >= week.toString() && it <= weekEnd.toString() } == true }
                 val diff = thisFocus - lastFocus
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Stat(durationText(thisFocus), "Foco · " + (if (diff >= 0) "+" else "−") + durationText(kotlin.math.abs(diff)) + " vs. anterior")

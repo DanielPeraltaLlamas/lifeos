@@ -1,6 +1,6 @@
 # Cómo retomar el proyecto
 
-_Última sesión: 19/11/2026 (Entregas 2 a 6 hechas)_
+_Última sesión: 19/11/2026 (Entregas 1 a 7 hechas)_
 
 ## Dónde estamos
 - **Fase 1 (descubrimiento):** terminada. Ver `PROPUESTA.md` (está desactualizada en algunos puntos: manda `DECISIONES.md`).
@@ -80,8 +80,8 @@ _Última sesión: 19/11/2026 (Entregas 2 a 6 hechas)_
   Ojo: AGP 9 exige el plugin `com.android.kotlin.multiplatform.library` para el módulo compartido y trae Kotlin integrado (no aplicar `kotlin-android`).
 
 ## Siguiente paso
-1. Que el usuario pruebe la Entrega 6 (hecha el 19/11).
-2. Entrega 7: calidad (pruebas de flujos, botones sin función, pulido en móvil y PC).
+1. **Todas las entregas del plan están hechas (19/11).** Queda que el usuario use la app unos días y dé feedback.
+2. Pendientes sueltos: Autoinicio de Life OS en HyperOS (a mano); iCal de Blackboard (si existe); arrastrar tareas al calendario; bajar la memoria del agente (~165 MB).
 - Hechas el 19/11: sincronizar al volver a la app, 4a (modo enfoque), 4b (bloqueo en Android) 4c (agente de Linux, instalado con `scripts/install-agent.sh`; tras cambiar el código del agente hay que volver a ejecutarlo) y 4d (extensión firmada, `scripts/sign-extension.sh`, instalada en Zen y Firefox).
 - Móvil por adb inalámbrico: `adb pair IP:PUERTO CÓDIGO` y luego `adb connect` al puerto de `adb mdns services`. Pedir el código al usuario cada vez.
 

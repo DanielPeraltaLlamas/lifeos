@@ -48,6 +48,7 @@ object Usage {
         return BlockRules.foregroundMs(today, BlockRules.LIMITED.keys, from, now)
     }
 
+    @Suppress("DEPRECATION") // la alternativa nueva es solo para API 33+; minSdk es 29
     fun hasUsageAccess(context: Context): Boolean {
         val ops = context.getSystemService(AppOpsManager::class.java)
         return ops.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName) ==

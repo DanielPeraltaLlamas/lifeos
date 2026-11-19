@@ -110,4 +110,4 @@ Cada entrega se puede usar de verdad antes de pasar a la siguiente:
 4. **Enfoque y bloqueo:** temporizador, bloqueo en Android, agente de Linux y extensión del navegador. ✅
 5. **Widgets** (la notificación fija se eliminó el 19/11). ✅
 6. **El resto:** Notas, Cierre del día, Revisión semanal, Evolución, asistente por reglas y Ajustes. ✅ (pendiente de prueba del usuario)
-7. **Calidad:** pruebas de flujos, persistencia, sincronización, móvil y escritorio, y que no haya botones sin función.
+7. **Calidad:** pruebas de flujos, persistencia, sincronización, móvil y escritorio, y que no haya botones sin función. ✅
