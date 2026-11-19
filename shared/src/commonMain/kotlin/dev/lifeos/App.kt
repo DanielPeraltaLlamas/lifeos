@@ -21,6 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Inbox
 import androidx.compose.material.icons.outlined.Loop
 import androidx.compose.material.icons.outlined.TaskAlt
@@ -56,6 +57,7 @@ import dev.lifeos.ui.LocalRepository
 import dev.lifeos.ui.LocalSource
 import dev.lifeos.ui.LocalToday
 import dev.lifeos.ui.rememberToday
+import dev.lifeos.ui.screens.CalendarScreen
 import dev.lifeos.ui.screens.HabitsScreen
 import dev.lifeos.ui.screens.InboxScreen
 import dev.lifeos.ui.screens.TasksScreen
@@ -63,6 +65,7 @@ import dev.lifeos.ui.screens.TodayScreen
 
 enum class Screen(val title: String, val short: String, val icon: ImageVector) {
     TODAY("Hoy", "Hoy", Icons.Outlined.WbSunny),
+    CALENDAR("Calendario", "Calendario", Icons.Outlined.CalendarMonth),
     TASKS("Tareas y proyectos", "Tareas", Icons.Outlined.TaskAlt),
     HABITS("Hábitos", "Hábitos", Icons.Outlined.Loop),
     INBOX("Bandeja", "Bandeja", Icons.Outlined.Inbox),
@@ -108,7 +111,8 @@ private fun Shell(initialScreen: Screen) {
                 ) {
                     Box(Modifier.widthIn(max = 1200.dp)) {
                         when (screen) {
-                            Screen.TODAY -> TodayScreen(wide) { screen = Screen.HABITS }
+                            Screen.TODAY -> TodayScreen(wide, onOpenHabits = { screen = Screen.HABITS }, onOpenCalendar = { screen = Screen.CALENDAR })
+                            Screen.CALENDAR -> CalendarScreen(wide)
                             Screen.TASKS -> TasksScreen(wide, tasksSelection) { tasksSelection = it }
                             Screen.HABITS -> HabitsScreen()
                             Screen.INBOX -> InboxScreen()

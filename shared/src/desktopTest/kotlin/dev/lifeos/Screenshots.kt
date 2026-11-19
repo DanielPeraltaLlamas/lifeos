@@ -6,6 +6,7 @@ import androidx.compose.ui.use
 import dev.lifeos.data.Dates
 import dev.lifeos.data.Dates.plusDays
 import dev.lifeos.data.DeadlineKind
+import dev.lifeos.data.EventKind
 import dev.lifeos.data.ProjectKind
 import dev.lifeos.data.Repository
 import dev.lifeos.data.Source
@@ -44,6 +45,16 @@ class Screenshots {
         (1..3).forEach { d -> repeat(3) { r.logHabit(habits[0].id, today.plusDays(-d)) } }
         (1..4).forEach { d -> r.logHabit(habits[1].id, today.plusDays(-d)) }
         r.logHabit(habits[2].id, today.plusDays(-1))
+        val ws = Dates.weekStart(today)
+        val sd = r.addProject("Sistemas Distribuidos", ProjectKind.SUBJECT)
+        r.addEvent("Sistemas Distribuidos", EventKind.CLASS, ws, 9 * 60, 11 * 60, weekly = true, projectId = sd, location = "Aula 2.1")
+        r.addEvent("Seguridad", EventKind.CLASS, ws.plusDays(1), 9 * 60, 11 * 60, weekly = true, projectId = sec)
+        r.addEvent("Seguridad", EventKind.CLASS, ws.plusDays(3), 11 * 60 + 30, 13 * 60 + 30, weekly = true, projectId = sec)
+        r.addEvent("TFG · análisis", EventKind.STUDY, today, 16 * 60, 17 * 60 + 40, projectId = tfg)
+        r.addEvent("Repaso tema 5", EventKind.STUDY, today, 16 * 60 + 30, 17 * 60 + 30, projectId = sec)
+        r.addEvent("Gimnasio", EventKind.GYM, ws, 18 * 60, 19 * 60, weekly = true)
+        r.addEvent("Gimnasio", EventKind.GYM, ws.plusDays(5), 11 * 60, 12 * 60, weekly = true)
+        r.addDeadline("Examen Seguridad", DeadlineKind.EXAM, today.plusDays(4), sec)
         r.capture("Mirar si la API de AniList tiene límite de peticiones", Source.ANDROID)
         r.capture("Idea TFG: importar también desde Backloggd", Source.DESKTOP)
         r

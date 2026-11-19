@@ -76,5 +76,8 @@ object Dates {
 
     fun hourNow(clock: Clock = Clock.System): Int = clock.now().toLocalDateTime(zone).hour
 
+    /** Minutos desde medianoche, ahora. */
+    fun minuteNow(clock: Clock = Clock.System): Int = clock.now().toLocalDateTime(zone).let { it.hour * 60 + it.minute }
+
     fun LocalDate.plusDays(n: Int): LocalDate = plus(n, DateTimeUnit.DAY)
 }

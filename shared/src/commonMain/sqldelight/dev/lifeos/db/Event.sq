@@ -1,0 +1,48 @@
+-- Eventos con hora del calendario. kind: CLASS | STUDY | GYM | OTHER
+-- Horas en minutos desde medianoche. Si repeat_weekly = 1, el evento se repite
+-- cada semana el mismo día desde `date` hasta `until_date` (incluida; NULL = sin fin).
+-- skip_dates: fechas ISO separadas por comas en las que esa semana no hay evento.
+CREATE TABLE event (
+    id TEXT NOT NULL PRIMARY KEY,
+    project_id TEXT,
+    title TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    date TEXT NOT NULL,
+    start_min INTEGER NOT NULL,
+    end_min INTEGER NOT NULL,
+    repeat_weekly INTEGER NOT NULL DEFAULT 0,
+    until_date TEXT,
+    skip_dates TEXT NOT NULL DEFAULT '',
+    location TEXT,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    deleted_at INTEGER
+);
+
+CREATE INDEX event_date ON event(date);
+
+selectAll:
+SELECT * FROM event WHERE deleted_at IS NULL ORDER BY date, start_min;
+
+selectById:
+SELECT * FROM event WHERE id = ?;
+
+insert:
+INSERT INTO event(id, project_id, title, kind, date, start_min, end_min, repeat_weekly, until_date, location, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE event SET project_id = ?, title = ?, kind = ?, date = ?, start_min = ?, end_min = ?, repeat_weekly = ?, until_date = ?, location = ?, updated_at = ?
+WHERE id = ?;
+
+setSkipDates:
+UPDATE event SET skip_dates = ?, updated_at = ? WHERE id = ?;
+
+setUntil:
+UPDATE event SET until_date = ?, updated_at = ? WHERE id = ?;
+
+softDelete:
+UPDATE event SET deleted_at = :now, updated_at = :now WHERE id = :id;
+
+softDeleteByProject:
+UPDATE event SET deleted_at = :now, updated_at = :now WHERE project_id = :projectId AND deleted_at IS NULL;

@@ -1,11 +1,11 @@
 # Cómo retomar el proyecto
 
-_Última sesión: 18/11/2026_
+_Última sesión: 19/11/2026_
 
 ## Dónde estamos
 - **Fase 1 (descubrimiento):** terminada. Ver `PROPUESTA.md` (está desactualizada en algunos puntos: manda `DECISIONES.md`).
 - **Fase 2 (diseño):** **aprobada.** Prototipo navegable: https://claude.ai/artifact/YPhWZsZa7GHJU3ashSwJ9x. Copia local de sus archivos en `prototipo/project/`.
-- **Fase 3 (desarrollo):** arquitectura aprobada (`ARQUITECTURA.md`). **Entrega 1 (Base) hecha el 18/11**, pendiente de que el usuario la pruebe.
+- **Fase 3 (desarrollo):** arquitectura aprobada (`ARQUITECTURA.md`). **Entrega 1 (Base) hecha el 18/11 y probada por el usuario el 19/11: funciona en el PC y en el móvil.** **Entrega 2 (Calendario) hecha el 19/11**, pendiente de que el usuario la pruebe.
 - **Git: todo en local.** Nunca añadir remoto ni subir a GitHub (lo pidió el usuario).
 
 ## Documentos (léelos en este orden)
@@ -25,7 +25,7 @@ _Última sesión: 18/11/2026_
 
 ## Cómo se ejecuta
 - Escritorio: `./gradlew :desktopApp:run`. Datos en `~/.local/share/lifeos/lifeos.db`.
-- Android: `./gradlew :androidApp:assembleDebug` → `androidApp/build/outputs/apk/debug/androidApp-debug.apk` (`adb install -r …`).
+- Android: `./gradlew :androidApp:assembleDebug` → `androidApp/build/outputs/apk/debug/androidApp-debug.apk`. adb no ve el móvil por USB, así que se manda con KDE Connect: `kdeconnect-cli -n "POCO X7 Pro" --share <apk>` y se instala a mano.
 - Pruebas: `./gradlew :shared:desktopTest`.
 - Capturas sin ventana (escritorio y móvil): `SCREENSHOTS_DIR=/ruta ./gradlew :shared:desktopTest --tests '*Screenshots*'`.
 - `gradle.properties` fija `org.gradle.java.home` al JDK 21, así que funciona aunque el JDK del sistema sea el 27.
@@ -44,6 +44,12 @@ _Última sesión: 18/11/2026_
   - En Hoy aún no están las tarjetas Agenda y Asistente (Entrega 5).
   - El botón «Empezar · 50 min» de Lo primero llega con Enfoque (Entrega 3); por ahora se usan «Hecha» y «Cambiar».
   - Las notas creadas desde la Bandeja se guardan, pero la pantalla Notas es de la Entrega 5.
+
+## Qué incluye la Entrega 2 (Calendario)
+- Tabla `event` (migración `1.sqm`: la base de datos pasa a la versión 2; probada con una copia de la base real).
+- `data/Calendar.kt`: repetición semanal, reparto de eventos solapados y elementos de «todo el día». Pruebas en `CalendarTest.kt`.
+- `ui/screens/CalendarScreen.kt` y `ui/EventDialog.kt`. Tarjeta Agenda en Hoy.
+- En Hoy, la cuadrícula queda como en el prototipo: Agenda + Se acerca, y debajo Plan + Hábitos.
 
 ## Entorno ya preparado (17/11)
 - `git init` hecho en esta carpeta (rama `main`, `.gitignore` creado). Aún sin commits.
@@ -69,7 +75,7 @@ _Última sesión: 18/11/2026_
   Ojo: AGP 9 exige el plugin `com.android.kotlin.multiplatform.library` para el módulo compartido y trae Kotlin integrado (no aplicar `kotlin-android`).
 
 ## Siguiente paso
-1. Que el usuario pruebe la Entrega 1 en el escritorio y en el móvil, y dé su feedback.
-2. Entrega 2 de `ARQUITECTURA.md`: sincronización con Supabase. Hace falta la cuenta.
+1. Que el usuario pruebe el Calendario (Entrega 2) en el PC y el móvil.
+2. Entrega 3: sincronización con Supabase. Hace falta la cuenta.
 
 **Pedir confirmación al usuario antes de empezar cada entrega.**

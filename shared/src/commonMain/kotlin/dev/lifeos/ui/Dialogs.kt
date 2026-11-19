@@ -59,7 +59,7 @@ import kotlin.time.Instant
 // ---------------------------------------------------------------- utilidades
 
 @Composable
-private fun FormDialog(
+internal fun FormDialog(
     title: String,
     confirmLabel: String = "Guardar",
     canConfirm: Boolean,
@@ -285,22 +285,33 @@ fun MilestoneDialog(projectId: String, milestone: Milestone?, onDismiss: () -> U
 // ---------------------------------------------------------------- entrega/examen
 
 @Composable
-fun DeadlineDialog(projects: List<Project>, initialProjectId: String?, onDismiss: () -> Unit) {
+fun DeadlineDialog(
+    projects: List<Project>,
+    initialProjectId: String?,
+    deadline: dev.lifeos.db.Deadline? = null,
+    initialDate: LocalDate? = null,
+    onDismiss: () -> Unit,
+) {
     val act = rememberActions()
     val today = LocalToday.current
-    var title by remember { mutableStateOf("") }
-    var kind by remember { mutableStateOf(DeadlineKind.DELIVERY) }
-    var due by remember { mutableStateOf<LocalDate?>(today.plusDays(7)) }
-    var projectId by remember { mutableStateOf(initialProjectId) }
+    var title by remember { mutableStateOf(deadline?.title ?: "") }
+    var kind by remember { mutableStateOf(deadline?.kindEnum ?: DeadlineKind.DELIVERY) }
+    var due by remember { mutableStateOf<LocalDate?>(deadline?.due_date?.let(LocalDate::parse) ?: initialDate ?: today.plusDays(7)) }
+    var projectId by remember { mutableStateOf(deadline?.project_id ?: initialProjectId) }
+    var deleting by remember { mutableStateOf(false) }
 
     fun save() {
         val d = due ?: return
         if (title.isBlank()) return
-        act { addDeadline(title, kind, d, projectId) }
+        if (deadline == null) act { addDeadline(title, kind, d, projectId) }
+        else act { updateDeadline(deadline.id, title, kind, d, projectId) }
         onDismiss()
     }
 
-    FormDialog("Nueva entrega o examen", canConfirm = title.isNotBlank() && due != null, onConfirm = ::save, onDismiss = onDismiss) {
+    FormDialog(
+        if (deadline == null) "Nueva entrega o examen" else "Editar ${kind.label.lowercase()}",
+        canConfirm = title.isNotBlank() && due != null, onConfirm = ::save, onDismiss = onDismiss,
+    ) {
         TitleField(title, { title = it }, "Qué es (p. ej. Práctica 3)", onDone = ::save)
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             DeadlineKind.entries.forEach { k ->
@@ -313,6 +324,17 @@ fun DeadlineDialog(projects: List<Project>, initialProjectId: String?, onDismiss
             projectId,
         ) { projectId = it }
         DateField("Fecha", due, { due = it }, allowNone = false)
+        if (deadline != null) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(deadline.done_at != null, { done -> act { setDeadlineDone(deadline.id, done) }; onDismiss() })
+                Text("Ya está hecha")
+            }
+            TextButton(onClick = { deleting = true }) { Text("Eliminar", color = MaterialTheme.colorScheme.error) }
+        }
+    }
+    if (deleting && deadline != null) {
+        ConfirmDialog("Eliminar", "«${deadline.title}» se eliminará.", "Eliminar",
+            onConfirm = { act { deleteDeadline(deadline.id) }; onDismiss() }, onDismiss = { deleting = false })
     }
 }
 

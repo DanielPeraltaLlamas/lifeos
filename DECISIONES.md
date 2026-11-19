@@ -85,6 +85,10 @@
 - **Git solo en local (18/11):** el usuario no quiere subir el proyecto a su cuenta de GitHub. Nada de remotos ni de push.
 - **Entrega 1 (18/11):** las tarjetas Agenda y Asistente de Hoy y el botón «Empezar» de Lo primero se dejan para las entregas en las que existen el Calendario, el asistente y el modo Enfoque, para no tener botones sin función.
 - **Datos iniciales (18/11):** solo se precargan datos reales: el TFG, sus hitos H1–H5 y los tres hábitos. Las asignaturas del prototipo no se precargan; las crea el usuario.
+- **Prueba de la Entrega 1 (19/11):** funciona bien en el PC y en el móvil (Poco X7 Pro). Lo único que echa en falta es el Calendario. El APK se instala por KDE Connect, porque el móvil no aparece por USB (probablemente el cable solo carga).
+- **Orden de entregas (19/11):** el Calendario se adelanta a la Entrega 2. La sincronización con Supabase pasa a la 3 (y se corre el resto).
+- **Entrega 2, Calendario (19/11):** vistas de día, semana y mes (semana por defecto en el ordenador; día en el móvil). Eventos con hora de cuatro tipos: clase, estudio, gimnasio y otro, opcionalmente ligados a una asignatura o proyecto, con lugar y repetición semanal (con fecha de fin opcional). Un evento semanal se puede borrar solo un día, desde un día en adelante o entero; las ediciones se aplican a toda la serie. En la fila «todo el día» salen entregas, exámenes, hitos y tareas con fecha límite (y, en la vista de día, las tareas del plan). Al pulsar cualquiera se edita. Panel lateral: mes en miniatura y próximas fechas. En Hoy aparece la tarjeta Agenda (eventos de hoy, con «Ahora») y el subtítulo dice cuántas clases hay. Colores desde el tema dinámico; estudio con borde discontinuo (planificado). Las entregas ya se pueden editar.
+- **Pendiente del calendario:** importar el iCal de Blackboard (sin verificar que exista), arrastrar tareas a huecos libres y los bloques de enfoque reales (Entrega de Enfoque).
 
 ## Ideas aparcadas / a validar
 _(ninguna todavía)_

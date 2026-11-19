@@ -1,5 +1,6 @@
 package dev.lifeos.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Loop
 import androidx.compose.material.icons.outlined.Remove
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
@@ -44,7 +46,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dev.lifeos.data.CalendarMath
 import dev.lifeos.data.Dates
+import dev.lifeos.data.EventKind
+import dev.lifeos.data.Occurrence
 import dev.lifeos.data.Dates.plusDays
 import dev.lifeos.data.HABIT_HISTORY_DAYS
 import dev.lifeos.data.HabitMath
@@ -62,6 +67,7 @@ import dev.lifeos.ui.CaptureDialog
 import dev.lifeos.ui.Chip
 import dev.lifeos.ui.DeadlineDialog
 import dev.lifeos.ui.EmptyText
+import dev.lifeos.ui.EventDialog
 import dev.lifeos.ui.LocalRepository
 import dev.lifeos.ui.LocalToday
 import dev.lifeos.ui.MenuAction
@@ -85,7 +91,7 @@ fun estimateText(t: Task): String? = t.estimate_blocks?.toInt()?.takeIf { it > 0
 }
 
 @Composable
-fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit) {
+fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit, onOpenCalendar: () -> Unit) {
     val repo = LocalRepository.current
     val today = LocalToday.current
     val act = rememberActions()
@@ -95,12 +101,20 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit) {
     val milestones by repo.milestones.collectAsState(emptyList())
     val deadlines by repo.deadlines.collectAsState(emptyList())
     val habits by repo.habits.collectAsState(emptyList())
+    val events by repo.events.collectAsState(emptyList())
     val plan by remember(today) { repo.dailyPlan(today) }.collectAsState(null)
     val counts by remember(today) { repo.habitCounts(today.plusDays(-HABIT_HISTORY_DAYS), today) }.collectAsState(emptyMap())
 
     val projectById = projects.associateBy { it.id }
     val first = plan?.first_task_id?.let { id -> tasks.firstOrNull { it.id == id } }
     val planned = tasks.filter { it.planned_date == today.toString() }
+    val todayOccs = CalendarMath.occurrences(events, today, today)
+    val classes = todayOccs.filter { it.event.kindEnum == EventKind.CLASS }
+    val dayNote = when {
+        classes.isEmpty() -> "sin clase"
+        classes.size == 1 -> "1 clase a las ${CalendarMath.hm(classes[0].start)}"
+        else -> "${classes.size} clases desde las ${CalendarMath.hm(classes[0].start)}"
+    }
 
     var dialog by remember { mutableStateOf<TodayDialog?>(null) }
 
@@ -112,7 +126,7 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(bottom = 18.dp)) {
             Column(Modifier.weight(1f)) {
                 Text(greeting, style = MaterialTheme.typography.headlineMedium)
-                Text(Dates.long(today), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(Dates.long(today) + " · " + dayNote, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             if (wide) {
                 OutlinedButton(onClick = { dialog = TodayDialog.Capture }) { Text("Apuntar") }
@@ -139,6 +153,9 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit) {
         val upcoming: @Composable (Modifier) -> Unit = { m ->
             UpcomingCard(today, deadlines, milestones, projectById, tasks, m, onAdd = { dialog = TodayDialog.NewDeadline })
         }
+        val agenda: @Composable (Modifier) -> Unit = { m ->
+            AgendaCard(todayOccs, projectById, m, onOpen = onOpenCalendar, onAdd = { dialog = TodayDialog.NewEvent })
+        }
         val planCard: @Composable (Modifier) -> Unit = { m ->
             PlanCard(
                 planned, projectById, milestones, m,
@@ -155,21 +172,21 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit) {
 
         BoxWithConstraints(Modifier.fillMaxWidth()) {
             val gap = 14.dp
-            when {
-                maxWidth >= 880.dp -> Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(gap)) {
-                    planCard(Modifier.weight(1.2f).fillMaxHeight())
-                    upcoming(Modifier.weight(1f).fillMaxHeight())
-                    habitsCard(Modifier.weight(1f).fillMaxHeight())
-                }
-                maxWidth >= 560.dp -> Column(verticalArrangement = Arrangement.spacedBy(gap)) {
+            if (maxWidth >= 560.dp) {
+                Column(verticalArrangement = Arrangement.spacedBy(gap)) {
                     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(gap)) {
-                        planCard(Modifier.weight(1f).fillMaxHeight())
+                        agenda(Modifier.weight(1.2f).fillMaxHeight())
+                        upcoming(Modifier.weight(1f).fillMaxHeight())
+                    }
+                    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(gap)) {
+                        planCard(Modifier.weight(1.2f).fillMaxHeight())
                         habitsCard(Modifier.weight(1f).fillMaxHeight())
                     }
-                    upcoming(Modifier.fillMaxWidth())
                 }
-                else -> Column(verticalArrangement = Arrangement.spacedBy(gap)) {
+            } else {
+                Column(verticalArrangement = Arrangement.spacedBy(gap)) {
                     planCard(Modifier.fillMaxWidth())
+                    agenda(Modifier.fillMaxWidth())
                     habitsCard(Modifier.fillMaxWidth())
                     upcoming(Modifier.fillMaxWidth())
                 }
@@ -181,6 +198,7 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit) {
         TodayDialog.Capture -> CaptureDialog { dialog = null }
         TodayDialog.NewTask -> TaskDialog(null, projects, milestones, onDismiss = { dialog = null })
         TodayDialog.NewDeadline -> DeadlineDialog(projects, null) { dialog = null }
+        TodayDialog.NewEvent -> EventDialog(null, projects, today, initialStart = ((Dates.hourNow() + 1).coerceAtMost(22)) * 60) { dialog = null }
         TodayDialog.PickFirst -> {
             val open = tasks.filter { !it.isDone }
                 .sortedWith(compareBy<Task> { it.planned_date != today.toString() }.thenBy { it.due_date ?: "9999" })
@@ -210,7 +228,7 @@ fun TodayScreen(wide: Boolean, onOpenHabits: () -> Unit) {
     }
 }
 
-private enum class TodayDialog { Capture, NewTask, NewDeadline, PickFirst, AddToPlan }
+private enum class TodayDialog { Capture, NewTask, NewDeadline, NewEvent, PickFirst, AddToPlan }
 
 @Composable
 private fun FirstCard(
@@ -373,6 +391,61 @@ private fun UpcomingCard(
                     Text(item.title, style = MaterialTheme.typography.bodyMedium, maxLines = 1)
                     if (item.sub.isNotBlank()) Text(item.sub, style = MaterialTheme.typography.bodySmall, color = cs.onSurfaceVariant, maxLines = 1)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AgendaCard(
+    occs: List<Occurrence>,
+    projects: Map<String, Project>,
+    modifier: Modifier,
+    onOpen: () -> Unit,
+    onAdd: () -> Unit,
+) {
+    val cs = MaterialTheme.colorScheme
+    val now = Dates.minuteNow()
+    Card(
+        "Agenda", modifier, icon = Icons.Outlined.Schedule,
+        action = {
+            IconButton(onClick = onAdd) { Icon(Icons.Outlined.Add, "Nuevo evento hoy") }
+            TextButton(onClick = onOpen) { Text("Calendario") }
+        },
+    ) {
+        if (occs.isEmpty()) EmptyText("Nada en el calendario hoy.")
+        occs.forEach { o ->
+            val past = o.end <= now
+            val current = now in o.start until o.end
+            val alpha = if (past) 0.5f else 1f
+            val bar = when (o.event.kindEnum) {
+                EventKind.CLASS -> cs.outline
+                EventKind.STUDY -> cs.primary
+                EventKind.GYM -> cs.tertiary
+                EventKind.OTHER -> cs.secondary
+            }
+            Row(Modifier.fillMaxWidth().padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    CalendarMath.hm(o.start),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = cs.onSurface.copy(alpha = alpha),
+                    modifier = Modifier.widthIn(min = 48.dp),
+                )
+                androidx.compose.foundation.layout.Box(
+                    Modifier.width(3.dp).height(32.dp)
+                        .background(bar.copy(alpha = alpha), androidx.compose.foundation.shape.RoundedCornerShape(2.dp)),
+                )
+                Spacer(Modifier.width(10.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(o.event.title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = cs.onSurface.copy(alpha = alpha), maxLines = 1)
+                    val project = o.event.project_id?.let(projects::get)?.name?.takeIf { it != o.event.title }
+                    Text(
+                        listOfNotNull("hasta las ${CalendarMath.hm(o.end)}", o.event.location, project).joinToString(" · "),
+                        style = MaterialTheme.typography.bodySmall, color = cs.onSurfaceVariant.copy(alpha = alpha), maxLines = 1,
+                    )
+                }
+                if (current) Chip("Ahora", color = cs.primaryContainer)
             }
         }
     }

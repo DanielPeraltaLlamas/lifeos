@@ -5,6 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import dev.lifeos.db.Daily_plan
 import dev.lifeos.db.Deadline
+import dev.lifeos.db.Event
 import dev.lifeos.db.Habit
 import dev.lifeos.db.Inbox_item
 import dev.lifeos.db.LifeOsDatabase
@@ -17,6 +18,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import dev.lifeos.data.Dates.plusDays
 import kotlinx.datetime.LocalDate
 import kotlin.time.Clock
 import kotlin.uuid.Uuid
@@ -43,6 +45,7 @@ class Repository(
     val deadlines: Flow<List<Deadline>> = db.deadlineQueries.selectAll().asFlow().mapToList(io)
     val inbox: Flow<List<Inbox_item>> = db.inboxQueries.selectAll().asFlow().mapToList(io)
     val notes: Flow<List<Note>> = db.noteQueries.selectAll().asFlow().mapToList(io)
+    val events: Flow<List<Event>> = db.eventQueries.selectAll().asFlow().mapToList(io)
 
     fun dailyPlan(date: LocalDate): Flow<Daily_plan?> =
         db.dailyPlanQueries.selectByDate(date.toString()).asFlow().mapToOneOrNull(io)
@@ -66,7 +69,7 @@ class Repository(
         db.projectQueries.update(name.trim(), kind.name, description?.trim()?.ifEmpty { null }, dueDate?.toString(), now(), id)
     }
 
-    /** Borra el proyecto con sus hitos, tareas y entregas. */
+    /** Borra el proyecto con sus hitos, tareas, entregas y eventos. */
     suspend fun deleteProject(id: String) = write {
         db.transaction {
             val t = now()
@@ -74,6 +77,7 @@ class Repository(
             db.milestoneQueries.softDeleteByProject(t, id)
             db.taskQueries.softDeleteByProject(t, id)
             db.deadlineQueries.softDeleteByProject(t, id)
+            db.eventQueries.softDeleteByProject(t, id)
         }
     }
 
@@ -199,6 +203,67 @@ class Repository(
     }
 
     suspend fun deleteDeadline(id: String) = write { db.deadlineQueries.softDelete(now(), id) }
+
+    // ---------- Calendario ----------
+    suspend fun addEvent(
+        title: String,
+        kind: EventKind,
+        date: LocalDate,
+        startMin: Int,
+        endMin: Int,
+        weekly: Boolean = false,
+        until: LocalDate? = null,
+        projectId: String? = null,
+        location: String? = null,
+    ): String = write {
+        require(endMin > startMin) { "El evento debe terminar después de empezar" }
+        val id = newId()
+        val t = now()
+        db.eventQueries.insert(
+            id, projectId, title.trim(), kind.name, date.toString(), startMin.toLong(), endMin.toLong(),
+            if (weekly) 1L else 0L, until?.takeIf { weekly }?.toString(), location?.trim()?.ifEmpty { null }, t, t,
+        )
+        id
+    }
+
+    suspend fun updateEvent(
+        id: String,
+        title: String,
+        kind: EventKind,
+        date: LocalDate,
+        startMin: Int,
+        endMin: Int,
+        weekly: Boolean,
+        until: LocalDate?,
+        projectId: String?,
+        location: String?,
+    ) = write {
+        require(endMin > startMin) { "El evento debe terminar después de empezar" }
+        db.eventQueries.update(
+            projectId, title.trim(), kind.name, date.toString(), startMin.toLong(), endMin.toLong(),
+            if (weekly) 1L else 0L, until?.takeIf { weekly }?.toString(), location?.trim()?.ifEmpty { null }, now(), id,
+        )
+    }
+
+    suspend fun deleteEvent(id: String) = write { db.eventQueries.softDelete(now(), id) }
+
+    /** Quita una sola semana de un evento semanal. */
+    suspend fun skipOccurrence(id: String, date: LocalDate) = write {
+        db.transaction {
+            val e = db.eventQueries.selectById(id).executeAsOneOrNull() ?: return@transaction
+            val dates = (e.skipped + date).sorted().joinToString(",")
+            db.eventQueries.setSkipDates(dates, now(), id)
+        }
+    }
+
+    /** Corta un evento semanal: desaparece desde `date` (incluida) en adelante. */
+    suspend fun endSeriesFrom(id: String, date: LocalDate) = write {
+        db.transaction {
+            val e = db.eventQueries.selectById(id).executeAsOneOrNull() ?: return@transaction
+            if (date <= e.startDate) db.eventQueries.softDelete(now(), id)
+            else db.eventQueries.setUntil(date.plusDays(-1).toString(), now(), id)
+        }
+    }
 
     // ---------- Bandeja ----------
     suspend fun capture(text: String, source: Source): String? {
