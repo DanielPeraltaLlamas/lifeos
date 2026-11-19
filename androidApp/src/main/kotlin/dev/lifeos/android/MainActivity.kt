@@ -14,4 +14,9 @@ class MainActivity : ComponentActivity() {
         val app = application as LifeOsApp
         setContent { App(app.repository, Source.ANDROID, sync = app.sync) }
     }
+
+    override fun onResume() {
+        super.onResume()
+        (application as LifeOsApp).sync.onAppVisible()
+    }
 }

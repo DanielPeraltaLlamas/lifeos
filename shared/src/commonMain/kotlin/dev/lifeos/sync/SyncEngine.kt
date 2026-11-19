@@ -86,6 +86,12 @@ class SyncEngine(
 
     fun syncNow() { kick.trySend(Unit) }
 
+    /** Al abrir la app o volver a ella. Si se sincronizó hace menos de 20 s, no hace nada. */
+    fun onAppVisible() {
+        val last = _state.value.lastSync ?: 0L
+        if (now() - last > 20_000) kick.trySend(Unit)
+    }
+
     // ------------------------------------------------------------------ sesión
 
     private suspend fun restoreSession() = withContext(io) {
